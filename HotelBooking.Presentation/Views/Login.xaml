@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="HotelBooking.Presentation.Views.Login"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:HotelBooking.Presentation.Views"
+            xmlns:ui="http://schemas.modernwpf.com/2019"
+             mc:Ignorable="d" 
+             xmlns:prism="http://prismlibrary.com/"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <ui:SimpleStackPanel MaxWidth="400px" Spacing="10" Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="Log in" Style="{ui:StaticResource HeaderTextBlockStyle}"/>
+            <ui:SimpleStackPanel>
+                <TextBlock Style="{ui:StaticResource CaptionTextBlockStyle}" Text="Username"/>
+                <RichTextBox Style="{ui:StaticResource DefaultRichTextBoxStyle}"/>
+            </ui:SimpleStackPanel>
+            <ui:SimpleStackPanel>
+                <TextBlock Style="{ui:StaticResource CaptionTextBlockStyle}" Text="Password"/>
+                <PasswordBox Style="{ui:StaticResource DefaultPasswordBoxStyle}"/>
+            </ui:SimpleStackPanel>
+            <Button Content="Log in" HorizontalAlignment="Center" Style="{ui:StaticResource AccentButtonStyle}"/>
+            <ui:SimpleStackPanel HorizontalAlignment="Center">
+                <TextBlock Text="or" HorizontalAlignment="Center"/>
+                <ui:HyperlinkButton Content="Sign Up"/>
+            </ui:SimpleStackPanel>
+        </ui:SimpleStackPanel>
+    </Grid>
+</UserControl>
