@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.31613.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotelBooking.Presentation", "HotelBooking.Presentation\HotelBooking.Presentation.csproj", "{E50CE928-070A-4A2B-84E7-C21E2658BE2C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBooking.Domain", "HotelBooking.Domain\HotelBooking.Domain.csproj", "{D93AD04A-A20F-456B-9147-2492BCC50E11}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotelBooking.Domain", "HotelBooking.Domain\HotelBooking.Domain.csproj", "{D93AD04A-A20F-456B-9147-2492BCC50E11}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBooking.DAL", "HotelBooking.DAL\HotelBooking.DAL.csproj", "{A236BDB1-4F18-4A79-8565-15F45B333FF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotelBooking.DAL", "HotelBooking.DAL\HotelBooking.DAL.csproj", "{A236BDB1-4F18-4A79-8565-15F45B333FF6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

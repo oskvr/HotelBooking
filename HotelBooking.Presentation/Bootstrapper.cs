@@ -23,9 +23,11 @@ namespace HotelBooking.Presentation
 			base.OnInitialized();
 			var regionManager = Container.Resolve<IRegionManager>();
 			var contentRegion = regionManager.Regions["ContentRegion"];
-			var loginView = Container.Resolve<Login>();
+			//var loginView = Container.Resolve<Login>();
+			//contentRegion.Add(loginView);
+			var hotelsOverview = Container.Resolve<HotelsOverview>();
+			contentRegion.Add(hotelsOverview);
 
-			contentRegion.Add(loginView);
 		}
 	}
 }
