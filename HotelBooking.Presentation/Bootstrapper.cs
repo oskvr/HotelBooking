@@ -15,7 +15,7 @@ namespace HotelBooking.Presentation
 
 		protected override void RegisterTypes(IContainerRegistry containerRegistry)
 		{
-			
+
 
 		}
 		protected override void OnInitialized()

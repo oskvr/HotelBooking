@@ -3,6 +3,7 @@ using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,12 +17,14 @@ namespace HotelBooking.Presentation.ViewModels
 		public string ImageUrl { get; set; }
 		public int RatingScore { get; set; }
 	}
+
 	public class HotelsOverviewViewModel : BindableBase
 	{
 		public ObservableCollection<Hotel> Hotels { get; set; }
 		public Hotel SelectedHotel { get; set; }
-		public DelegateCommand TogglePaneCommand{ get; set; }
+		public DelegateCommand TogglePaneCommand { get; set; }
 		public bool ShowPane { get; set; }
+
 		public HotelsOverviewViewModel()
 		{
 			TogglePaneCommand = new DelegateCommand(() => ShowPane = !ShowPane);

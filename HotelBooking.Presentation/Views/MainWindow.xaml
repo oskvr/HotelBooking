@@ -20,6 +20,7 @@
         </Grid.RowDefinitions>
         <ui:NavigationView
             Grid.Row="0"
+            IsPaneToggleButtonVisible="False"
             IsSettingsVisible="False"
             PaneDisplayMode="Top">
             <ui:NavigationView.MenuItems>
