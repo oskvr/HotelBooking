@@ -1,20 +1,15 @@
-﻿using Prism.Mvvm;
+﻿using ModernWpf.Controls;
+using Prism.Commands;
+using Prism.Mvvm;
+using Prism.Regions;
+using System;
+using System.Diagnostics;
+using System.Windows.Input;
 
 namespace HotelBooking.Presentation.ViewModels
 {
 	public class MainWindowViewModel : BindableBase
 	{
-		private string _title = "ModernWpf Application";
-		public bool IsUserLoggedIn { get; set; } = false;
-		public string Title
-		{
-			get { return _title; }
-			set { SetProperty(ref _title, value); }
-		}
 
-		public MainWindowViewModel()
-		{
-
-		}
 	}
 }

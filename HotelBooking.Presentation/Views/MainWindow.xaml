@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:ui="http://schemas.modernwpf.com/2019"
+    xmlns:view="clr-namespace:HotelBooking.Presentation.Views"
     Title="MainWindow"
     Width="1000"
     Height="600"
@@ -18,19 +19,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <ui:NavigationView
-            Grid.Row="0"
-            IsPaneToggleButtonVisible="False"
-            IsSettingsVisible="False"
-            PaneDisplayMode="Top">
-            <ui:NavigationView.MenuItems>
-                <ui:NavigationViewItem Content="Hotels" Icon="Home" />
-                <ui:NavigationViewItem Content="Your Bookings" Icon="Bullets" />
-            </ui:NavigationView.MenuItems>
-            <ui:NavigationView.PaneFooter>
-                <ui:NavigationViewItem Content="Log Out" Icon="Forward" />
-            </ui:NavigationView.PaneFooter>
-        </ui:NavigationView>
+        <view:Navbar Grid.Row="0" />
         <ContentControl Grid.Row="1" prism:RegionManager.RegionName="ContentRegion" />
     </Grid>
 </Window>

@@ -15,7 +15,8 @@ namespace HotelBooking.Presentation
 
 		protected override void RegisterTypes(IContainerRegistry containerRegistry)
 		{
-
+			containerRegistry.RegisterForNavigation<Login>();
+			containerRegistry.RegisterForNavigation<HotelsOverview>();
 
 		}
 		protected override void OnInitialized()
