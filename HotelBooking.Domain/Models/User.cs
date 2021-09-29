@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HotelBooking.Domain.Models
 {
-	public class Customer : BaseEntity
+	public class User : BaseEntity
 	{
 		[Required]
 		public string Email { get; set; }
@@ -17,6 +17,8 @@ namespace HotelBooking.Domain.Models
 		public string FirstName { get; set; }
 		[Required]
 		public string LastName { get; set; }
+
+		public string FullName => $"{FirstName} {LastName}";
 		public ICollection<Booking> Bookings { get; set; }
 		public ICollection<Rating> Ratings { get; set; }
 	}

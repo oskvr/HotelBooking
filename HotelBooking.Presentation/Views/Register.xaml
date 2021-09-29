@@ -1,0 +1,57 @@
+﻿<UserControl
+    x:Class="HotelBooking.Presentation.Views.Register"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:HotelBooking.Presentation.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:prism="http://prismlibrary.com/"
+    xmlns:ui="http://schemas.modernwpf.com/2019"
+    xmlns:viewmodels="clr-namespace:HotelBooking.Presentation.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewmodels:RegisterViewModel}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    mc:Ignorable="d">
+    <Grid>
+        <ui:SimpleStackPanel
+            MaxWidth="400px"
+            Margin="10"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Center"
+            Spacing="10">
+            <TextBlock Style="{ui:StaticResource HeaderTextBlockStyle}" Text="Register" />
+            <ui:SimpleStackPanel>
+                <TextBlock Style="{ui:StaticResource CaptionTextBlockStyle}" Text="First Name" />
+                <TextBox Style="{ui:StaticResource DefaultTextBoxStyle}" Text="{Binding FirstName}" />
+            </ui:SimpleStackPanel>
+            <ui:SimpleStackPanel>
+                <TextBlock Style="{ui:StaticResource CaptionTextBlockStyle}" Text="Last Name" />
+                <TextBox Style="{ui:StaticResource DefaultTextBoxStyle}" Text="{Binding LastName}" />
+            </ui:SimpleStackPanel>
+            <ui:SimpleStackPanel>
+                <TextBlock Style="{ui:StaticResource CaptionTextBlockStyle}" Text="Email" />
+                <TextBox Style="{ui:StaticResource DefaultTextBoxStyle}" Text="{Binding Email}" />
+            </ui:SimpleStackPanel>
+            <ui:SimpleStackPanel>
+                <TextBlock Style="{ui:StaticResource CaptionTextBlockStyle}" Text="Password" />
+                <PasswordBox
+                    x:Name="RegisterPasswordBox"
+                    PasswordChanged="RegisterPasswordBox_PasswordChanged"
+                    Style="{ui:StaticResource DefaultPasswordBoxStyle}" />
+            </ui:SimpleStackPanel>
+            <ui:SimpleStackPanel>
+                <TextBlock Style="{ui:StaticResource CaptionTextBlockStyle}" Text="Confirm Password" />
+                <PasswordBox
+                    x:Name="RegisterConfirmPasswordBox"
+                    PasswordChanged="RegisterConfirmPasswordBox_PasswordChanged"
+                    Style="{ui:StaticResource DefaultPasswordBoxStyle}" />
+            </ui:SimpleStackPanel>
+            <Button
+                HorizontalAlignment="Center"
+                Command="{Binding RegisterCommand}"
+                Content="Register"
+                Style="{ui:StaticResource AccentButtonStyle}" />
+        </ui:SimpleStackPanel>
+    </Grid>
+</UserControl>

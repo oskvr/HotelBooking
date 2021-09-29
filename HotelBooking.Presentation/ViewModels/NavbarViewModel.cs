@@ -1,4 +1,5 @@
-﻿using HotelBooking.Presentation.Views;
+﻿using HotelBooking.Domain.Shared;
+using HotelBooking.Presentation.Views;
 using ModernWpf.Controls;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -16,6 +17,7 @@ namespace HotelBooking.Presentation.ViewModels
     {
 		private NavigationViewItem selectedItem;
 		private readonly IRegionManager regionManager;
+		public GlobalStore Store { get; set; }
 		public NavigationViewItem SelectedItem
 		{
 			get { return selectedItem; }
@@ -27,9 +29,10 @@ namespace HotelBooking.Presentation.ViewModels
 		}
 
 
-		public NavbarViewModel(IRegionManager regionManager)
+		public NavbarViewModel(IRegionManager regionManager, GlobalStore store)
 		{
 			this.regionManager = regionManager;
+			Store = store;
 		}
 
 	}

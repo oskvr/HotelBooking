@@ -1,5 +1,6 @@
 ﻿using HotelBooking.DAL.Data;
 using HotelBooking.DAL.Services;
+using HotelBooking.Domain.Shared;
 using HotelBooking.Presentation.Views;
 using Prism.DryIoc;
 using Prism.Ioc;
@@ -20,7 +21,10 @@ namespace HotelBooking.Presentation
 			containerRegistry.Register<HotelBookingDbContext>();
 			containerRegistry.Register<IHotelService, HotelService>();
 			containerRegistry.Register<IBookingService, BookingService>();
+			containerRegistry.Register<IAuthenticationService, AuthenticationService>();
+			containerRegistry.RegisterSingleton<GlobalStore>();
 			containerRegistry.RegisterForNavigation<Login>();
+			containerRegistry.RegisterForNavigation<Register>();
 			containerRegistry.RegisterForNavigation<HotelsOverview>();
 			containerRegistry.RegisterForNavigation<BookingCreate>();
 			containerRegistry.RegisterForNavigation<BookingsList>();

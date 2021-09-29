@@ -7,28 +7,31 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:ui="http://schemas.modernwpf.com/2019"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    xmlns:viewmodels="clr-namespace:HotelBooking.Presentation.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewmodels:LoginViewModel}"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
     <Grid>
         <ui:SimpleStackPanel
             MaxWidth="400px"
             Margin="10"
-            HorizontalAlignment="Center"
+            HorizontalAlignment="Stretch"
             VerticalAlignment="Center"
             Spacing="10">
             <TextBlock Style="{ui:StaticResource HeaderTextBlockStyle}" Text="Log in" />
             <ui:SimpleStackPanel>
-                <TextBlock Style="{ui:StaticResource CaptionTextBlockStyle}" Text="Username" />
-                <RichTextBox Style="{ui:StaticResource DefaultRichTextBoxStyle}" />
+                <TextBlock Style="{ui:StaticResource CaptionTextBlockStyle}" Text="Email" />
+                <TextBox Style="{ui:StaticResource DefaultTextBoxStyle}" Text="{Binding Email}" />
             </ui:SimpleStackPanel>
             <ui:SimpleStackPanel>
                 <TextBlock Style="{ui:StaticResource CaptionTextBlockStyle}" Text="Password" />
-                <PasswordBox Style="{ui:StaticResource DefaultPasswordBoxStyle}" />
+                <PasswordBox PasswordChanged="PasswordBox_PasswordChanged" Style="{ui:StaticResource DefaultPasswordBoxStyle}" />
             </ui:SimpleStackPanel>
             <Button
                 HorizontalAlignment="Center"
+                Command="{Binding LoginCommand}"
                 Content="Log in"
                 Style="{ui:StaticResource AccentButtonStyle}" />
             <ui:SimpleStackPanel HorizontalAlignment="Center">

@@ -17,19 +17,25 @@ using System.Windows.Shapes;
 namespace HotelBooking.Presentation.Views
 {
 	/// <summary>
-	/// Interaction logic for Login.xaml
+	/// Interaction logic for Register.xaml
 	/// </summary>
-	public partial class Login : UserControl
+	public partial class Register : UserControl
 	{
-		public Login()
+		public Register()
 		{
 			InitializeComponent();
 		}
 
-		private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+		private void RegisterConfirmPasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
 		{
 			if (DataContext != null)
-			{ ((LoginViewModel)DataContext).Password = ((PasswordBox)sender).Password; }
+			{ ((RegisterViewModel)DataContext).ConfirmPassword = ((PasswordBox)sender).Password; }
+		}
+
+		private void RegisterPasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+		{
+			if (DataContext != null)
+			{ ((RegisterViewModel)DataContext).Password = ((PasswordBox)sender).Password; }
 		}
 	}
 }

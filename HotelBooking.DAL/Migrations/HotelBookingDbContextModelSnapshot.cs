@@ -35,22 +35,22 @@ namespace HotelBooking.DAL.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("CustomerId")
-                        .HasColumnType("int");
-
                     b.Property<int>("HotelId")
                         .HasColumnType("int");
 
                     b.Property<int?>("RoomId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("CustomerId");
+                    b.HasKey("Id");
 
                     b.HasIndex("HotelId");
 
                     b.HasIndex("RoomId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Bookings");
                 });
@@ -81,37 +81,6 @@ namespace HotelBooking.DAL.Migrations
                     b.ToTable("BookingExtras");
                 });
 
-            modelBuilder.Entity("HotelBooking.Domain.Models.Customer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Customers");
-                });
-
             modelBuilder.Entity("HotelBooking.Domain.Models.Hotel", b =>
                 {
                     b.Property<int>("Id")
@@ -140,7 +109,7 @@ namespace HotelBooking.DAL.Migrations
                         {
                             Id = 1,
                             Country = "Sweden",
-                            CreatedAt = new DateTime(2021, 9, 26, 13, 38, 59, 992, DateTimeKind.Local).AddTicks(7723),
+                            CreatedAt = new DateTime(2021, 9, 29, 14, 43, 28, 158, DateTimeKind.Local).AddTicks(8525),
                             Name = "Plaza Bay Hotel",
                             ThumbnailImage = "https://picsum.photos/500"
                         },
@@ -148,7 +117,7 @@ namespace HotelBooking.DAL.Migrations
                         {
                             Id = 2,
                             Country = "Sweden",
-                            CreatedAt = new DateTime(2021, 9, 26, 13, 38, 59, 995, DateTimeKind.Local).AddTicks(3348),
+                            CreatedAt = new DateTime(2021, 9, 29, 14, 43, 28, 161, DateTimeKind.Local).AddTicks(3631),
                             Name = "Stadshotellet",
                             ThumbnailImage = "https://picsum.photos/500"
                         },
@@ -156,7 +125,7 @@ namespace HotelBooking.DAL.Migrations
                         {
                             Id = 3,
                             Country = "Sweden",
-                            CreatedAt = new DateTime(2021, 9, 26, 13, 38, 59, 995, DateTimeKind.Local).AddTicks(3498),
+                            CreatedAt = new DateTime(2021, 9, 29, 14, 43, 28, 161, DateTimeKind.Local).AddTicks(3734),
                             Name = "Sunkstället",
                             ThumbnailImage = "https://picsum.photos/500"
                         },
@@ -164,7 +133,7 @@ namespace HotelBooking.DAL.Migrations
                         {
                             Id = 4,
                             Country = "Sweden",
-                            CreatedAt = new DateTime(2021, 9, 26, 13, 38, 59, 995, DateTimeKind.Local).AddTicks(3509),
+                            CreatedAt = new DateTime(2021, 9, 29, 14, 43, 28, 161, DateTimeKind.Local).AddTicks(3744),
                             Name = "Stugstugan",
                             ThumbnailImage = "https://picsum.photos/500"
                         });
@@ -180,20 +149,20 @@ namespace HotelBooking.DAL.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("CustomerId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("HotelId")
                         .HasColumnType("int");
 
                     b.Property<double>("Score")
                         .HasColumnType("float");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
-
                     b.HasIndex("HotelId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Ratings");
 
@@ -201,86 +170,86 @@ namespace HotelBooking.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2021, 9, 26, 13, 38, 59, 996, DateTimeKind.Local).AddTicks(1860),
+                            CreatedAt = new DateTime(2021, 9, 29, 14, 43, 28, 162, DateTimeKind.Local).AddTicks(2360),
                             HotelId = 1,
-                            Score = 2.0
+                            Score = 0.0
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2021, 9, 26, 13, 38, 59, 996, DateTimeKind.Local).AddTicks(2355),
+                            CreatedAt = new DateTime(2021, 9, 29, 14, 43, 28, 162, DateTimeKind.Local).AddTicks(2899),
                             HotelId = 1,
-                            Score = 2.0
+                            Score = 1.0
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2021, 9, 26, 13, 38, 59, 996, DateTimeKind.Local).AddTicks(2365),
+                            CreatedAt = new DateTime(2021, 9, 29, 14, 43, 28, 162, DateTimeKind.Local).AddTicks(2910),
                             HotelId = 1,
-                            Score = 1.0
+                            Score = 3.0
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2021, 9, 26, 13, 38, 59, 996, DateTimeKind.Local).AddTicks(2369),
+                            CreatedAt = new DateTime(2021, 9, 29, 14, 43, 28, 162, DateTimeKind.Local).AddTicks(2913),
                             HotelId = 1,
-                            Score = 1.0
+                            Score = 5.0
                         },
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2021, 9, 26, 13, 38, 59, 996, DateTimeKind.Local).AddTicks(2372),
+                            CreatedAt = new DateTime(2021, 9, 29, 14, 43, 28, 162, DateTimeKind.Local).AddTicks(2916),
                             HotelId = 2,
-                            Score = 0.0
+                            Score = 4.0
                         },
                         new
                         {
                             Id = 6,
-                            CreatedAt = new DateTime(2021, 9, 26, 13, 38, 59, 996, DateTimeKind.Local).AddTicks(2375),
+                            CreatedAt = new DateTime(2021, 9, 29, 14, 43, 28, 162, DateTimeKind.Local).AddTicks(2918),
                             HotelId = 2,
-                            Score = 0.0
+                            Score = 4.0
                         },
                         new
                         {
                             Id = 7,
-                            CreatedAt = new DateTime(2021, 9, 26, 13, 38, 59, 996, DateTimeKind.Local).AddTicks(2379),
+                            CreatedAt = new DateTime(2021, 9, 29, 14, 43, 28, 162, DateTimeKind.Local).AddTicks(2921),
                             HotelId = 2,
                             Score = 2.0
                         },
                         new
                         {
                             Id = 8,
-                            CreatedAt = new DateTime(2021, 9, 26, 13, 38, 59, 996, DateTimeKind.Local).AddTicks(2382),
+                            CreatedAt = new DateTime(2021, 9, 29, 14, 43, 28, 162, DateTimeKind.Local).AddTicks(2924),
                             HotelId = 2,
-                            Score = 1.0
+                            Score = 0.0
                         },
                         new
                         {
                             Id = 9,
-                            CreatedAt = new DateTime(2021, 9, 26, 13, 38, 59, 996, DateTimeKind.Local).AddTicks(2385),
+                            CreatedAt = new DateTime(2021, 9, 29, 14, 43, 28, 162, DateTimeKind.Local).AddTicks(2927),
                             HotelId = 3,
-                            Score = 2.0
+                            Score = 1.0
                         },
                         new
                         {
                             Id = 10,
-                            CreatedAt = new DateTime(2021, 9, 26, 13, 38, 59, 996, DateTimeKind.Local).AddTicks(2388),
-                            HotelId = 3,
-                            Score = 5.0
-                        },
-                        new
-                        {
-                            Id = 11,
-                            CreatedAt = new DateTime(2021, 9, 26, 13, 38, 59, 996, DateTimeKind.Local).AddTicks(2392),
+                            CreatedAt = new DateTime(2021, 9, 29, 14, 43, 28, 162, DateTimeKind.Local).AddTicks(2930),
                             HotelId = 3,
                             Score = 2.0
                         },
                         new
                         {
-                            Id = 12,
-                            CreatedAt = new DateTime(2021, 9, 26, 13, 38, 59, 996, DateTimeKind.Local).AddTicks(2396),
+                            Id = 11,
+                            CreatedAt = new DateTime(2021, 9, 29, 14, 43, 28, 162, DateTimeKind.Local).AddTicks(2933),
                             HotelId = 3,
-                            Score = 0.0
+                            Score = 3.0
+                        },
+                        new
+                        {
+                            Id = 12,
+                            CreatedAt = new DateTime(2021, 9, 29, 14, 43, 28, 162, DateTimeKind.Local).AddTicks(2936),
+                            HotelId = 3,
+                            Score = 1.0
                         });
                 });
 
@@ -336,7 +305,7 @@ namespace HotelBooking.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2021, 9, 26, 13, 38, 59, 996, DateTimeKind.Local).AddTicks(4515),
+                            CreatedAt = new DateTime(2021, 9, 29, 14, 43, 28, 162, DateTimeKind.Local).AddTicks(5166),
                             MaxCapacity = 1,
                             PricePerNight = 100,
                             Type = "Single Room"
@@ -344,7 +313,7 @@ namespace HotelBooking.DAL.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2021, 9, 26, 13, 38, 59, 996, DateTimeKind.Local).AddTicks(5067),
+                            CreatedAt = new DateTime(2021, 9, 29, 14, 43, 28, 162, DateTimeKind.Local).AddTicks(5737),
                             MaxCapacity = 2,
                             PricePerNight = 150,
                             Type = "Double Room"
@@ -352,19 +321,46 @@ namespace HotelBooking.DAL.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2021, 9, 26, 13, 38, 59, 996, DateTimeKind.Local).AddTicks(5077),
+                            CreatedAt = new DateTime(2021, 9, 29, 14, 43, 28, 162, DateTimeKind.Local).AddTicks(5746),
                             MaxCapacity = 3,
                             PricePerNight = 200,
                             Type = "Triple Room"
                         });
                 });
 
+            modelBuilder.Entity("HotelBooking.Domain.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("HotelBooking.Domain.Models.Booking", b =>
                 {
-                    b.HasOne("HotelBooking.Domain.Models.Customer", "Customer")
-                        .WithMany("Bookings")
-                        .HasForeignKey("CustomerId");
-
                     b.HasOne("HotelBooking.Domain.Models.Hotel", "Hotel")
                         .WithMany()
                         .HasForeignKey("HotelId")
@@ -375,11 +371,15 @@ namespace HotelBooking.DAL.Migrations
                         .WithMany("Bookings")
                         .HasForeignKey("RoomId");
 
-                    b.Navigation("Customer");
+                    b.HasOne("HotelBooking.Domain.Models.User", "User")
+                        .WithMany("Bookings")
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Hotel");
 
                     b.Navigation("Room");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("HotelBooking.Domain.Models.BookingExtra", b =>
@@ -391,17 +391,17 @@ namespace HotelBooking.DAL.Migrations
 
             modelBuilder.Entity("HotelBooking.Domain.Models.Rating", b =>
                 {
-                    b.HasOne("HotelBooking.Domain.Models.Customer", "Customer")
-                        .WithMany("Ratings")
-                        .HasForeignKey("CustomerId");
-
                     b.HasOne("HotelBooking.Domain.Models.Hotel", "Hotel")
                         .WithMany("Ratings")
                         .HasForeignKey("HotelId");
 
-                    b.Navigation("Customer");
+                    b.HasOne("HotelBooking.Domain.Models.User", "User")
+                        .WithMany("Ratings")
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Hotel");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("HotelBooking.Domain.Models.Room", b =>
@@ -426,13 +426,6 @@ namespace HotelBooking.DAL.Migrations
                     b.Navigation("BookingExtras");
                 });
 
-            modelBuilder.Entity("HotelBooking.Domain.Models.Customer", b =>
-                {
-                    b.Navigation("Bookings");
-
-                    b.Navigation("Ratings");
-                });
-
             modelBuilder.Entity("HotelBooking.Domain.Models.Hotel", b =>
                 {
                     b.Navigation("Ratings");
@@ -448,6 +441,13 @@ namespace HotelBooking.DAL.Migrations
             modelBuilder.Entity("HotelBooking.Domain.Models.RoomType", b =>
                 {
                     b.Navigation("Rooms");
+                });
+
+            modelBuilder.Entity("HotelBooking.Domain.Models.User", b =>
+                {
+                    b.Navigation("Bookings");
+
+                    b.Navigation("Ratings");
                 });
 #pragma warning restore 612, 618
         }

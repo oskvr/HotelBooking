@@ -8,23 +8,6 @@ namespace HotelBooking.DAL.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Customers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Customers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Hotels",
                 columns: table => new
                 {
@@ -57,31 +40,20 @@ namespace HotelBooking.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Ratings",
+                name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Score = table.Column<double>(type: "float", nullable: false),
-                    CustomerId = table.Column<int>(type: "int", nullable: true),
-                    HotelId = table.Column<int>(type: "int", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Ratings", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Ratings_Customers_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Ratings_Hotels_HotelId",
-                        column: x => x.HotelId,
-                        principalTable: "Hotels",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -112,6 +84,34 @@ namespace HotelBooking.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Ratings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Score = table.Column<double>(type: "float", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: true),
+                    HotelId = table.Column<int>(type: "int", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ratings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Ratings_Hotels_HotelId",
+                        column: x => x.HotelId,
+                        principalTable: "Hotels",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Ratings_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Bookings",
                 columns: table => new
                 {
@@ -119,7 +119,7 @@ namespace HotelBooking.DAL.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CheckInDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CheckOutDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CustomerId = table.Column<int>(type: "int", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: true),
                     RoomId = table.Column<int>(type: "int", nullable: true),
                     HotelId = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -127,12 +127,6 @@ namespace HotelBooking.DAL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Bookings", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Bookings_Customers_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Bookings_Hotels_HotelId",
                         column: x => x.HotelId,
@@ -143,6 +137,12 @@ namespace HotelBooking.DAL.Migrations
                         name: "FK_Bookings_Rooms_RoomId",
                         column: x => x.RoomId,
                         principalTable: "Rooms",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Bookings_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -174,10 +174,10 @@ namespace HotelBooking.DAL.Migrations
                 columns: new[] { "Id", "Country", "CreatedAt", "Name", "ThumbnailImage" },
                 values: new object[,]
                 {
-                    { 1, "Sweden", new DateTime(2021, 9, 26, 13, 38, 59, 992, DateTimeKind.Local).AddTicks(7723), "Plaza Bay Hotel", "https://picsum.photos/500" },
-                    { 2, "Sweden", new DateTime(2021, 9, 26, 13, 38, 59, 995, DateTimeKind.Local).AddTicks(3348), "Stadshotellet", "https://picsum.photos/500" },
-                    { 3, "Sweden", new DateTime(2021, 9, 26, 13, 38, 59, 995, DateTimeKind.Local).AddTicks(3498), "Sunkstället", "https://picsum.photos/500" },
-                    { 4, "Sweden", new DateTime(2021, 9, 26, 13, 38, 59, 995, DateTimeKind.Local).AddTicks(3509), "Stugstugan", "https://picsum.photos/500" }
+                    { 1, "Sweden", new DateTime(2021, 9, 29, 14, 43, 28, 158, DateTimeKind.Local).AddTicks(8525), "Plaza Bay Hotel", "https://picsum.photos/500" },
+                    { 2, "Sweden", new DateTime(2021, 9, 29, 14, 43, 28, 161, DateTimeKind.Local).AddTicks(3631), "Stadshotellet", "https://picsum.photos/500" },
+                    { 3, "Sweden", new DateTime(2021, 9, 29, 14, 43, 28, 161, DateTimeKind.Local).AddTicks(3734), "Sunkstället", "https://picsum.photos/500" },
+                    { 4, "Sweden", new DateTime(2021, 9, 29, 14, 43, 28, 161, DateTimeKind.Local).AddTicks(3744), "Stugstugan", "https://picsum.photos/500" }
                 });
 
             migrationBuilder.InsertData(
@@ -185,39 +185,34 @@ namespace HotelBooking.DAL.Migrations
                 columns: new[] { "Id", "CreatedAt", "MaxCapacity", "PricePerNight", "Type" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2021, 9, 26, 13, 38, 59, 996, DateTimeKind.Local).AddTicks(4515), 1, 100, "Single Room" },
-                    { 2, new DateTime(2021, 9, 26, 13, 38, 59, 996, DateTimeKind.Local).AddTicks(5067), 2, 150, "Double Room" },
-                    { 3, new DateTime(2021, 9, 26, 13, 38, 59, 996, DateTimeKind.Local).AddTicks(5077), 3, 200, "Triple Room" }
+                    { 1, new DateTime(2021, 9, 29, 14, 43, 28, 162, DateTimeKind.Local).AddTicks(5166), 1, 100, "Single Room" },
+                    { 2, new DateTime(2021, 9, 29, 14, 43, 28, 162, DateTimeKind.Local).AddTicks(5737), 2, 150, "Double Room" },
+                    { 3, new DateTime(2021, 9, 29, 14, 43, 28, 162, DateTimeKind.Local).AddTicks(5746), 3, 200, "Triple Room" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Ratings",
-                columns: new[] { "Id", "CreatedAt", "CustomerId", "HotelId", "Score" },
+                columns: new[] { "Id", "CreatedAt", "HotelId", "Score", "UserId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2021, 9, 26, 13, 38, 59, 996, DateTimeKind.Local).AddTicks(1860), null, 1, 2.0 },
-                    { 2, new DateTime(2021, 9, 26, 13, 38, 59, 996, DateTimeKind.Local).AddTicks(2355), null, 1, 2.0 },
-                    { 3, new DateTime(2021, 9, 26, 13, 38, 59, 996, DateTimeKind.Local).AddTicks(2365), null, 1, 1.0 },
-                    { 4, new DateTime(2021, 9, 26, 13, 38, 59, 996, DateTimeKind.Local).AddTicks(2369), null, 1, 1.0 },
-                    { 5, new DateTime(2021, 9, 26, 13, 38, 59, 996, DateTimeKind.Local).AddTicks(2372), null, 2, 0.0 },
-                    { 6, new DateTime(2021, 9, 26, 13, 38, 59, 996, DateTimeKind.Local).AddTicks(2375), null, 2, 0.0 },
-                    { 7, new DateTime(2021, 9, 26, 13, 38, 59, 996, DateTimeKind.Local).AddTicks(2379), null, 2, 2.0 },
-                    { 8, new DateTime(2021, 9, 26, 13, 38, 59, 996, DateTimeKind.Local).AddTicks(2382), null, 2, 1.0 },
-                    { 9, new DateTime(2021, 9, 26, 13, 38, 59, 996, DateTimeKind.Local).AddTicks(2385), null, 3, 2.0 },
-                    { 10, new DateTime(2021, 9, 26, 13, 38, 59, 996, DateTimeKind.Local).AddTicks(2388), null, 3, 5.0 },
-                    { 11, new DateTime(2021, 9, 26, 13, 38, 59, 996, DateTimeKind.Local).AddTicks(2392), null, 3, 2.0 },
-                    { 12, new DateTime(2021, 9, 26, 13, 38, 59, 996, DateTimeKind.Local).AddTicks(2396), null, 3, 0.0 }
+                    { 1, new DateTime(2021, 9, 29, 14, 43, 28, 162, DateTimeKind.Local).AddTicks(2360), 1, 0.0, null },
+                    { 2, new DateTime(2021, 9, 29, 14, 43, 28, 162, DateTimeKind.Local).AddTicks(2899), 1, 1.0, null },
+                    { 3, new DateTime(2021, 9, 29, 14, 43, 28, 162, DateTimeKind.Local).AddTicks(2910), 1, 3.0, null },
+                    { 4, new DateTime(2021, 9, 29, 14, 43, 28, 162, DateTimeKind.Local).AddTicks(2913), 1, 5.0, null },
+                    { 5, new DateTime(2021, 9, 29, 14, 43, 28, 162, DateTimeKind.Local).AddTicks(2916), 2, 4.0, null },
+                    { 6, new DateTime(2021, 9, 29, 14, 43, 28, 162, DateTimeKind.Local).AddTicks(2918), 2, 4.0, null },
+                    { 7, new DateTime(2021, 9, 29, 14, 43, 28, 162, DateTimeKind.Local).AddTicks(2921), 2, 2.0, null },
+                    { 8, new DateTime(2021, 9, 29, 14, 43, 28, 162, DateTimeKind.Local).AddTicks(2924), 2, 0.0, null },
+                    { 9, new DateTime(2021, 9, 29, 14, 43, 28, 162, DateTimeKind.Local).AddTicks(2927), 3, 1.0, null },
+                    { 10, new DateTime(2021, 9, 29, 14, 43, 28, 162, DateTimeKind.Local).AddTicks(2930), 3, 2.0, null },
+                    { 11, new DateTime(2021, 9, 29, 14, 43, 28, 162, DateTimeKind.Local).AddTicks(2933), 3, 3.0, null },
+                    { 12, new DateTime(2021, 9, 29, 14, 43, 28, 162, DateTimeKind.Local).AddTicks(2936), 3, 1.0, null }
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_BookingExtras_BookingId",
                 table: "BookingExtras",
                 column: "BookingId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Bookings_CustomerId",
-                table: "Bookings",
-                column: "CustomerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bookings_HotelId",
@@ -230,14 +225,19 @@ namespace HotelBooking.DAL.Migrations
                 column: "RoomId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ratings_CustomerId",
-                table: "Ratings",
-                column: "CustomerId");
+                name: "IX_Bookings_UserId",
+                table: "Bookings",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ratings_HotelId",
                 table: "Ratings",
                 column: "HotelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ratings_UserId",
+                table: "Ratings",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Rooms_HotelId",
@@ -262,10 +262,10 @@ namespace HotelBooking.DAL.Migrations
                 name: "Bookings");
 
             migrationBuilder.DropTable(
-                name: "Customers");
+                name: "Rooms");
 
             migrationBuilder.DropTable(
-                name: "Rooms");
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Hotels");
