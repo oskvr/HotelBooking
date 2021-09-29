@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 
 namespace HotelBooking.Domain.Models
 {
-    public class RoomType
-    {
-		public string Title { get; set; }
-		public ICollection<Room> Rooms { get; set; }
+
+	public class RoomType : BaseEntity
+	{
+		public string Type { get; set; } // eg. Single Room
+		public int MaxCapacity { get; set; }
+		public int PricePerNight { get; set; }
+		public ICollection<Room> Rooms { get; set; } = new List<Room>();
 	}
 }

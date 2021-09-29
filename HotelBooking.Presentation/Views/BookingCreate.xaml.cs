@@ -1,7 +1,5 @@
-﻿using ModernWpf.Controls;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,17 +12,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Prism.Services;
-using Prism.Regions;
 
 namespace HotelBooking.Presentation.Views
 {
 	/// <summary>
-	/// Interaction logic for Navbar.xaml
+	/// Interaction logic for BookingCreate.xaml
 	/// </summary>
-	public partial class Navbar : UserControl
+	public partial class BookingCreate : UserControl
 	{
-		public Navbar()
+		public BookingCreate()
 		{
 			InitializeComponent();
 		}

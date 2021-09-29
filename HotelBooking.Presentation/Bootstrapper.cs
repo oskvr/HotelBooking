@@ -1,4 +1,6 @@
-﻿using HotelBooking.Presentation.Views;
+﻿using HotelBooking.DAL.Data;
+using HotelBooking.DAL.Services;
+using HotelBooking.Presentation.Views;
 using Prism.DryIoc;
 using Prism.Ioc;
 using Prism.Regions;
@@ -15,8 +17,13 @@ namespace HotelBooking.Presentation
 
 		protected override void RegisterTypes(IContainerRegistry containerRegistry)
 		{
+			containerRegistry.Register<HotelBookingDbContext>();
+			containerRegistry.Register<IHotelService, HotelService>();
+			containerRegistry.Register<IBookingService, BookingService>();
 			containerRegistry.RegisterForNavigation<Login>();
 			containerRegistry.RegisterForNavigation<HotelsOverview>();
+			containerRegistry.RegisterForNavigation<BookingCreate>();
+			containerRegistry.RegisterForNavigation<BookingsList>();
 
 		}
 		protected override void OnInitialized()
