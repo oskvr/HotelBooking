@@ -28,6 +28,7 @@ namespace HotelBooking.DAL.Data
 		{
 			modelBuilder.SeedHotels();
 			modelBuilder.SeedRoomTypes();
+			modelBuilder.SeedBookingExtras();
 			base.OnModelCreating(modelBuilder);
 		}
 	}
@@ -42,6 +43,37 @@ namespace HotelBooking.DAL.Data
 				new RoomType { Id = (int)RoomTypeIds.Triple, Type = "Triple Room", MaxCapacity = 3, PricePerNight = 200 }
 				);
 		}
+
+		public static void SeedBookingExtras(this ModelBuilder builder)
+		{
+			int extrasId = 1;
+			builder.Entity<BookingExtra>().HasData(
+			new BookingExtra
+			{
+				Id = extrasId++,
+				Type = "Transport",
+				Cost = 20,
+			},
+			new BookingExtra
+			{
+				Id = extrasId++,
+				Type = "All-Inclusive",
+				Cost = 100,
+			},
+			new BookingExtra
+			{
+				Id = extrasId++,
+				Type = "Pool",
+				Cost = 30,
+			},
+			new BookingExtra
+			{
+				Id = extrasId++,
+				Type = "Breakfast",
+				Cost = 50,
+			}
+			);
+		}
 		public static void SeedHotels(this ModelBuilder modelBuilder)
 		{
 			int hotelId = 1;
@@ -54,7 +86,80 @@ namespace HotelBooking.DAL.Data
 				new Hotel { Id = hotelId++, ThumbnailImage = new Uri("https://picsum.photos/500"), Country = "Sweden", Name = "Sunkstället" },
 				new Hotel { Id = hotelId++, ThumbnailImage = new Uri("https://picsum.photos/500"), Country = "Sweden", Name = "Stugstugan" }
 				);
-
+			modelBuilder.Entity<Room>().HasData(
+				new Room
+				{
+					Id = roomId++,
+					HotelId = 1,
+					RoomTypeId = (int)RoomTypeIds.Single
+				},
+				new Room
+				{
+					Id = roomId++,
+					HotelId = 1,
+					RoomTypeId = (int)RoomTypeIds.Double
+				},
+				new Room
+				{
+					Id = roomId++,
+					HotelId = 1,
+					RoomTypeId = (int)RoomTypeIds.Triple
+				},
+				new Room
+				{
+					Id = roomId++,
+					HotelId = 2,
+					RoomTypeId = (int)RoomTypeIds.Single
+				},
+				new Room
+				{
+					Id = roomId++,
+					HotelId = 2,
+					RoomTypeId = (int)RoomTypeIds.Double
+				},
+				new Room
+				{
+					Id = roomId++,
+					HotelId = 2,
+					RoomTypeId = (int)RoomTypeIds.Triple
+				},
+				new Room
+				{
+					Id = roomId++,
+					HotelId = 3,
+					RoomTypeId = (int)RoomTypeIds.Single
+				},
+				new Room
+				{
+					Id = roomId++,
+					HotelId = 3,
+					RoomTypeId = (int)RoomTypeIds.Double
+				},
+				new Room
+				{
+					Id = roomId++,
+					HotelId = 3,
+					RoomTypeId = (int)RoomTypeIds.Triple
+				},
+				new Room
+				{
+					Id = roomId++,
+					HotelId = 4,
+					RoomTypeId = (int)RoomTypeIds.Single
+				},
+				new Room
+				{
+					Id = roomId++,
+					HotelId = 4,
+					RoomTypeId = (int)RoomTypeIds.Double
+				},
+				new Room
+				{
+					Id = roomId++,
+					HotelId = 4,
+					RoomTypeId = (int)RoomTypeIds.Triple
+				}
+			);
 			modelBuilder.Entity<Rating>().HasData(
 			new Rating { Id = ratingId++, HotelId = 1, Score = random.Next(0, 6) },
 			new Rating { Id = ratingId++, HotelId = 1, Score = random.Next(0, 6) },

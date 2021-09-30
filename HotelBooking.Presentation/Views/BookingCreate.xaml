@@ -7,6 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:ui="http://schemas.modernwpf.com/2019"
+    xmlns:viewmodels="clr-namespace:HotelBooking.Presentation.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewmodels:BookingCreateViewModel}"
     d:DesignHeight="450"
     d:DesignWidth="800"
     prism:ViewModelLocator.AutoWireViewModel="True"
@@ -24,7 +26,17 @@
                 DisplayDateStart="{Binding Booking.CheckInDate}"
                 SelectedDate="{Binding Booking.CheckOutDate, Mode=TwoWay}"
                 Style="{ui:StaticResource DefaultDatePickerStyle}" />
-
+            <TextBlock FontSize="36" Text="{Binding SelectedCount}" />
+            <ui:ListView ItemsSource="{Binding BookingExtras, Mode=TwoWay}">
+                <ui:ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ui:SimpleStackPanel Orientation="Horizontal">
+                            <CheckBox IsChecked="{Binding IsSelected}" />
+                            <TextBlock Text="{Binding BookingExtra.Type}" />
+                        </ui:SimpleStackPanel>
+                    </DataTemplate>
+                </ui:ListView.ItemTemplate>
+            </ui:ListView>
             <Button
                 Command="{Binding CreateBookingCommand}"
                 Content="Submit"

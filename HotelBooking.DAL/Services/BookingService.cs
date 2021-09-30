@@ -1,5 +1,6 @@
 ﻿using HotelBooking.DAL.Data;
 using HotelBooking.Domain.Models;
+using HotelBooking.Domain.Shared;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,15 +14,19 @@ namespace HotelBooking.DAL.Services
 	{
 		private readonly HotelBookingDbContext dbContext;
 		private readonly HotelService hotelService;
+		private readonly GlobalStore store;
 
-		public BookingService(HotelBookingDbContext dbContext, HotelService hotelService)
+		public BookingService(HotelBookingDbContext dbContext, HotelService hotelService, GlobalStore store)
 		{
 			this.dbContext = dbContext;
 			this.hotelService = hotelService;
+			this.store = store;
 		}
 		public async Task Add(Booking booking)
 		{
 			//var availableRooms = hotelService.GetAvailableRoomsBetweenDates(booking.HotelId, booking.CheckInDate, booking.CheckOutDate);
+			booking.UserId = store.CurrentUser.Id;
+			booking.RoomId = 1;
 			dbContext.Bookings.Add(booking);
 			await dbContext.SaveChangesAsync();
 			//throw new NotImplementedException();
@@ -44,7 +49,7 @@ namespace HotelBooking.DAL.Services
 
 		public async Task<IEnumerable<Booking>> GetAll()
 		{
-			return await dbContext.Bookings.Include(booking=>booking.Hotel).ToListAsync();
+			return await dbContext.Bookings.Include(booking => booking.Hotel).Where(booking=>booking.UserId == store.CurrentUser.Id).ToListAsync();
 		}
 	}
 }

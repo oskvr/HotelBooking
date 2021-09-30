@@ -7,11 +7,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:ui="http://schemas.modernwpf.com/2019"
-    prism:ViewModelLocator.AutoWireViewModel="True"
     xmlns:viewmodels="clr-namespace:HotelBooking.Presentation.ViewModels"
     d:DataContext="{d:DesignInstance Type=viewmodels:LoginViewModel}"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
     <Grid>
         <ui:SimpleStackPanel
@@ -27,7 +27,10 @@
             </ui:SimpleStackPanel>
             <ui:SimpleStackPanel>
                 <TextBlock Style="{ui:StaticResource CaptionTextBlockStyle}" Text="Password" />
-                <PasswordBox PasswordChanged="PasswordBox_PasswordChanged" Style="{ui:StaticResource DefaultPasswordBoxStyle}" />
+                <PasswordBox
+                    x:Name="LoginPasswordBox"
+                    PasswordChanged="PasswordBox_PasswordChanged"
+                    Style="{ui:StaticResource DefaultPasswordBoxStyle}" />
             </ui:SimpleStackPanel>
             <Button
                 HorizontalAlignment="Center"

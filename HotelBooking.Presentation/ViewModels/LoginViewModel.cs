@@ -1,6 +1,7 @@
 ﻿using HotelBooking.DAL.Services;
 using HotelBooking.Domain.Models;
 using HotelBooking.Domain.Shared;
+using HotelBooking.Presentation.Views;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
@@ -19,15 +20,14 @@ namespace HotelBooking.Presentation.ViewModels
 		public string Email { get; set; }
 		public string Password { private get; set; }
 		public DelegateCommand LoginCommand { get; set; }
-		public GlobalStore Store { get; set; }
-
 		private readonly IAuthenticationService authenticationService;
+		private readonly IRegionManager regionManager;
 
-		public LoginViewModel(IAuthenticationService authenticationService, GlobalStore store)
+		public LoginViewModel(IAuthenticationService authenticationService, IRegionManager regionManager)
 		{
 			this.authenticationService = authenticationService;
 			LoginCommand = new DelegateCommand(OnLogin);
-			Store = store;
+			this.regionManager = regionManager;
 		}
 
 		private async void OnLogin()
@@ -35,8 +35,10 @@ namespace HotelBooking.Presentation.ViewModels
 			LoginResult result = await authenticationService.Login(Email, Password);
 			if (result.IsSuccess)
 			{
+				regionManager.RequestNavigate("ContentRegion", nameof(HotelsOverview));
 				Debug.WriteLine($"{result.User.FirstName} {result.User.LastName} logged in");
-				Store.CurrentUser = result.User;
+				Email = "";
+				Password = "";
 			}
 			else
 			{

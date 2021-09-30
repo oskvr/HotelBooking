@@ -24,10 +24,20 @@ namespace HotelBooking.Presentation.ViewModels
 			set
 			{
 				SetProperty(ref selectedItem, value);
+				if(selectedItem.Name == "Logout")
+				{
+					OnLogout();
+					return;
+				}
 				regionManager.RequestNavigate("ContentRegion", selectedItem.Name);
 			}
 		}
 
+		private void OnLogout()
+		{
+			Store.CurrentUser = null;
+			regionManager.RequestNavigate("ContentRegion", nameof(Login));
+		}
 
 		public NavbarViewModel(IRegionManager regionManager, GlobalStore store)
 		{

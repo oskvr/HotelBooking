@@ -7,15 +7,29 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:ui="http://schemas.modernwpf.com/2019"
+    xmlns:viewmodels="clr-namespace:HotelBooking.Presentation.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewmodels:BookingsListViewModel}"
     d:DesignHeight="450"
     d:DesignWidth="800"
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </UserControl.Resources>
     <Grid>
+        <ui:SimpleStackPanel
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Visibility="{Binding HasBookings, Converter={StaticResource BoolToVis}}">
+            <TextBlock FontSize="18" Text="You have no bookings" />
+        </ui:SimpleStackPanel>
         <ui:ListView ItemsSource="{Binding Bookings}">
             <ui:ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Hotel.Name}" />
+                    <ui:SimpleStackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Hotel.Name}" />
+                        <TextBlock Text="{Binding TotalPrice}" />
+                    </ui:SimpleStackPanel>
                 </DataTemplate>
             </ui:ListView.ItemTemplate>
         </ui:ListView>
