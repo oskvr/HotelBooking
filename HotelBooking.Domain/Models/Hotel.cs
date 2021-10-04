@@ -18,6 +18,5 @@ namespace HotelBooking.Domain.Models
 		// Computed properties
 
 		public double Rating => Ratings.Sum(rating => rating.Score) / Ratings.Count;
-
 	}
 }

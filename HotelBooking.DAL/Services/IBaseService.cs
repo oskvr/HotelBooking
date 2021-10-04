@@ -11,7 +11,7 @@ namespace HotelBooking.DAL.Services
 	{
 		Task<T> GetById(int id);
 		Task<IEnumerable<T>> GetAll();
-		Task Add(T entity);
+		Task Create(T entity);
 		Task Edit(T entity);
 		Task Delete(T entity);
 	}

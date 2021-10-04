@@ -9,7 +9,7 @@ namespace HotelBooking.DAL.Services
 {
 	public class HotelService : IHotelService
 	{
-		public Task Add(Hotel entity)
+		public Task Create(Hotel entity)
 		{
 			throw new NotImplementedException();
 		}

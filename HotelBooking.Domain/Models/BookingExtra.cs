@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PropertyChanged;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,5 +11,6 @@ namespace HotelBooking.Domain.Models
 	{
 		public string Type { get; set; }
 		public double Cost { get; set; }
+		public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 	}
 }

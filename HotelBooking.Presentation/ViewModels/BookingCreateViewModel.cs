@@ -15,52 +15,75 @@ using System.Threading.Tasks;
 using PropertyChanged;
 using System.ComponentModel;
 using System.Collections.Specialized;
+using HotelBooking.Domain.Models.Wrappers;
+using System.Windows;
 
 namespace HotelBooking.Presentation.ViewModels
 {
-	public class BookingExtraViewModel : BindableBase
-	{
-		public BookingExtra BookingExtra { get; set; }
-		public bool IsSelected { get; set; }
-	}
 	public class BookingCreateViewModel : BindableBase, INavigationAware
 	{
-		public Hotel SelectedHotel { get; set; }
-		public Booking Booking { get; set; }
-		public ObservableCollection<BookingExtraViewModel> BookingExtras { get; set; } = new ObservableCollection<BookingExtraViewModel>();
+		public BookingWrapper Booking { get; set; } = new BookingWrapper();
+		public ObservableCollection<RoomType> RoomTypes { get; set; } = new ObservableCollection<RoomType>();
+		public ObservableCollection<BookingExtraWrapper> BookingExtras { get; set; } = new ObservableCollection<BookingExtraWrapper>();
+		public DelegateCommand BookingUpdatedCommand { get; set; }
+
 		public DelegateCommand CreateBookingCommand { get; set; }
 		private readonly IBookingService bookingService;
 		private readonly HotelBookingDbContext dbContext;
+		public int TotalDays => (Booking.CheckInDate.AddDays(Booking.LengthInDays) - Booking.CheckInDate).Days;
+		public double? TotalPrice => (Booking.RoomType.PricePerNight * TotalDays) + BookingExtras.Where(extra => extra.IsSelected).Sum(extra => extra.BookingExtra.Cost);
 		public BookingCreateViewModel(IBookingService bookingService, HotelBookingDbContext dbContext)
 		{
 			CreateBookingCommand = new DelegateCommand(OnCreateBooking);
+			BookingUpdatedCommand = new DelegateCommand(OnBookingUpdate);
 			this.bookingService = bookingService;
 			this.dbContext = dbContext;
-			LoadBookingExtras();
+			LoadDataAsync();
 		}
-
-		private async void LoadBookingExtras()
+		private void OnBookingUpdate()
 		{
-			var bookingExtras = await dbContext.BookingExtras.ToListAsync();
-			foreach (var extra in bookingExtras)
-			{
-				BookingExtraViewModel vm = new()
-				{
-					BookingExtra = extra,
-					IsSelected = false,
-				};
-				BookingExtras.Add(vm);
-			}
+			RaisePropertyChanged(nameof(TotalPrice));
 		}
-
 		private async void OnCreateBooking()
 		{
-			foreach (var item in BookingExtras.Where(be=>be.IsSelected))
+			Booking.BookingExtras = BookingExtras;
+			try
 			{
-				Booking.BookingExtras.Add(item.BookingExtra);
+
+			await bookingService.Create(Booking);
 			}
-			await bookingService.Add(Booking);
+			catch (Exception e)
+			{
+				MessageBox.Show(e.Message);
+			}
 		}
+		private async void LoadDataAsync()
+		{
+			await LoadBookingExtrasAsync();
+			await LoadRoomTypesAsync();
+		}
+		private async Task LoadBookingExtrasAsync()
+		{
+			var bookingExtras = await dbContext.BookingExtras.ToListAsync();
+			foreach (BookingExtra extra in bookingExtras)
+			{
+				BookingExtraWrapper bookingExtra = new()
+				{
+					BookingExtra = extra,
+				};
+				BookingExtras.Add(bookingExtra);
+			}
+		}
+
+		private async Task LoadRoomTypesAsync()
+		{
+			var roomTypes = await dbContext.RoomTypes.ToListAsync();
+			foreach (var roomType in roomTypes)
+			{
+				RoomTypes.Add(roomType);
+			}
+		}
+
 		public bool IsNavigationTarget(NavigationContext navigationContext)
 		{
 			return true;
@@ -74,7 +97,7 @@ namespace HotelBooking.Presentation.ViewModels
 		public void OnNavigatedTo(NavigationContext navigationContext)
 		{
 			var hotelId = navigationContext.Parameters.GetValue<int>("id");
-			Booking = new Booking();
+			Booking = new BookingWrapper();
 			Booking.HotelId = hotelId;
 		}
 	}
