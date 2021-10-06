@@ -1,5 +1,6 @@
 ﻿using HotelBooking.DAL.Data;
 using HotelBooking.Domain.Models;
+using HotelBooking.Domain.Shared;
 using HotelBooking.Presentation.Views;
 using Microsoft.EntityFrameworkCore;
 using Prism.Commands;
@@ -24,23 +25,25 @@ namespace HotelBooking.Presentation.ViewModels
 		public DelegateCommand NavigateToBookingCommand { get; set; }
 
 		public bool ShowPane { get; set; }
-
+		private GlobalStore store;
 		private readonly HotelBookingDbContext dbContext;
 		private readonly IRegionManager regionManager;
 
-		public HotelsOverviewViewModel(HotelBookingDbContext dbContext, IRegionManager regionManager)
+		public HotelsOverviewViewModel(HotelBookingDbContext dbContext, IRegionManager regionManager, GlobalStore store)
 		{
 			this.dbContext = dbContext;
 			NavigateToBookingCommand = new DelegateCommand(OnNavigateToBooking);
 			LoadInitData();
 			this.regionManager = regionManager;
+			this.store = store;
 		}
 
 		private void OnNavigateToBooking()
 		{
 			var navigationParams = new NavigationParameters();
-			navigationParams.Add("id", SelectedHotel.Id);
-			regionManager.RequestNavigate("ContentRegion", nameof(BookingCreate), navigationParams);
+			navigationParams.Add("hotelId", SelectedHotel.Id);
+			string redirectView = store.IsLoggedIn ? nameof(BookingCreate) : nameof(Login);
+			regionManager.RequestNavigate("ContentRegion", redirectView, navigationParams);
 		}
 
 		public async Task<ObservableCollection<RoomType>> GetRoomTypes()

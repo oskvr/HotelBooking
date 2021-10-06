@@ -99,7 +99,7 @@ namespace HotelBooking.Presentation.ViewModels
 
 		public void OnNavigatedTo(NavigationContext navigationContext)
 		{
-			var hotelId = navigationContext.Parameters.GetValue<int>("id");
+			var hotelId = navigationContext.Parameters.GetValue<int>("hotelId");
 			Booking = new BookingWrapper();
 			Booking.HotelId = hotelId;
 		}

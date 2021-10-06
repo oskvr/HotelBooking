@@ -23,7 +23,8 @@ namespace HotelBooking.Presentation.ViewModels
 		public DelegateCommand LoginCommand { get; set; }
 		private readonly IAuthenticationService authenticationService;
 		private readonly IRegionManager regionManager;
-
+		private NavigationParameters navigationParams;
+		private string redirectView;
 		public LoginViewModel(IAuthenticationService authenticationService, IRegionManager regionManager)
 		{
 			this.authenticationService = authenticationService;
@@ -36,7 +37,7 @@ namespace HotelBooking.Presentation.ViewModels
 			LoginResult result = await authenticationService.Login(Email, Password);
 			if (result.IsSuccess)
 			{
-				regionManager.RequestNavigate("ContentRegion", nameof(HotelsOverview));
+				regionManager.RequestNavigate("ContentRegion", redirectView, navigationParams);
 				Email = "";
 				Password = "";
 			}
@@ -53,12 +54,27 @@ namespace HotelBooking.Presentation.ViewModels
 
 		public void OnNavigatedFrom(NavigationContext navigationContext)
 		{
-			
+
 		}
 
 		public void OnNavigatedTo(NavigationContext navigationContext)
 		{
-			Debug.WriteLine("Navigated to login");
+			navigationParams = new NavigationParameters();
+
+			bool hasHotelId = navigationContext.Parameters.Any(param => param.Key == "hotelId");
+			if (hasHotelId)
+			{
+				// If hotelId exists the user wanted to book a hotel
+				int hotelId = navigationContext.Parameters.GetValue<int>("hotelId");
+				navigationParams.Add("hotelId", hotelId);
+				// Redirect the user to the booking page on successful login
+				redirectView = nameof(BookingCreate);
+			}
+			else
+			{
+				// Do a normal login and redirect to "home" page
+				redirectView = nameof(HotelsOverview);
+			}
 		}
 	}
 }
