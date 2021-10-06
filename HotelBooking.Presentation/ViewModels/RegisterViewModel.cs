@@ -3,6 +3,7 @@ using HotelBooking.Presentation.Views;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
+using PropertyChanged;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,11 +13,38 @@ using System.Threading.Tasks;
 
 namespace HotelBooking.Presentation.ViewModels
 {
-	public class RegisterViewModel : BindableBase, INavigationAware
+	[AddINotifyPropertyChangedInterface]
+	public class UserWrapper
 	{
-		public string Email { get; set; }
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
+
+	}
+	public class RegisterViewModel : BindableBase, INavigationAware
+	{
+		private UserWrapper user = new();
+
+		public UserWrapper User
+		{
+			get { return user; }
+			set { SetProperty(ref user, value); RegisterCommand.RaiseCanExecuteChanged(); }
+		}
+
+		public string Email { get; set; }
+		//public string FirstName { get; set; }
+		//public string LastName { get; set; }
+		private string firstName;
+		public string FirstName
+		{
+			get { return firstName; }
+			set { SetProperty(ref firstName, value); RegisterCommand.RaiseCanExecuteChanged(); }
+		}
+		private string lastName;
+		public string LastName
+		{
+			get { return lastName; }
+			set { SetProperty(ref lastName, value); RegisterCommand.RaiseCanExecuteChanged(); }
+		}
 		public string Password { get; set; }
 		public string ConfirmPassword { get; set; }
 		public DelegateCommand RegisterCommand { get; set; }
@@ -26,7 +54,7 @@ namespace HotelBooking.Presentation.ViewModels
 
 		public RegisterViewModel(IAuthenticationService authenticationService, IRegionManager regionManager)
 		{
-			RegisterCommand = new DelegateCommand(OnRegister);
+			RegisterCommand = new DelegateCommand(OnRegister, CanRegister);
 			this.authenticationService = authenticationService;
 			this.regionManager = regionManager;
 		}
@@ -51,6 +79,11 @@ namespace HotelBooking.Presentation.ViewModels
 			}
 		}
 
+		private bool CanRegister()
+		{
+			return !string.IsNullOrEmpty(FirstName) && !string.IsNullOrEmpty(LastName);
+		}
+
 		public bool IsNavigationTarget(NavigationContext navigationContext)
 		{
 			return true;
@@ -62,7 +95,7 @@ namespace HotelBooking.Presentation.ViewModels
 
 		public void OnNavigatedTo(NavigationContext navigationContext)
 		{
-			
+
 		}
 	}
 }

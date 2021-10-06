@@ -32,18 +32,18 @@ namespace HotelBooking.Presentation.ViewModels
 		public void OnNavigatedFrom(NavigationContext navigationContext)
 		{
 		}
-
+		private async void LoadBookings()
+		{
+			var bookings = await bookingService.GetAll();
+			Bookings.Clear();
+			foreach (var booking in bookings)
+			{
+				Bookings.Add(booking);
+			}
+			RaisePropertyChanged(nameof(HasBookings));
+		}
 		public void OnNavigatedTo(NavigationContext navigationContext)
 		{
-			async void LoadBookings()
-			{
-				var bookings = await bookingService.GetAll();
-				Bookings.Clear();
-				foreach (var booking in bookings)
-				{
-					Bookings.Add(booking);
-				}
-			}
 			LoadBookings();
 		}
 	}

@@ -15,14 +15,6 @@ using System.Threading.Tasks;
 
 namespace HotelBooking.Presentation.ViewModels
 {
-	public class MockHotel
-	{
-		public string Name { get; set; }
-		public string Country { get; set; }
-		public string ThumbnailImage { get; set; }
-		public int Rating { get; set; }
-	}
-
 	public class HotelsOverviewViewModel : BindableBase
 	{
 		public ObservableCollection<Hotel> Hotels { get; set; }
@@ -65,97 +57,6 @@ namespace HotelBooking.Presentation.ViewModels
 		{
 			RoomTypes = await GetRoomTypes();
 			Hotels = await GetHotels();
-		}
-		public ObservableCollection<MockHotel> GetMockHotels()
-		{
-			var random = new Random();
-			return new ObservableCollection<MockHotel>()
-			{
-				new MockHotel
-				{
-					Name = "Bay Area Hotel",
-					ThumbnailImage = "https://picsum.photos/500",
-					Country = "Sweden",
-					Rating = random.Next(0, 6)
-				},
-				new MockHotel
-				{
-					Name = "Neonside Hotel",
-					ThumbnailImage = "https://picsum.photos/500",
-					Country = "Sweden",
-					Rating = random.Next(0, 6)
-				},
-				new MockHotel
-				{
-					Name = "Pascha Bay",
-					ThumbnailImage = "https://picsum.photos/500",
-					Country = "Sweden",
-					Rating = random.Next(0, 6)
-				},
-				new MockHotel
-				{
-					Name = "Longbeach Hotel",
-					ThumbnailImage = "https://picsum.photos/500",
-					Country = "Sweden",
-					Rating = random.Next(0, 6)
-				},
-				new MockHotel
-				{
-					Name = "Hotel 66",
-					ThumbnailImage = "https://picsum.photos/500",
-					Country = "Sweden",
-					Rating = random.Next(0, 6)
-				},
-				new MockHotel
-				{
-					Name = "Scandic Stockholm",
-					ThumbnailImage = "https://picsum.photos/500",
-					Country = "Sweden",
-					Rating = random.Next(0, 6)
-				},
-				new MockHotel
-				{
-					Name = "Bay Area Hotel",
-					ThumbnailImage = "https://picsum.photos/500",
-					Country = "Sweden",
-					Rating = random.Next(0, 6)
-				},
-				new MockHotel
-				{
-					Name = "Neonside Hotel",
-					ThumbnailImage = "https://picsum.photos/500",
-					Country = "Sweden",
-					Rating = random.Next(0, 6)
-				},
-				new MockHotel
-				{
-					Name = "Pascha Bay",
-					ThumbnailImage = "https://picsum.photos/500",
-					Country = "Sweden",
-					Rating = random.Next(0, 6)
-				},
-				new MockHotel
-				{
-					Name = "Longbeach Hotel",
-					ThumbnailImage = "https://picsum.photos/500",
-					Country = "Sweden",
-					Rating = random.Next(0, 6)
-				},
-				new MockHotel
-				{
-					Name = "Hotel 66",
-					ThumbnailImage = "https://picsum.photos/500",
-					Country = "Sweden",
-					Rating = random.Next(0, 6)
-				},
-				new MockHotel
-				{
-					Name = "Scandic Stockholm",
-					ThumbnailImage = "https://picsum.photos/500",
-					Country = "Sweden",
-					Rating = random.Next(0, 6)
-				},
-			};
 		}
 	}
 }

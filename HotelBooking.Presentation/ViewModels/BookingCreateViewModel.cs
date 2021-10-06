@@ -25,11 +25,13 @@ namespace HotelBooking.Presentation.ViewModels
 		public BookingWrapper Booking { get; set; } = new BookingWrapper();
 		public ObservableCollection<RoomType> RoomTypes { get; set; } = new ObservableCollection<RoomType>();
 		public ObservableCollection<BookingExtraWrapper> BookingExtras { get; set; } = new ObservableCollection<BookingExtraWrapper>();
+		public ObservableCollection<int> AvailableBookingLengths { get; set; }
 		public DelegateCommand BookingUpdatedCommand { get; set; }
 
 		public DelegateCommand CreateBookingCommand { get; set; }
 		private readonly IBookingService bookingService;
 		private readonly HotelBookingDbContext dbContext;
+
 		public int TotalDays => (Booking.CheckInDate.AddDays(Booking.LengthInDays) - Booking.CheckInDate).Days;
 		public double? TotalPrice => (Booking.RoomType.PricePerNight * TotalDays) + BookingExtras.Where(extra => extra.IsSelected).Sum(extra => extra.BookingExtra.Cost);
 		public BookingCreateViewModel(IBookingService bookingService, HotelBookingDbContext dbContext)
@@ -39,6 +41,7 @@ namespace HotelBooking.Presentation.ViewModels
 			this.bookingService = bookingService;
 			this.dbContext = dbContext;
 			LoadDataAsync();
+			AvailableBookingLengths = new ObservableCollection<int> { 7, 14 };
 		}
 		private void OnBookingUpdate()
 		{

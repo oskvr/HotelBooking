@@ -29,16 +29,16 @@ namespace HotelBooking.DAL.Services
 
 			PasswordHasher<User> hasher = new();
 			User user = await dbContext.Users.FirstOrDefaultAsync(user => user.Email == email);
-			bool passwordMatches = hasher.VerifyHashedPassword(user, user?.Password, password) == PasswordVerificationResult.Success;
-			if (user is not null && passwordMatches)
+			if (user is not null)
 			{
-				store.CurrentUser = user;
-				return new LoginResult(User: user, IsSuccess: true);
+				bool passwordMatches = hasher.VerifyHashedPassword(user, user?.Password, password) == PasswordVerificationResult.Success;
+				if (passwordMatches)
+				{
+					store.CurrentUser = user;
+					return new LoginResult(User: user, IsSuccess: true);
+				}
 			}
-			else
-			{
-				return new LoginResult(User: user, IsSuccess: false);
-			}
+			return new LoginResult(User: user, IsSuccess: false);
 		}
 
 		private async Task<bool> UserExists(string email)

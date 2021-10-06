@@ -12,6 +12,7 @@ using System.Linq;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace HotelBooking.Presentation.ViewModels
 {
@@ -36,13 +37,12 @@ namespace HotelBooking.Presentation.ViewModels
 			if (result.IsSuccess)
 			{
 				regionManager.RequestNavigate("ContentRegion", nameof(HotelsOverview));
-				Debug.WriteLine($"{result.User.FirstName} {result.User.LastName} logged in");
 				Email = "";
 				Password = "";
 			}
 			else
 			{
-				Debug.WriteLine("Login failed");
+				MessageBox.Show("Login failed");
 			}
 		}
 
