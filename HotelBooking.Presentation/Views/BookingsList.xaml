@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:ui="http://schemas.modernwpf.com/2019"
+    xmlns:view="clr-namespace:HotelBooking.Presentation.Views"
     xmlns:viewmodels="clr-namespace:HotelBooking.Presentation.ViewModels"
     d:DataContext="{d:DesignInstance Type=viewmodels:BookingsListViewModel}"
     d:DesignHeight="450"
@@ -23,12 +24,15 @@
             Visibility="{Binding HasBookings, Converter={StaticResource BoolToVis}}">
             <TextBlock FontSize="18" Text="You have no bookings" />
         </ui:SimpleStackPanel>
-        <ui:ListView ItemsSource="{Binding Bookings}">
+        <ui:ListView ItemsSource="{Binding Bookings}" SelectedItem="{Binding SelectedBooking}">
             <ui:ListView.ItemTemplate>
                 <DataTemplate>
                     <ui:SimpleStackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding Hotel.Name}" />
-                        <TextBlock Text="{Binding TotalPrice}" />
+                        <Button
+                            Command="{Binding DataContext.DeleteBookingCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type view:BookingsList}}}"
+                            CommandParameter="{Binding}"
+                            Content="Avboka" />
                     </ui:SimpleStackPanel>
                 </DataTemplate>
             </ui:ListView.ItemTemplate>

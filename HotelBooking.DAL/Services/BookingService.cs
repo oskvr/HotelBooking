@@ -78,9 +78,14 @@ namespace HotelBooking.DAL.Services
 			await dbContext.SaveChangesAsync();
 		}
 
-		public Task Delete(Booking booking)
+		public async Task Delete(int id)
 		{
-			throw new NotImplementedException();
+			var bookingToDelete = await dbContext.Bookings.FirstOrDefaultAsync(b => b.Id == id);
+			if(bookingToDelete is not null)
+			{
+				dbContext.Remove(bookingToDelete);
+				await dbContext.SaveChangesAsync();
+			}
 		}
 
 		public Task Edit(Booking booking)

@@ -14,7 +14,7 @@ namespace HotelBooking.DAL.Services
 			throw new NotImplementedException();
 		}
 
-		public Task Delete(Hotel entity)
+		public Task Delete(int id)
 		{
 			throw new NotImplementedException();
 		}

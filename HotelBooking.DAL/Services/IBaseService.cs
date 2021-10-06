@@ -13,6 +13,6 @@ namespace HotelBooking.DAL.Services
 		Task<IEnumerable<T>> GetAll();
 		Task Create(T entity);
 		Task Edit(T entity);
-		Task Delete(T entity);
+		Task Delete(int id);
 	}
 }
