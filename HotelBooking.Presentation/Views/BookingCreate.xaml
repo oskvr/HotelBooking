@@ -16,63 +16,78 @@
     d:DesignWidth="800"
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
-    <Grid>
-        <ui:SimpleStackPanel>
-            <TextBlock FontSize="36" Text="{Binding HotelId}" />
-            <TextBlock Style="{ui:StaticResource SubheaderTextBlockStyle}" Text="Incheckning:" />
-            <DatePicker
-                HorizontalAlignment="Stretch"
-                DisplayDateStart="{Binding Mode=OneWay, Source={x:Static System:DateTime.Today}}"
-                Language="sv-se"
-                SelectedDate="{Binding Booking.CheckInDate}"
-                SelectedDateFormat="Long"
-                Style="{ui:StaticResource DefaultDatePickerStyle}" />
-            <TextBlock Text="Hur många nätter vill du stanna?" />
-            <ComboBox
-                HorizontalAlignment="Stretch"
-                ItemsSource="{Binding AvailableBookingLengths}"
-                SelectedIndex="0"
-                SelectedItem="{Binding Booking.LengthInDays}" />
-            <TextBlock Text="{Binding Booking.DisplayCheckOutDate}" />
-            <TextBlock Style="{ui:StaticResource SubheaderTextBlockStyle}" Text="Rumstyp:" />
-            <ui:RadioButtons ItemsSource="{Binding RoomTypes}" SelectedItem="{Binding Booking.RoomType}">
-                <ui:RadioButtons.ItemTemplate>
-                    <DataTemplate>
-                        <RadioButton>
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="Click">
-                                    <i:InvokeCommandAction Command="{Binding DataContext.BookingUpdatedCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type view:BookingCreate}}}" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                            <TextBlock Text="{Binding Type}" />
-                        </RadioButton>
-                    </DataTemplate>
-                </ui:RadioButtons.ItemTemplate>
-            </ui:RadioButtons>
+    <ScrollViewer>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="400" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="1">
+                <GroupBox Header="Incheckning">
+                    <ui:SimpleStackPanel>
+                        <DatePicker
+                            HorizontalAlignment="Stretch"
+                            DisplayDateStart="{Binding Mode=OneWay, Source={x:Static System:DateTime.Today}}"
+                            Language="sv-se"
+                            SelectedDate="{Binding Booking.CheckInDate, Mode=TwoWay}"
+                            SelectedDateFormat="Long"
+                            Style="{ui:StaticResource DefaultDatePickerStyle}" />
+                        <TextBlock Text="Hur många nätter vill du stanna?" />
+                        <ComboBox
+                            HorizontalAlignment="Stretch"
+                            ItemsSource="{Binding AvailableBookingLengths}"
+                            SelectedIndex="0"
+                            SelectedItem="{Binding Booking.LengthInDays}" />
+                        <TextBlock Text="{Binding Booking.DisplayCheckOutDate}" />
+                    </ui:SimpleStackPanel>
+                </GroupBox>
+                <GroupBox Header="Rumstyp">
+                    <ui:SimpleStackPanel>
+                        <ui:RadioButtons ItemsSource="{Binding RoomTypes}" SelectedItem="{Binding Booking.RoomType}">
+                            <ui:RadioButtons.ItemTemplate>
+                                <DataTemplate>
+                                    <RadioButton>
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Click">
+                                                <i:InvokeCommandAction Command="{Binding DataContext.BookingUpdatedCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type view:BookingCreate}}}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <TextBlock Text="{Binding Type}" />
+                                    </RadioButton>
+                                </DataTemplate>
+                            </ui:RadioButtons.ItemTemplate>
+                        </ui:RadioButtons>
+                    </ui:SimpleStackPanel>
+                </GroupBox>
 
-            <TextBlock Style="{ui:StaticResource SubheaderTextBlockStyle}" Text="Tillägg:" />
-            <ui:ListView ItemsSource="{Binding BookingExtras}">
-                <ui:ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ui:SimpleStackPanel Orientation="Horizontal">
-                            <CheckBox IsChecked="{Binding IsSelected}">
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="Click">
-                                        <i:InvokeCommandAction Command="{Binding DataContext.BookingUpdatedCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type view:BookingCreate}}}" />
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                                <TextBlock Text="{Binding BookingExtra.Type}" />
-                            </CheckBox>
-                            <TextBlock Text="{Binding BookingExtra.Cost, StringFormat='{}{0:c}'}" />
-                        </ui:SimpleStackPanel>
-                    </DataTemplate>
-                </ui:ListView.ItemTemplate>
-            </ui:ListView>
-            <TextBlock FontSize="36" Text="{Binding TotalPrice}" />
-            <Button
-                Command="{Binding CreateBookingCommand}"
-                Content="Submit"
-                Style="{ui:StaticResource AccentButtonStyle}" />
-        </ui:SimpleStackPanel>
-    </Grid>
+                <GroupBox Header="Tillägg">
+                    <ui:SimpleStackPanel>
+                        <ui:ListView ItemsSource="{Binding BookingExtras}">
+                            <ui:ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ui:SimpleStackPanel Orientation="Horizontal">
+                                        <CheckBox IsChecked="{Binding IsSelected}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="Click">
+                                                    <i:InvokeCommandAction Command="{Binding DataContext.BookingUpdatedCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type view:BookingCreate}}}" />
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                            <TextBlock Text="{Binding BookingExtra.Type}" />
+                                        </CheckBox>
+                                        <TextBlock Text="{Binding BookingExtra.Cost, StringFormat='{}{0:c}'}" />
+                                    </ui:SimpleStackPanel>
+                                </DataTemplate>
+                            </ui:ListView.ItemTemplate>
+                        </ui:ListView>
+                    </ui:SimpleStackPanel>
+                </GroupBox>
+                <TextBlock FontSize="36" Text="{Binding TotalPrice}" />
+                <Button
+                    Command="{Binding CreateBookingCommand}"
+                    Content="Submit"
+                    Style="{ui:StaticResource AccentButtonStyle}" />
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
 </UserControl>

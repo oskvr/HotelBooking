@@ -14,33 +14,34 @@
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
     <Grid>
-        <ui:SimpleStackPanel
+        <GroupBox
             MaxWidth="400px"
-            Margin="10"
             HorizontalAlignment="Stretch"
-            VerticalAlignment="Center"
-            Spacing="10">
-            <TextBlock Style="{ui:StaticResource HeaderTextBlockStyle}" Text="Log in" />
-            <ui:SimpleStackPanel>
-                <TextBlock Style="{ui:StaticResource CaptionTextBlockStyle}" Text="Email" />
-                <TextBox Style="{ui:StaticResource DefaultTextBoxStyle}" Text="{Binding Email}" />
+            VerticalAlignment="Center">
+            <GroupBox.Header>
+                <TextBlock Style="{ui:StaticResource HeaderTextBlockStyle}" Text="Logga In" />
+            </GroupBox.Header>
+            <ui:SimpleStackPanel Spacing="20">
+                <ui:SimpleStackPanel>
+                    <TextBlock Style="{ui:StaticResource CaptionTextBlockStyle}" Text="Email" />
+                    <TextBox Style="{ui:StaticResource DefaultTextBoxStyle}" Text="{Binding Email}" />
+                </ui:SimpleStackPanel>
+                <ui:SimpleStackPanel>
+                    <TextBlock Style="{ui:StaticResource CaptionTextBlockStyle}" Text="Password" />
+                    <PasswordBox
+                        x:Name="LoginPasswordBox"
+                        PasswordChanged="PasswordBox_PasswordChanged"
+                        Style="{ui:StaticResource DefaultPasswordBoxStyle}" />
+                    <CheckBox Content="Kom ihåg mig" />
+                </ui:SimpleStackPanel>
+                <ui:SimpleStackPanel>
+                    <Button
+                        HorizontalAlignment="Stretch"
+                        Command="{Binding LoginCommand}"
+                        Content="Log in"
+                        Style="{ui:StaticResource AccentButtonStyle}" />
+                </ui:SimpleStackPanel>
             </ui:SimpleStackPanel>
-            <ui:SimpleStackPanel>
-                <TextBlock Style="{ui:StaticResource CaptionTextBlockStyle}" Text="Password" />
-                <PasswordBox
-                    x:Name="LoginPasswordBox"
-                    PasswordChanged="PasswordBox_PasswordChanged"
-                    Style="{ui:StaticResource DefaultPasswordBoxStyle}" />
-            </ui:SimpleStackPanel>
-            <Button
-                HorizontalAlignment="Center"
-                Command="{Binding LoginCommand}"
-                Content="Log in"
-                Style="{ui:StaticResource AccentButtonStyle}" />
-            <ui:SimpleStackPanel HorizontalAlignment="Center">
-                <TextBlock HorizontalAlignment="Center" Text="or" />
-                <ui:HyperlinkButton Content="Sign Up" />
-            </ui:SimpleStackPanel>
-        </ui:SimpleStackPanel>
+        </GroupBox>
     </Grid>
 </UserControl>
