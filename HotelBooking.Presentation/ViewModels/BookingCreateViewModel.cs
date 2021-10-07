@@ -23,11 +23,11 @@ namespace HotelBooking.Presentation.ViewModels
 	public class BookingCreateViewModel : BindableBase, INavigationAware
 	{
 		public BookingWrapper Booking { get; set; } = new BookingWrapper();
+		public int HotelId { get; set; }
 		public ObservableCollection<RoomType> RoomTypes { get; set; } = new ObservableCollection<RoomType>();
 		public ObservableCollection<BookingExtraWrapper> BookingExtras { get; set; } = new ObservableCollection<BookingExtraWrapper>();
 		public ObservableCollection<int> AvailableBookingLengths { get; set; }
 		public DelegateCommand BookingUpdatedCommand { get; set; }
-
 		public DelegateCommand CreateBookingCommand { get; set; }
 		private readonly IBookingService bookingService;
 		private readonly HotelBookingDbContext dbContext;
@@ -50,10 +50,11 @@ namespace HotelBooking.Presentation.ViewModels
 		private async void OnCreateBooking()
 		{
 			Booking.BookingExtras = BookingExtras;
+			Booking.HotelId = HotelId;
 			try
 			{
-
-			await bookingService.Create(Booking);
+				await bookingService.Create(Booking);
+				Booking = new BookingWrapper();
 			}
 			catch (Exception e)
 			{
@@ -101,7 +102,7 @@ namespace HotelBooking.Presentation.ViewModels
 		{
 			var hotelId = navigationContext.Parameters.GetValue<int>("hotelId");
 			Booking = new BookingWrapper();
-			Booking.HotelId = hotelId;
+			HotelId = hotelId;
 		}
 	}
 }

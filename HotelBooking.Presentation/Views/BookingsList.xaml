@@ -21,7 +21,7 @@
         <ui:SimpleStackPanel
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Visibility="{Binding HasBookings, Converter={StaticResource BoolToVis}}">
+            Visibility="{Binding UserHasNoBookings, Converter={StaticResource BoolToVis}}">
             <TextBlock FontSize="18" Text="You have no bookings" />
         </ui:SimpleStackPanel>
         <ui:ListView ItemsSource="{Binding Bookings}" SelectedItem="{Binding SelectedBooking}">

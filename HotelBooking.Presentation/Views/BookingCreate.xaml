@@ -18,7 +18,7 @@
     mc:Ignorable="d">
     <Grid>
         <ui:SimpleStackPanel>
-            <TextBlock FontSize="36" Text="{Binding Booking.HotelId}" />
+            <TextBlock FontSize="36" Text="{Binding HotelId}" />
             <TextBlock Style="{ui:StaticResource SubheaderTextBlockStyle}" Text="Incheckning:" />
             <DatePicker
                 HorizontalAlignment="Stretch"

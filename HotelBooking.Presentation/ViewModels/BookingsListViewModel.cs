@@ -18,13 +18,14 @@ namespace HotelBooking.Presentation.ViewModels
 	public class BookingsListViewModel : BindableBase, INavigationAware
 	{
 		public ObservableCollection<Booking> Bookings { get; set; } = new ObservableCollection<Booking>();
-		public bool HasBookings => Bookings is not null && Bookings.Count > 0;
+		public bool UserHasNoBookings => Bookings is null || Bookings.Count == 0;
 		public Booking SelectedBooking { get; set; }
 		private readonly IBookingService bookingService;
-		public DelegateCommand<Booking> DeleteBookingCommand => new DelegateCommand<Booking>(OnDeleteBooking);
+		public DelegateCommand<Booking> DeleteBookingCommand { get; }
 
 		public BookingsListViewModel(IBookingService bookingService)
 		{
+			DeleteBookingCommand = new DelegateCommand<Booking>(OnDeleteBooking);
 			this.bookingService = bookingService;
 		}
 		async void OnDeleteBooking(Booking booking)
@@ -32,6 +33,7 @@ namespace HotelBooking.Presentation.ViewModels
 			await bookingService.Delete(booking.Id);
 			Bookings.Remove(booking);
 			Debug.WriteLine("Deleted booking with id: " + booking.Id);
+			RaisePropertyChanged(nameof(UserHasNoBookings));
 		}
 
 		public bool IsNavigationTarget(NavigationContext navigationContext)
@@ -50,7 +52,7 @@ namespace HotelBooking.Presentation.ViewModels
 			{
 				Bookings.Add(booking);
 			}
-			RaisePropertyChanged(nameof(HasBookings));
+			RaisePropertyChanged(nameof(UserHasNoBookings));
 		}
 		public void OnNavigatedTo(NavigationContext navigationContext)
 		{
