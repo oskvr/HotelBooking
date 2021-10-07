@@ -18,7 +18,7 @@ namespace HotelBooking.Presentation
 
 		protected override void RegisterTypes(IContainerRegistry containerRegistry)
 		{
-			containerRegistry.Register<HotelBookingDbContext>();
+			containerRegistry.RegisterScoped<HotelBookingDbContext>();
 			containerRegistry.Register<IHotelService, HotelService>();
 			containerRegistry.Register<IBookingService, BookingService>();
 			containerRegistry.Register<IAuthenticationService, AuthenticationService>();
