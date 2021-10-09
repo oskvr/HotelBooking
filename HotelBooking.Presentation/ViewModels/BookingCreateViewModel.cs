@@ -17,6 +17,7 @@ using System.ComponentModel;
 using System.Collections.Specialized;
 using HotelBooking.Domain.Models.Wrappers;
 using System.Windows;
+using HotelBooking.Presentation.Views;
 
 namespace HotelBooking.Presentation.ViewModels
 {
@@ -31,10 +32,12 @@ namespace HotelBooking.Presentation.ViewModels
 		public DelegateCommand CreateBookingCommand { get; set; }
 		private readonly IBookingService bookingService;
 		private readonly HotelBookingDbContext dbContext;
+		private readonly IHotelService hotelService;
+		private readonly IRegionManager regionManager;
 
 		public int TotalDays => (Booking.CheckInDate.AddDays(Booking.LengthInDays) - Booking.CheckInDate).Days;
 		public double? TotalPrice => (Booking.RoomType.PricePerNight * TotalDays) + BookingExtras.Where(extra => extra.IsSelected).Sum(extra => extra.BookingExtra.Cost);
-		public BookingCreateViewModel(IBookingService bookingService, HotelBookingDbContext dbContext)
+		public BookingCreateViewModel(IBookingService bookingService, IHotelService hotelService, HotelBookingDbContext dbContext, IRegionManager regionManager)
 		{
 			CreateBookingCommand = new DelegateCommand(OnCreateBooking);
 			BookingUpdatedCommand = new DelegateCommand(OnBookingUpdate);
@@ -42,6 +45,8 @@ namespace HotelBooking.Presentation.ViewModels
 			this.dbContext = dbContext;
 			LoadDataAsync();
 			AvailableBookingLengths = new ObservableCollection<int> { 7, 14 };
+			this.hotelService = hotelService;
+			this.regionManager = regionManager;
 		}
 		private void OnBookingUpdate()
 		{
@@ -53,13 +58,20 @@ namespace HotelBooking.Presentation.ViewModels
 			Booking.HotelId = HotelId;
 			try
 			{
-				await bookingService.Create(Booking);
+				var createdBooking = await bookingService.Create(Booking);
 				Booking = new BookingWrapper();
+				var navigationParams = new NavigationParameters();
+				navigationParams.Add("Booking", createdBooking);
+				regionManager.RequestNavigate("ContentRegion", nameof(BookingConfirmed), navigationParams);
+				
 			}
 			catch (Exception e)
 			{
 				MessageBox.Show(e.Message);
 			}
+
+			// TODO: Temporary for refreshing roomtypes
+			LoadRoomTypesAsync();
 		}
 		private async void LoadDataAsync()
 		{
@@ -69,6 +81,7 @@ namespace HotelBooking.Presentation.ViewModels
 		private async Task LoadBookingExtrasAsync()
 		{
 			var bookingExtras = await dbContext.BookingExtras.ToListAsync();
+			BookingExtras.Clear();
 			foreach (BookingExtra extra in bookingExtras)
 			{
 				BookingExtraWrapper bookingExtra = new()
@@ -81,7 +94,9 @@ namespace HotelBooking.Presentation.ViewModels
 
 		private async Task LoadRoomTypesAsync()
 		{
-			var roomTypes = await dbContext.RoomTypes.ToListAsync();
+			//var roomTypes = await dbContext.RoomTypes.ToListAsync();
+			var roomTypes = await hotelService.GetAvailableRoomTypesBetweenDates(HotelId, Booking.CheckInDate, Booking.CheckOutDate);
+			RoomTypes.Clear();
 			foreach (var roomType in roomTypes)
 			{
 				RoomTypes.Add(roomType);

@@ -1,4 +1,6 @@
-﻿using HotelBooking.Domain.Models;
+﻿using HotelBooking.DAL.Data;
+using HotelBooking.Domain.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +11,13 @@ namespace HotelBooking.DAL.Services
 {
 	public class HotelService : IHotelService
 	{
+		private readonly HotelBookingDbContext dbContext;
+
+		public HotelService(HotelBookingDbContext dbContext)
+		{
+			this.dbContext = dbContext;
+		}
+
 		public Task Create(Hotel entity)
 		{
 			throw new NotImplementedException();
@@ -33,10 +42,32 @@ namespace HotelBooking.DAL.Services
 		{
 			throw new NotImplementedException();
 		}
-
-		public Task<IEnumerable<Room>> GetAvailableRoomsBetweenDates(int hotelId, DateTime checkInDate, DateTime checkOutDate)
+		public async Task<List<Room>> GetAvailableRoomsBetweenDates(int hotelId, DateTime checkInDate, DateTime checkOutDate)
 		{
-			throw new NotImplementedException();
+			List<Room> allRooms = await dbContext.Rooms.Include(room => room.Bookings).Where(room => room.HotelId == hotelId).ToListAsync();
+			List<Room> availableRooms = new();
+			foreach (Room room in allRooms)
+			{
+				bool isAvailable = room.IsAvailableBetweenDates(checkInDate, checkOutDate);
+				if (isAvailable)
+				{
+					availableRooms.Add(room);
+				}
+
+			}
+			return availableRooms;
 		}
+
+		public async Task<List<RoomType>> GetAvailableRoomTypesBetweenDates(int hotelId, DateTime checkInDate, DateTime checkOutDate)
+		{
+			var availableRooms = await GetAvailableRoomsBetweenDates(hotelId, checkInDate, checkOutDate);
+			return availableRooms.Select(room => room.RoomType).Distinct().ToList();
+		}
+		//public async Task<IEnumerable<RoomType>> GetAvailableRoomTypesBetweenDates(int hotelId, DateTime checkInDate, DateTime checkOutDate)
+		//{
+		//	Hotel hotel = await dbContext.Hotels.Include(hotel=>hotel.Rooms).FirstOrDefaultAsync(hotel => hotel.Id == hotelId);
+		//	var availableRoomTypes = hotel.Rooms.Where(room=>room.isa)
+		//}
+
 	}
 }

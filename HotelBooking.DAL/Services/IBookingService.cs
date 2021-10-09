@@ -10,6 +10,6 @@ namespace HotelBooking.DAL.Services
 {
 	public interface IBookingService : IBaseService<Booking>
 	{
-		Task Create(BookingWrapper bookingWrapper);
+		Task<Booking> Create(BookingWrapper bookingWrapper);
 	}
 }

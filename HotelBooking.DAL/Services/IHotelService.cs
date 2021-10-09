@@ -9,7 +9,8 @@ namespace HotelBooking.DAL.Services
 {
 	public interface IHotelService : IBaseService<Hotel>
 	{
-		Task<IEnumerable<Room>> GetAvailableRoomsBetweenDates(int hotelId, DateTime checkInDate, DateTime checkOutDate);
+		Task<List<Room>> GetAvailableRoomsBetweenDates(int hotelId, DateTime checkInDate, DateTime checkOutDate);
+		Task<List<RoomType>> GetAvailableRoomTypesBetweenDates(int hotelId, DateTime checkInDate, DateTime checkOutDate);
 		//Task<IEnumerable<Room>> GetAvailableRoomsBetweenDates(Hotel hotel, DateTime checkInDate, DateTime checkOutDate, RoomTypeIds roomTypeId);
 	}
 }

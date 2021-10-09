@@ -15,10 +15,10 @@ namespace HotelBooking.DAL.Services
 	public class BookingService : IBookingService
 	{
 		private readonly HotelBookingDbContext dbContext;
-		private readonly HotelService hotelService;
+		private readonly IHotelService hotelService;
 		private readonly GlobalStore store;
 
-		public BookingService(HotelBookingDbContext dbContext, HotelService hotelService, GlobalStore store)
+		public BookingService(HotelBookingDbContext dbContext, IHotelService hotelService, GlobalStore store)
 		{
 			this.dbContext = dbContext;
 			this.hotelService = hotelService;
@@ -31,23 +31,25 @@ namespace HotelBooking.DAL.Services
 
 		private async Task<Room> GetFirstAvailableRoomAsync(BookingWrapper booking)
 		{
-			var matchingRooms = await dbContext.Rooms.Include(room=>room.Bookings).Where(room => room.HotelId == booking.HotelId
-				&& room.RoomTypeId == booking.RoomType.Id).ToListAsync();
-			Room roomToBeBooked = null;
-			foreach (Room room in matchingRooms)
-			{
-				bool isAvailable = room.IsAvailableBetweenDates(booking.CheckInDate, booking.CheckOutDate);
-				if(isAvailable)
-				{
-					roomToBeBooked = room;
-					break;
-				}
-				
-			}
-			return roomToBeBooked;
+			//var matchingRooms = await dbContext.Rooms.Include(room=>room.Bookings).Where(room => room.HotelId == booking.HotelId
+			//	&& room.RoomTypeId == booking.RoomType.Id).ToListAsync();
+			//Room roomToBeBooked = null;
+			//foreach (Room room in matchingRooms)
+			//{
+			//	bool isAvailable = room.IsAvailableBetweenDates(booking.CheckInDate, booking.CheckOutDate);
+			//	if(isAvailable)
+			//	{
+			//		roomToBeBooked = room;
+			//		break;
+			//	}
+
+			//}
+			var matchingRooms = await hotelService.GetAvailableRoomsBetweenDates(booking.HotelId, booking.CheckInDate, booking.CheckOutDate);
+			return matchingRooms.FirstOrDefault(room => room.RoomTypeId == booking.RoomType.Id);
+
 		}
 
-		public async Task Create(BookingWrapper booking)
+		public async Task<Booking> Create(BookingWrapper booking)
 		{
 			Room room = await GetFirstAvailableRoomAsync(booking);
 			Debug.WriteLine(room);
@@ -76,12 +78,13 @@ namespace HotelBooking.DAL.Services
 				newBooking.BookingExtras.Add(extra);
 			}
 			await dbContext.SaveChangesAsync();
+			return newBooking;
 		}
 
 		public async Task Delete(int id)
 		{
 			var bookingToDelete = await dbContext.Bookings.FirstOrDefaultAsync(b => b.Id == id);
-			if(bookingToDelete is not null)
+			if (bookingToDelete is not null)
 			{
 				dbContext.Remove(bookingToDelete);
 				await dbContext.SaveChangesAsync();

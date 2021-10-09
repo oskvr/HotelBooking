@@ -59,6 +59,12 @@ namespace HotelBooking.Presentation.ViewModels
 
 		public void OnNavigatedTo(NavigationContext navigationContext)
 		{
+			// TODO: ---- FOR TESTING, REMOVE ----
+			Email = "oskar@gmail.com";
+			Password = "oskar";
+			OnLogin();
+			// TODO: ---- FOR TESTING, REMOVE ----
+
 			navigationParams = new NavigationParameters();
 
 			bool hasHotelId = navigationContext.Parameters.Any(param => param.Key == "hotelId");
