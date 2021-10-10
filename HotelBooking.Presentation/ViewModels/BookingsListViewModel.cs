@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using PropertyChanged;
 using Prism.Commands;
 using System.Diagnostics;
+using ModernWpf.Controls;
 
 namespace HotelBooking.Presentation.ViewModels
 {
@@ -30,10 +31,30 @@ namespace HotelBooking.Presentation.ViewModels
 		}
 		async void OnDeleteBooking(Booking booking)
 		{
-			await bookingService.Delete(booking.Id);
-			Bookings.Remove(booking);
-			Debug.WriteLine("Deleted booking with id: " + booking.Id);
-			RaisePropertyChanged(nameof(UserHasNoBookings));
+			ContentDialog locationPromptDialog = new ContentDialog
+			{
+				Title = "Är du säker på att du vill avboka?",
+				Content = $"{booking.Hotel.Name}",
+				PrimaryButtonText = "Avboka",
+				CloseButtonText = "Avbryt",
+			};
+
+			ContentDialogResult result = await locationPromptDialog.ShowAsync();
+			switch (result)
+			{
+				case ContentDialogResult.None:
+					break;
+				case ContentDialogResult.Primary:
+					await bookingService.Delete(booking.Id);
+					Bookings.Remove(booking);
+					Debug.WriteLine("Deleted booking with id: " + booking.Id);
+					RaisePropertyChanged(nameof(UserHasNoBookings));
+					break;
+				case ContentDialogResult.Secondary:
+					break;
+				default:
+					break;
+			}
 		}
 
 		public bool IsNavigationTarget(NavigationContext navigationContext)

@@ -6,8 +6,8 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ui:ThemeResources />
-                <!--<ui:ThemeResources RequestedTheme="Dark" />-->
+                <!--  Accentcolor = Tailwind blue.500  -->
+                <ui:ThemeResources AccentColor="#3B82F6" RequestedTheme="Light" />
                 <ui:XamlControlsResources />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

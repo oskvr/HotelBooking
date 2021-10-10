@@ -34,11 +34,11 @@
             <ui:ListView.ItemTemplate>
                 <DataTemplate>
                     <ui:SimpleStackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Hotel.Name}" />
-                        <Button
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Hotel.Name}" />
+                        <ui:AppBarButton
                             Command="{Binding DataContext.DeleteBookingCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type view:BookingsList}}}"
                             CommandParameter="{Binding}"
-                            Content="Avboka" />
+                            Icon="Delete" />
                     </ui:SimpleStackPanel>
                 </DataTemplate>
             </ui:ListView.ItemTemplate>

@@ -7,19 +7,89 @@
     xmlns:prism="http://prismlibrary.com/"
     xmlns:ui="http://schemas.modernwpf.com/2019"
     xmlns:view="clr-namespace:HotelBooking.Presentation.Views"
+    xmlns:viewmodels="clr-namespace:HotelBooking.Presentation.ViewModels"
     Title="MainWindow"
     Width="1000"
     Height="600"
+    d:DataContext="{d:DesignInstance Type=viewmodels:MainWindowViewModel}"
     prism:ViewModelLocator.AutoWireViewModel="True"
     ui:WindowHelper.UseModernWindowStyle="True"
     WindowStartupLocation="CenterScreen"
+    WindowState="Maximized"
     mc:Ignorable="d">
     <Grid>
+        <Grid.Resources>
+            <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+        </Grid.Resources>
+        <ui:NavigationView
+            x:Name="NavigationViewControl"
+            IsBackButtonVisible="Collapsed"
+            IsSettingsVisible="False"
+            PaneDisplayMode="Left"
+            SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+            <ui:NavigationView.Header>
+                <Border Padding="20" Background="White">
+                    <Grid HorizontalAlignment="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <ui:SimpleStackPanel Grid.Column="1" Orientation="Horizontal">
+                            <ui:AutoSuggestBox Width="300" PlaceholderText="Välj destination" />
+                            <DatePicker Width="300" />
+                            <ComboBox MinWidth="280" SelectedIndex="0">
+                                <ComboBoxItem>Hur många nätter ska du stanna?</ComboBoxItem>
+                                <ComboBoxItem>7 nätter</ComboBoxItem>
+                                <ComboBoxItem>14 nätter</ComboBoxItem>
+                            </ComboBox>
+                            <ui:SimpleStackPanel Orientation="Horizontal" Spacing="10">
+                                <Button Content="Sök" Style="{ui:StaticResource AccentButtonStyle}" />
+                                <Button
+                                    Content="Rensa"
+                                    FontSize="14"
+                                    Style="{ui:StaticResource DateTimePickerFlyoutButtonStyle}" />
+                            </ui:SimpleStackPanel>
+                        </ui:SimpleStackPanel>
+                    </Grid>
+                </Border>
+            </ui:NavigationView.Header>
+            <ui:NavigationView.MenuItems>
+                <ui:NavigationViewItem
+                    Name="HotelsOverview"
+                    Content="Hotell"
+                    Icon="Home" />
+                <ui:NavigationViewItem
+                    Name="BookingsList"
+                    Content="Dina bokningar"
+                    Icon="CalendarWeek"
+                    Visibility="{Binding Store.IsLoggedIn, Converter={StaticResource BoolToVisConverter}}" />
+            </ui:NavigationView.MenuItems>
+            <ui:NavigationView.FooterMenuItems>
+                <ui:NavigationViewItem
+                    Name="Logout"
+                    Content="Logga ut"
+                    Icon="Back"
+                    Visibility="{Binding Store.IsLoggedIn, Converter={StaticResource BoolToVisConverter}}" />
+                <ui:NavigationViewItem
+                    Name="Login"
+                    Content="Logga in"
+                    Icon="Forward"
+                    Visibility="{Binding Store.IsNotLoggedIn, Converter={StaticResource BoolToVisConverter}}" />
+            </ui:NavigationView.FooterMenuItems>
+            <ui:NavigationView.Content>
+                <ContentControl Grid.Row="1" prism:RegionManager.RegionName="ContentRegion" />
+            </ui:NavigationView.Content>
+        </ui:NavigationView>
+    </Grid>
+</Window>
+
+
+
+<!--<Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <view:Navbar Grid.Row="0" />
         <ContentControl Grid.Row="1" prism:RegionManager.RegionName="ContentRegion" />
-    </Grid>
-</Window>
+    </Grid>-->
