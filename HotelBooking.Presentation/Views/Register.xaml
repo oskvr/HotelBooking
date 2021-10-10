@@ -51,6 +51,7 @@
                 HorizontalAlignment="Center"
                 Command="{Binding RegisterCommand}"
                 Content="Register"
+                IsDefault="True"
                 Style="{ui:StaticResource AccentButtonStyle}" />
         </ui:SimpleStackPanel>
     </Grid>

@@ -78,6 +78,11 @@
                     Icon="Back"
                     Visibility="{Binding Store.IsLoggedIn, Converter={StaticResource BoolToVisConverter}}" />
                 <ui:NavigationViewItem
+                    Name="Register"
+                    Content="Skapa konto"
+                    Icon="AddFriend"
+                    Visibility="{Binding Store.IsNotLoggedIn, Converter={StaticResource BoolToVisConverter}}" />
+                <ui:NavigationViewItem
                     Name="Login"
                     Content="Logga in"
                     Icon="Forward"

@@ -35,6 +35,7 @@
                             HorizontalAlignment="Stretch"
                             Command="{Binding LoginCommand}"
                             Content="Logga in"
+                            IsDefault="True"
                             Style="{ui:StaticResource AccentButtonStyle}" />
                     </ui:SimpleStackPanel>
                 </ui:SimpleStackPanel>

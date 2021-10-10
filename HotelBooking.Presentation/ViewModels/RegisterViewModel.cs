@@ -65,13 +65,15 @@ namespace HotelBooking.Presentation.ViewModels
 			if (result.IsSuccess)
 			{
 				await authenticationService.Login(Email, Password);
+
+				// Prevent going back after registration and login
+				regionManager.Regions["ContentRegion"].NavigationService.Journal.Clear();
 				regionManager.RequestNavigate("ContentRegion", nameof(HotelsOverview));
 				Email = "";
 				FirstName = "";
 				LastName = "";
 				Password = "";
 				ConfirmPassword = "";
-				Debug.WriteLine($"User id: {result.User.Id} Email: {result.User.Email}");
 			}
 			else
 			{
