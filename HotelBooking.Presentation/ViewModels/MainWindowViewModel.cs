@@ -5,23 +5,23 @@ using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
 using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows.Input;
 
 namespace HotelBooking.Presentation.ViewModels
 {
+
 	public class MainWindowViewModel : BindableBase, INavigationAware
 	{
 		private DelegateCommand goBackCommand;
 		public DelegateCommand GoBackCommand => goBackCommand ??= new DelegateCommand(ExecuteGoBackCommand, CanGoBack);
-
 		void ExecuteGoBackCommand()
 		{
 			GoBack();
 		}
 		private NavigationViewItem selectedItem;
 		private readonly IRegionManager regionManager;
-		private IRegionNavigationService navigationService;
 
 		public GlobalStore Store { get; set; }
 		public NavigationViewItem SelectedItem
@@ -39,11 +39,10 @@ namespace HotelBooking.Presentation.ViewModels
 			}
 		}
 
-		public MainWindowViewModel(IRegionManager regionManager, GlobalStore store, IRegionNavigationService navigationService)
+		public MainWindowViewModel(IRegionManager regionManager, GlobalStore store)
 		{
 			this.regionManager = regionManager;
 			Store = store;
-			this.navigationService = navigationService;
 		}
 
 		private async void OnLogout()

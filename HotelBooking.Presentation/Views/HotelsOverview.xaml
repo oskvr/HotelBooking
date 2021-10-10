@@ -36,18 +36,23 @@
                     Orientation="Horizontal"
                     Spacing="10">
                     <Label VerticalAlignment="Center" Content="Sortera efter:" />
-                    <ComboBox MinWidth="140" SelectedIndex="0">
-                        <ComboBoxItem Content="Pris (lågt till högt)" />
-                        <ComboBoxItem Content="Pris (högt till lågt)" />
-                        <ComboBoxItem Content="Hotellklass" />
-                        <ComboBoxItem Content="Tillgänglighet" />
+                    <ComboBox
+                        MinWidth="140"
+                        ItemsSource="{Binding SortOptions}"
+                        SelectedIndex="0"
+                        SelectedItem="{Binding SelectedSortOption}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
                     </ComboBox>
                 </ui:SimpleStackPanel>
             </ui:SimpleStackPanel>
             <ListView
                 Grid.Row="1"
                 Grid.Column="1"
-                ItemsSource="{Binding Hotels}">
+                ItemsSource="{Binding FilteredHotels}">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />

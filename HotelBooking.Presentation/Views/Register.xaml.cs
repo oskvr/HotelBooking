@@ -37,6 +37,5 @@ namespace HotelBooking.Presentation.Views
 			if (DataContext != null)
 			{ ((RegisterViewModel)DataContext).Password = ((PasswordBox)sender).Password; }
 		}
-
 	}
 }

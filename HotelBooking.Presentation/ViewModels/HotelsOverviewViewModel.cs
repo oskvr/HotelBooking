@@ -9,20 +9,56 @@ using Prism.Regions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 
 namespace HotelBooking.Presentation.ViewModels
 {
+	public class SortOption : BindableBase
+	{
+		public SortOption()
+		{
+
+		}
+
+		public SortOption(string name, string mappingProperty, ListSortDirection sortDirection)
+		{
+			Name = name;
+			MappingProperty = mappingProperty;
+			SortDirection = sortDirection;
+		}
+
+		public string Name { get; set; }
+		public string MappingProperty { get; set; }
+		public ListSortDirection SortDirection { get; set; }
+	}
 	public class HotelsOverviewViewModel : BindableBase
 	{
 		public ObservableCollection<Hotel> Hotels { get; set; }
+		public ICollectionView FilteredHotels { get; set; }
+		public ObservableCollection<SortOption> SortOptions { get; set; }
 		public ObservableCollection<RoomType> RoomTypes { get; set; }
 		public DelegateCommand TogglePaneCommand { get; set; }
 		public DelegateCommand<Hotel> NavigateToBookingCommand { get; set; }
-
+		private SortOption selectedSortOption = new SortOption();
+		public SortOption SelectedSortOption
+		{
+			get { return selectedSortOption; }
+			set
+			{
+				SetProperty(ref selectedSortOption, value);
+				if (FilteredHotels is not null)
+				{
+					FilteredHotels.SortDescriptions.Clear();
+					FilteredHotels.SortDescriptions.Add(new SortDescription(selectedSortOption.MappingProperty, selectedSortOption.SortDirection));
+					FilteredHotels.Refresh();
+				}
+			}
+		}
 		private GlobalStore store;
 		private readonly HotelBookingDbContext dbContext;
 		private readonly IRegionManager regionManager;
@@ -34,6 +70,16 @@ namespace HotelBooking.Presentation.ViewModels
 			LoadInitData();
 			this.regionManager = regionManager;
 			this.store = store;
+			SortOptions = new ObservableCollection<SortOption>
+			{
+				new SortOption("Pris (fallande)", "PricePerNight", ListSortDirection.Descending),
+				new SortOption("Pris (stigande)", "PricePerNight", ListSortDirection.Ascending),
+				new SortOption("Hotelklass (fallande)", "Rating", ListSortDirection.Descending),
+				new SortOption("Hotelklass (stigande)", "Rating", ListSortDirection.Ascending),
+				new SortOption("Tillgänglighet", "IsAvailable", ListSortDirection.Ascending),
+				new SortOption("Namn (stigande)", "Name", ListSortDirection.Ascending),
+				new SortOption("Namn (fallande)", "Name", ListSortDirection.Descending),
+			};
 		}
 
 		private void OnNavigateToBooking(Hotel hotel)
@@ -58,6 +104,17 @@ namespace HotelBooking.Presentation.ViewModels
 		{
 			RoomTypes = await GetRoomTypes();
 			Hotels = await GetHotels();
+			FilteredHotels = CollectionViewSource.GetDefaultView(Hotels);
+			FilteredHotels.Filter = new Predicate<object>(ItemFilter);
+			FilteredHotels.Refresh();
+		}
+		private bool ItemFilter(object obj)
+		{
+			if (obj is Hotel hotel)
+			{
+				return true;
+			}
+			return false;
 		}
 	}
 }
