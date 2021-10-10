@@ -22,11 +22,18 @@
             <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
         </Grid.Resources>
         <ui:NavigationView
-            x:Name="NavigationViewControl"
-            IsBackButtonVisible="Collapsed"
+            x:Name="MainNavView"
+            AlwaysShowHeader="True"
+            BackRequested="MainNavView_BackRequested"
+            IsBackButtonVisible="Auto"
+            IsBackEnabled="True"
             IsSettingsVisible="False"
-            PaneDisplayMode="Left"
+            ItemInvoked="MainNavView_ItemInvoked"
+            PaneDisplayMode="Auto"
             SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+            <ui:NavigationView.AutoSuggestBox>
+                <ui:AutoSuggestBox PlaceholderText="Search" QueryIcon="Find" />
+            </ui:NavigationView.AutoSuggestBox>
             <ui:NavigationView.Header>
                 <Border Padding="20" Background="White">
                     <Grid HorizontalAlignment="Center">
@@ -77,7 +84,11 @@
                     Visibility="{Binding Store.IsNotLoggedIn, Converter={StaticResource BoolToVisConverter}}" />
             </ui:NavigationView.FooterMenuItems>
             <ui:NavigationView.Content>
-                <ContentControl Grid.Row="1" prism:RegionManager.RegionName="ContentRegion" />
+                <ui:Frame
+                    x:Name="ContentFrame"
+                    prism:RegionManager.RegionName="ContentRegion"
+                    JournalOwnership="OwnsJournal" />
+                <!--<ContentControl Grid.Row="1" prism:RegionManager.RegionName="ContentRegion" />-->
             </ui:NavigationView.Content>
         </ui:NavigationView>
     </Grid>

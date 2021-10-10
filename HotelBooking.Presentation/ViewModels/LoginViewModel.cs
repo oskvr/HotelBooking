@@ -25,6 +25,7 @@ namespace HotelBooking.Presentation.ViewModels
 		private readonly IRegionManager regionManager;
 		private NavigationParameters navigationParams;
 		private string redirectView;
+
 		public LoginViewModel(IAuthenticationService authenticationService, IRegionManager regionManager)
 		{
 			this.authenticationService = authenticationService;
@@ -37,6 +38,9 @@ namespace HotelBooking.Presentation.ViewModels
 			LoginResult result = await authenticationService.Login(Email, Password);
 			if (result.IsSuccess)
 			{
+				// Prevent going back after logging in
+				regionManager.Regions["ContentRegion"].NavigationService.Journal.Clear();
+				
 				regionManager.RequestNavigate("ContentRegion", redirectView, navigationParams);
 				Email = "";
 				Password = "";

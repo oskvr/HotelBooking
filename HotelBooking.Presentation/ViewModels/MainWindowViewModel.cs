@@ -10,10 +10,19 @@ using System.Windows.Input;
 
 namespace HotelBooking.Presentation.ViewModels
 {
-	public class MainWindowViewModel : BindableBase
+	public class MainWindowViewModel : BindableBase, INavigationAware
 	{
+		private DelegateCommand goBackCommand;
+		public DelegateCommand GoBackCommand => goBackCommand ??= new DelegateCommand(ExecuteGoBackCommand, CanGoBack);
+
+		void ExecuteGoBackCommand()
+		{
+			GoBack();
+		}
 		private NavigationViewItem selectedItem;
 		private readonly IRegionManager regionManager;
+		private IRegionNavigationService navigationService;
+
 		public GlobalStore Store { get; set; }
 		public NavigationViewItem SelectedItem
 		{
@@ -30,16 +39,58 @@ namespace HotelBooking.Presentation.ViewModels
 			}
 		}
 
-		private void OnLogout()
-		{
-			Store.CurrentUser = null;
-			regionManager.RequestNavigate("ContentRegion", nameof(Login));
-		}
-
-		public MainWindowViewModel(IRegionManager regionManager, GlobalStore store)
+		public MainWindowViewModel(IRegionManager regionManager, GlobalStore store, IRegionNavigationService navigationService)
 		{
 			this.regionManager = regionManager;
 			Store = store;
+			this.navigationService = navigationService;
+		}
+
+		private async void OnLogout()
+		{
+			ContentDialog locationPromptDialog = new ContentDialog
+			{
+				Title = "Är du säker på att du vill logga ut?",
+				PrimaryButtonText = "Logga ut",
+				CloseButtonText = "Avbryt",
+			};
+			ContentDialogResult result = await locationPromptDialog.ShowAsync();
+			if (result == ContentDialogResult.Primary)
+			{
+				Store.CurrentUser = null;
+
+				// Prevent going back after logging out
+				regionManager.Regions["ContentRegion"].NavigationService.Journal.Clear();
+				regionManager.RequestNavigate("ContentRegion", nameof(Login));
+			}
+		}
+
+		private void GoBack()
+		{
+			if (regionManager.Regions["ContentRegion"].NavigationService.Journal.CanGoBack)
+			{
+				regionManager.Regions["ContentRegion"].NavigationService.Journal.GoBack();
+			}
+		}
+
+		private bool CanGoBack()
+		{
+			//return true;
+			return regionManager.Regions["ContentRegion"].NavigationService.Journal.CanGoBack;
+		}
+
+		public void OnNavigatedTo(NavigationContext navigationContext)
+		{
+			regionManager.Regions["ContentRegion"].NavigationService = navigationContext.NavigationService;
+		}
+
+		public bool IsNavigationTarget(NavigationContext navigationContext)
+		{
+			return true;
+		}
+
+		public void OnNavigatedFrom(NavigationContext navigationContext)
+		{
 		}
 	}
 }

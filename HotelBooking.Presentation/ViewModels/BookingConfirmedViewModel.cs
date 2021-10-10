@@ -38,6 +38,9 @@ namespace HotelBooking.Presentation.ViewModels
 		public void OnNavigatedTo(NavigationContext navigationContext)
 		{
 			Booking = navigationContext.Parameters.GetValue<Booking>("Booking");
+
+			// Clear journal to prevent going back to completed booking
+			regionManager.Regions["ContentRegion"].NavigationService.Journal.Clear();
 		}
 	}
 }

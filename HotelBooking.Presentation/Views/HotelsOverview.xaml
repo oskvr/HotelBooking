@@ -116,15 +116,11 @@
 
                                             <Button
                                                 BorderThickness="10,5"
+                                                Command="{Binding DataContext.NavigateToBookingCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type view:HotelsOverview}}}"
+                                                CommandParameter="{Binding}"
                                                 Content="Boka Nu"
                                                 FontSize="18"
-                                                Style="{ui:StaticResource AccentButtonStyle}">
-                                                <i:Interaction.Triggers>
-                                                    <i:EventTrigger EventName="Click">
-                                                        <i:InvokeCommandAction Command="{Binding DataContext.NavigateToBookingCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type view:HotelsOverview}}}" CommandParameter="{Binding}" />
-                                                    </i:EventTrigger>
-                                                </i:Interaction.Triggers>
-                                            </Button>
+                                                Style="{ui:StaticResource AccentButtonStyle}" />
                                         </ui:SimpleStackPanel>
                                     </Grid>
                                 </Border>

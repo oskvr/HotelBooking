@@ -40,20 +40,12 @@ namespace HotelBooking.Presentation.ViewModels
 			};
 
 			ContentDialogResult result = await locationPromptDialog.ShowAsync();
-			switch (result)
+			if (result == ContentDialogResult.Primary)
 			{
-				case ContentDialogResult.None:
-					break;
-				case ContentDialogResult.Primary:
-					await bookingService.Delete(booking.Id);
-					Bookings.Remove(booking);
-					Debug.WriteLine("Deleted booking with id: " + booking.Id);
-					RaisePropertyChanged(nameof(UserHasNoBookings));
-					break;
-				case ContentDialogResult.Secondary:
-					break;
-				default:
-					break;
+				await bookingService.Delete(booking.Id);
+				Bookings.Remove(booking);
+				Debug.WriteLine("Deleted booking with id: " + booking.Id);
+				RaisePropertyChanged(nameof(UserHasNoBookings));
 			}
 		}
 
