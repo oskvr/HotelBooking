@@ -19,6 +19,12 @@
     <DefineConstants>TRACE;Core</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Assetts\**" />
+    <EmbeddedResource Remove="Assetts\**" />
+    <None Remove="Assetts\**" />
+    <Page Remove="Assetts\**" />
+  </ItemGroup>
+  <ItemGroup>
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.10">
 	    <PrivateAssets>all</PrivateAssets>
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -32,8 +38,5 @@
   <ItemGroup>
     <ProjectReference Include="..\HotelBooking.DAL\HotelBooking.DAL.csproj" />
     <ProjectReference Include="..\HotelBooking.Domain\HotelBooking.Domain.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Assetts\" />
   </ItemGroup>
 </Project>

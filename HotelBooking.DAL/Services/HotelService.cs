@@ -38,9 +38,9 @@ namespace HotelBooking.DAL.Services
 			throw new NotImplementedException();
 		}
 
-		public Task<IEnumerable<Hotel>> GetAll()
+		public async Task<IEnumerable<Hotel>> GetAll()
 		{
-			throw new NotImplementedException();
+			return await dbContext.Hotels.Include(hotel => hotel.Ratings).Include(hotel=>hotel.Rooms).ToListAsync();
 		}
 		public async Task<List<Room>> GetAvailableRoomsBetweenDates(int hotelId, DateTime checkInDate, DateTime checkOutDate)
 		{

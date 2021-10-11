@@ -1,4 +1,5 @@
 ﻿using HotelBooking.DAL.Data;
+using HotelBooking.DAL.Services;
 using HotelBooking.Domain.Models;
 using HotelBooking.Domain.Shared;
 using HotelBooking.Presentation.Utils;
@@ -48,10 +49,12 @@ namespace HotelBooking.Presentation.ViewModels
 		private GlobalStore store;
 		private readonly HotelBookingDbContext dbContext;
 		private readonly IRegionManager regionManager;
+		private readonly IHotelService hotelService;
 
-		public HotelsOverviewViewModel(HotelBookingDbContext dbContext, IRegionManager regionManager, GlobalStore store)
+		public HotelsOverviewViewModel(HotelBookingDbContext dbContext, IRegionManager regionManager, GlobalStore store, IHotelService hotelService)
 		{
 			this.dbContext = dbContext;
+			this.hotelService = hotelService;
 			NavigateToBookingCommand = new DelegateCommand<Hotel>(OnNavigateToBooking);
 			LoadInitData();
 			this.regionManager = regionManager;
@@ -83,7 +86,7 @@ namespace HotelBooking.Presentation.ViewModels
 		}
 		public async Task<ObservableCollection<Hotel>> GetHotels()
 		{
-			var hotels = await dbContext.Hotels.Include(hotel => hotel.Ratings).ToListAsync();
+			var hotels = await hotelService.GetAll();
 			return new ObservableCollection<Hotel>(hotels);
 		}
 		private async void LoadInitData()

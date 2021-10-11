@@ -44,7 +44,7 @@
                 SelectionMode="Single">
                 <DataGrid.CellStyle>
                     <Style TargetType="DataGridCell">
-                        <Setter Property="Focusable" Value="False" />
+                        <Setter Property="Focusable" Value="True" />
                         <Setter Property="BorderThickness" Value="0" />
                         <Setter Property="Background" Value="Transparent" />
                     </Style>

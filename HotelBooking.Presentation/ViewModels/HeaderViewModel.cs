@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace HotelBooking.Presentation.ViewModels
 {
-    public class HeaderViewModel:BindableBase
-    {
+	public class HeaderViewModel:BindableBase
+	{
         
-    }
+	}
 }

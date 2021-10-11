@@ -19,7 +19,10 @@
                 Grid.Column="1"
                 Orientation="Horizontal"
                 Spacing="10">
-                <ui:AutoSuggestBox Width="300" PlaceholderText="Välj destination" />
+                <ui:AutoSuggestBox
+                    Width="300"
+                    PlaceholderText="Välj destination"
+                    QueryIcon="Find" />
                 <DatePicker Width="300" ui:ControlHelper.PlaceholderText="Incheckning" />
                 <ComboBox MinWidth="280" ui:ControlHelper.PlaceholderText="Hur många nätter ska du stanna?">
                     <ComboBoxItem>7 nätter</ComboBoxItem>
