@@ -21,6 +21,6 @@ namespace HotelBooking.Domain.Models
 		// Computed Properties
 
 		public int TotalDays => (CheckOutDate - CheckInDate).Days;
-		public double? TotalPrice => Room != null ? (Room.RoomType.PricePerNight * TotalDays) + BookingExtras.Sum(extra => extra.Cost) : null;
+		public double TotalPrice => (Room.RoomType.PricePerNight * TotalDays) + BookingExtras.Sum(extra => extra.Cost);
 	}
 }

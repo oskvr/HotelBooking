@@ -37,9 +37,13 @@ namespace HotelBooking.Presentation
 		protected override void OnInitialized()
 		{
 			base.OnInitialized();
-			var regionManager = Container.Resolve<IRegionManager>();
-			var contentRegion = regionManager.Regions[RegionNames.CONTENT_REGION];
-			var hotelsOverview = Container.Resolve<HotelsOverview>();
+			IRegionManager regionManager = Container.Resolve<IRegionManager>();
+
+			IRegion contentRegion = regionManager.Regions[RegionNames.CONTENT_REGION];
+			
+			HotelsOverview hotelsOverview = Container.Resolve<HotelsOverview>();
+
+			regionManager.RegisterViewWithRegion("HeaderRegion", typeof(Header));
 			contentRegion.Add(hotelsOverview);
 
 		}

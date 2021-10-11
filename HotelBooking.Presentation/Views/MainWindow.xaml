@@ -24,7 +24,7 @@
         </Grid.Resources>
         <ui:NavigationView
             x:Name="MainNavView"
-            AlwaysShowHeader="True"
+            AlwaysShowHeader="False"
             BackRequested="MainNavView_BackRequested"
             IsBackButtonVisible="Auto"
             IsBackEnabled="True"
@@ -32,40 +32,13 @@
             ItemInvoked="MainNavView_ItemInvoked"
             PaneDisplayMode="Auto"
             SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+            <ui:NavigationView.Header>
+                <!--<ContentControl prism:RegionManager.RegionName="{x:Static utils:RegionNames.HEADER_REGION}" />-->
+                Hejsan
+            </ui:NavigationView.Header>
             <ui:NavigationView.AutoSuggestBox>
                 <ui:AutoSuggestBox PlaceholderText="Search" QueryIcon="Find" />
             </ui:NavigationView.AutoSuggestBox>
-            <ui:NavigationView.Header>
-                <Border Padding="20" Background="White">
-                    <Grid HorizontalAlignment="Center">
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <ui:SimpleStackPanel Grid.Column="1" Orientation="Horizontal">
-                            <ui:AutoSuggestBox Width="300" PlaceholderText="Välj destination" />
-                            <DatePicker
-                                Width="300"
-                                ui:ControlHelper.CornerRadius="0"
-                                ui:ControlHelper.PlaceholderText="Incheckning" />
-                            <ComboBox
-                                MinWidth="280"
-                                ui:ControlHelper.CornerRadius="0"
-                                ui:ControlHelper.PlaceholderText="Hur många nätter ska du stanna?">
-                                <ComboBoxItem>7 nätter</ComboBoxItem>
-                                <ComboBoxItem>14 nätter</ComboBoxItem>
-                            </ComboBox>
-                            <ui:SimpleStackPanel Orientation="Horizontal" Spacing="10">
-                                <Button Content="Sök" Style="{ui:StaticResource AccentButtonStyle}" />
-                                <Button
-                                    Content="Rensa"
-                                    FontSize="14"
-                                    Style="{ui:StaticResource DateTimePickerFlyoutButtonStyle}" />
-                            </ui:SimpleStackPanel>
-                        </ui:SimpleStackPanel>
-                    </Grid>
-                </Border>
-            </ui:NavigationView.Header>
             <ui:NavigationView.MenuItems>
                 <ui:NavigationViewItem
                     Name="HotelsOverview"

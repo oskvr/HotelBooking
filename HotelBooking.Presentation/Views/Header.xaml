@@ -1,0 +1,32 @@
+﻿<UserControl
+    x:Class="HotelBooking.Presentation.Views.Header"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:HotelBooking.Presentation.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:prism="http://prismlibrary.com/"
+    xmlns:ui="http://schemas.modernwpf.com/2019"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    mc:Ignorable="d">
+    <Border Padding="20" Background="White">
+        <Grid HorizontalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <ui:SimpleStackPanel
+                Grid.Column="1"
+                Orientation="Horizontal"
+                Spacing="10">
+                <ui:AutoSuggestBox Width="300" PlaceholderText="Välj destination" />
+                <DatePicker Width="300" ui:ControlHelper.PlaceholderText="Incheckning" />
+                <ComboBox MinWidth="280" ui:ControlHelper.PlaceholderText="Hur många nätter ska du stanna?">
+                    <ComboBoxItem>7 nätter</ComboBoxItem>
+                    <ComboBoxItem>14 nätter</ComboBoxItem>
+                </ComboBox>
+                <Button Content="Sök" Style="{ui:StaticResource AccentButtonStyle}" />
+            </ui:SimpleStackPanel>
+        </Grid>
+    </Border>
+</UserControl>

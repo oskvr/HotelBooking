@@ -31,35 +31,39 @@
             <TextBlock FontSize="18" Text="Du har inga bokningar" />
         </ui:SimpleStackPanel>
         <DataGrid
+            Width="1000"
+            Margin="0,100,0,0"
+            HorizontalAlignment="Center"
             AutoGenerateColumns="False"
-            GridLinesVisibility="None"
+            IsReadOnly="True"
             ItemsSource="{Binding Bookings}"
-            SelectionMode="Single"
-            SelectionUnit="CellOrRowHeader">
+            SelectedIndex="0"
+            Style="{ui:StaticResource DefaultDataGridStyle}">
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="Focusable" Value="False" />
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="Background" Value="Transparent" />
+                </Style>
+            </DataGrid.CellStyle>
             <DataGrid.Columns>
-                <DataGridTemplateColumn Header="Hotell">
+                <DataGridTemplateColumn Header="">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock VerticalAlignment="Center" Text="{Binding Hotel.Name}" />
+                            <Image
+                                Width="60"
+                                Height="60"
+                                Margin="5"
+                                Source="https://source.unsplash.com/1000x700/?building,hotel"
+                                Stretch="Fill" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                <DataGridTextColumn Binding="{Binding Hotel.Name}" Header="Hotell" />
+                <DataGridTextColumn Binding="{Binding CheckInDate}" Header="Incheckning" />
+                <DataGridTextColumn Binding="{Binding CheckOutDate}" Header="Utcheckning" />
+                <DataGridTextColumn Binding="{Binding TotalPrice, ConverterCulture='sv-SE', StringFormat='\{0: #,##0 kr\}'}" Header="Pris" />
 
-                <DataGridTemplateColumn Header="Incheckning">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock VerticalAlignment="Center" Text="{Binding CheckInDate}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-                <DataGridTemplateColumn Header="Utcheckning">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock VerticalAlignment="Center" Text="{Binding CheckOutDate}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

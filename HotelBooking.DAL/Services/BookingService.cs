@@ -103,7 +103,13 @@ namespace HotelBooking.DAL.Services
 
 		public async Task<IEnumerable<Booking>> GetAll()
 		{
-			return await dbContext.Bookings.Include(booking => booking.Hotel).Where(booking => booking.UserId == store.CurrentUser.Id).ToListAsync();
+			return await dbContext
+				.Bookings
+				.Include(booking => booking.Hotel)
+				.Include(booking=>booking.Room)
+				.Include(booking=>booking.BookingExtras)
+				.Where(booking => booking.UserId == store.CurrentUser.Id)
+				.ToListAsync();
 		}
 	}
 }

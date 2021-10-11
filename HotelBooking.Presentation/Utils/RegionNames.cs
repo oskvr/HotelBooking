@@ -9,5 +9,6 @@ namespace HotelBooking.Presentation.Utils
     public static class RegionNames
     {
         public const string CONTENT_REGION = "ContentRegion";
+        public const string HEADER_REGION = "HeaderRegion";
     }
 }
