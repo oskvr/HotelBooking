@@ -18,24 +18,9 @@ using System.Windows.Data;
 
 namespace HotelBooking.Presentation.ViewModels
 {
-	public class SortOption : BindableBase
-	{
-		public SortOption()
-		{
 
-		}
+	public record SortOption(string Name, string MappingProperty, ListSortDirection SortDirection);
 
-		public SortOption(string name, string mappingProperty, ListSortDirection sortDirection)
-		{
-			Name = name;
-			MappingProperty = mappingProperty;
-			SortDirection = sortDirection;
-		}
-
-		public string Name { get; set; }
-		public string MappingProperty { get; set; }
-		public ListSortDirection SortDirection { get; set; }
-	}
 	public class HotelsOverviewViewModel : BindableBase
 	{
 		public ObservableCollection<Hotel> Hotels { get; set; }
@@ -44,7 +29,7 @@ namespace HotelBooking.Presentation.ViewModels
 		public ObservableCollection<RoomType> RoomTypes { get; set; }
 		public DelegateCommand TogglePaneCommand { get; set; }
 		public DelegateCommand<Hotel> NavigateToBookingCommand { get; set; }
-		private SortOption selectedSortOption = new SortOption();
+		private SortOption selectedSortOption;
 		public SortOption SelectedSortOption
 		{
 			get { return selectedSortOption; }
