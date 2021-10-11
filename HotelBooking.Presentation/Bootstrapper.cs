@@ -1,6 +1,7 @@
 ﻿using HotelBooking.DAL.Data;
 using HotelBooking.DAL.Services;
 using HotelBooking.Domain.Shared;
+using HotelBooking.Presentation.Utils;
 using HotelBooking.Presentation.Views;
 using Prism.DryIoc;
 using Prism.Ioc;
@@ -37,7 +38,7 @@ namespace HotelBooking.Presentation
 		{
 			base.OnInitialized();
 			var regionManager = Container.Resolve<IRegionManager>();
-			var contentRegion = regionManager.Regions["ContentRegion"];
+			var contentRegion = regionManager.Regions[RegionNames.CONTENT_REGION];
 			var hotelsOverview = Container.Resolve<HotelsOverview>();
 			contentRegion.Add(hotelsOverview);
 

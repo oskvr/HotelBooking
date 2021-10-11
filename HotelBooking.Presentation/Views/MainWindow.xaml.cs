@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using HotelBooking.Presentation.Utils;
 using ModernWpf.Controls;
 using Prism.Regions;
 
@@ -35,7 +36,7 @@ namespace HotelBooking.Presentation.Views
 
 		private void MainNavView_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
 		{
-			regionManager.Regions["ContentRegion"].NavigationService.Journal.GoBack();	
+			regionManager.Regions[RegionNames.CONTENT_REGION].NavigationService.Journal.GoBack();	
 		}
 	}
 }

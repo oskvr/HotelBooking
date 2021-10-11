@@ -18,6 +18,7 @@ using System.Collections.Specialized;
 using HotelBooking.Domain.Models.Wrappers;
 using System.Windows;
 using HotelBooking.Presentation.Views;
+using HotelBooking.Presentation.Utils;
 
 namespace HotelBooking.Presentation.ViewModels
 {
@@ -62,7 +63,7 @@ namespace HotelBooking.Presentation.ViewModels
 				Booking = new BookingWrapper();
 				var navigationParams = new NavigationParameters();
 				navigationParams.Add("Booking", createdBooking);
-				regionManager.RequestNavigate("ContentRegion", nameof(BookingConfirmed), navigationParams);
+				regionManager.RequestNavigate(RegionNames.CONTENT_REGION, nameof(BookingConfirmed), navigationParams);
 				
 			}
 			catch (Exception e)

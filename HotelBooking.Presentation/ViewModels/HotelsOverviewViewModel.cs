@@ -1,6 +1,7 @@
 ﻿using HotelBooking.DAL.Data;
 using HotelBooking.Domain.Models;
 using HotelBooking.Domain.Shared;
+using HotelBooking.Presentation.Utils;
 using HotelBooking.Presentation.Views;
 using Microsoft.EntityFrameworkCore;
 using Prism.Commands;
@@ -72,7 +73,7 @@ namespace HotelBooking.Presentation.ViewModels
 			var navigationParams = new NavigationParameters();
 			navigationParams.Add("hotelId", hotel.Id);
 			string redirectView = store.IsLoggedIn ? nameof(BookingCreate) : nameof(Login);
-			regionManager.RequestNavigate("ContentRegion", redirectView, navigationParams);
+			regionManager.RequestNavigate(RegionNames.CONTENT_REGION, redirectView, navigationParams);
 		}
 
 		public async Task<ObservableCollection<RoomType>> GetRoomTypes()

@@ -1,4 +1,5 @@
 ﻿using HotelBooking.Domain.Models;
+using HotelBooking.Presentation.Utils;
 using HotelBooking.Presentation.Views;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -24,7 +25,7 @@ namespace HotelBooking.Presentation.ViewModels
 		}
 		void ExecuteNavigateToBookingsCommand()
 		{
-			regionManager.RequestNavigate("ContentRegion", nameof(BookingsList));
+			regionManager.RequestNavigate(RegionNames.CONTENT_REGION, nameof(BookingsList));
 		}
 		public bool IsNavigationTarget(NavigationContext navigationContext)
 		{
@@ -40,7 +41,7 @@ namespace HotelBooking.Presentation.ViewModels
 			Booking = navigationContext.Parameters.GetValue<Booking>("Booking");
 
 			// Clear journal to prevent going back to completed booking
-			regionManager.Regions["ContentRegion"].NavigationService.Journal.Clear();
+			regionManager.Regions[RegionNames.CONTENT_REGION].NavigationService.Journal.Clear();
 		}
 	}
 }

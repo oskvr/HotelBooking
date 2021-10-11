@@ -1,4 +1,5 @@
 ﻿using HotelBooking.DAL.Services;
+using HotelBooking.Presentation.Utils;
 using HotelBooking.Presentation.Views;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -67,8 +68,8 @@ namespace HotelBooking.Presentation.ViewModels
 				await authenticationService.Login(Email, Password);
 
 				// Prevent going back after registration and login
-				regionManager.Regions["ContentRegion"].NavigationService.Journal.Clear();
-				regionManager.RequestNavigate("ContentRegion", nameof(HotelsOverview));
+				regionManager.Regions[RegionNames.CONTENT_REGION].NavigationService.Journal.Clear();
+				regionManager.RequestNavigate(RegionNames.CONTENT_REGION, nameof(HotelsOverview));
 				Email = "";
 				FirstName = "";
 				LastName = "";

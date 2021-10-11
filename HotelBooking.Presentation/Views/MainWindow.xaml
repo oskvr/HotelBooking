@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:ui="http://schemas.modernwpf.com/2019"
+    xmlns:utils="clr-namespace:HotelBooking.Presentation.Utils"
     xmlns:view="clr-namespace:HotelBooking.Presentation.Views"
     xmlns:viewmodels="clr-namespace:HotelBooking.Presentation.ViewModels"
     Title="MainWindow"
@@ -96,21 +97,9 @@
             <ui:NavigationView.Content>
                 <ui:Frame
                     x:Name="ContentFrame"
-                    prism:RegionManager.RegionName="ContentRegion"
+                    prism:RegionManager.RegionName="{x:Static utils:RegionNames.CONTENT_REGION}"
                     JournalOwnership="OwnsJournal" />
-                <!--<ContentControl Grid.Row="1" prism:RegionManager.RegionName="ContentRegion" />-->
             </ui:NavigationView.Content>
         </ui:NavigationView>
     </Grid>
 </Window>
-
-
-
-<!--<Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <view:Navbar Grid.Row="0" />
-        <ContentControl Grid.Row="1" prism:RegionManager.RegionName="ContentRegion" />
-    </Grid>-->

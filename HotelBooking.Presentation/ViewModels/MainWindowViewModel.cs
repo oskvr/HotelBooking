@@ -1,4 +1,5 @@
 ﻿using HotelBooking.Domain.Shared;
+using HotelBooking.Presentation.Utils;
 using HotelBooking.Presentation.Views;
 using ModernWpf.Controls;
 using Prism.Commands;
@@ -35,7 +36,7 @@ namespace HotelBooking.Presentation.ViewModels
 					OnLogout();
 					return;
 				}
-				regionManager.RequestNavigate("ContentRegion", selectedItem.Name);
+				regionManager.RequestNavigate(RegionNames.CONTENT_REGION, selectedItem.Name);
 			}
 		}
 
@@ -59,28 +60,28 @@ namespace HotelBooking.Presentation.ViewModels
 				Store.CurrentUser = null;
 
 				// Prevent going back after logging out
-				regionManager.Regions["ContentRegion"].NavigationService.Journal.Clear();
-				regionManager.RequestNavigate("ContentRegion", nameof(Login));
+				regionManager.Regions[RegionNames.CONTENT_REGION].NavigationService.Journal.Clear();
+				regionManager.RequestNavigate(RegionNames.CONTENT_REGION, nameof(Login));
 			}
 		}
 
 		private void GoBack()
 		{
-			if (regionManager.Regions["ContentRegion"].NavigationService.Journal.CanGoBack)
+			if (regionManager.Regions[RegionNames.CONTENT_REGION].NavigationService.Journal.CanGoBack)
 			{
-				regionManager.Regions["ContentRegion"].NavigationService.Journal.GoBack();
+				regionManager.Regions[RegionNames.CONTENT_REGION].NavigationService.Journal.GoBack();
 			}
 		}
 
 		private bool CanGoBack()
 		{
 			//return true;
-			return regionManager.Regions["ContentRegion"].NavigationService.Journal.CanGoBack;
+			return regionManager.Regions[RegionNames.CONTENT_REGION].NavigationService.Journal.CanGoBack;
 		}
 
 		public void OnNavigatedTo(NavigationContext navigationContext)
 		{
-			regionManager.Regions["ContentRegion"].NavigationService = navigationContext.NavigationService;
+			regionManager.Regions[RegionNames.CONTENT_REGION].NavigationService = navigationContext.NavigationService;
 		}
 
 		public bool IsNavigationTarget(NavigationContext navigationContext)

@@ -1,6 +1,7 @@
 ﻿using HotelBooking.DAL.Services;
 using HotelBooking.Domain.Models;
 using HotelBooking.Domain.Shared;
+using HotelBooking.Presentation.Utils;
 using HotelBooking.Presentation.Views;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -39,9 +40,9 @@ namespace HotelBooking.Presentation.ViewModels
 			if (result.IsSuccess)
 			{
 				// Prevent going back after logging in
-				regionManager.Regions["ContentRegion"].NavigationService.Journal.Clear();
+				regionManager.Regions[RegionNames.CONTENT_REGION].NavigationService.Journal.Clear();
 				
-				regionManager.RequestNavigate("ContentRegion", redirectView, navigationParams);
+				regionManager.RequestNavigate(RegionNames.CONTENT_REGION, redirectView, navigationParams);
 				Email = "";
 				Password = "";
 			}
