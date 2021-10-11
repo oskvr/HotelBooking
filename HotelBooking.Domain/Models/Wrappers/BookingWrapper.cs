@@ -15,10 +15,12 @@ namespace HotelBooking.Domain.Models.Wrappers
 		public DateTime CheckInDate { get; set; } = DateTime.Now;
 		public int LengthInDays { get; set; } = 7;
 		public DateTime CheckOutDate => CheckInDate.AddDays(LengthInDays);
+		public string DisplayCheckInDate => CheckInDate.ToString("D",
+		  CultureInfo.CreateSpecificCulture("sv-SE"));
 		public string DisplayCheckOutDate => CheckOutDate.ToString("D",
 				  CultureInfo.CreateSpecificCulture("sv-SE"));
 		public ICollection<BookingExtraWrapper> BookingExtras { get; set; } = new ObservableCollection<BookingExtraWrapper>();
-		public RoomType RoomType { get; set; } = new RoomType();
+		public RoomType RoomType { get; set; }
 		public int HotelId { get; set; }
 
 		// Computed properties

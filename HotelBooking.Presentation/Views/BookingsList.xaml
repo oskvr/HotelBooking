@@ -33,6 +33,7 @@
                 <TextBlock FontSize="18" Text="Du har inga bokningar" />
             </ui:SimpleStackPanel>
             <DataGrid
+                x:Name="BookingsDataGrid"
                 Grid.Row="1"
                 AutoGenerateColumns="False"
                 CanUserReorderColumns="True"
@@ -86,9 +87,10 @@
                                     VerticalAlignment="Center"
                                     Background="Transparent">
                                     <ui:CommandBar.SecondaryCommands>
-                                        <ui:AppBarButton Icon="Edit" Label="Ändra" />
+                                        <ui:AppBarButton Icon="Edit" Label="Ändra" x:Name="BtnEditBooking" Click="BtnEditBooking_Click" />
                                         <ui:AppBarButton
-                                            Command="{Binding DataContext.DeleteBookingCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"
+                                            x:Name="BtnDeleteBooking"
+                                            Click="BtnDeleteBooking_Click"
                                             CommandParameter="{Binding}"
                                             Icon="Delete"
                                             Label="Avboka" />

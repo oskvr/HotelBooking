@@ -19,6 +19,7 @@ using HotelBooking.Domain.Models.Wrappers;
 using System.Windows;
 using HotelBooking.Presentation.Views;
 using HotelBooking.Presentation.Utils;
+using HotelBooking.Domain.Shared;
 
 namespace HotelBooking.Presentation.ViewModels
 {
@@ -37,21 +38,32 @@ namespace HotelBooking.Presentation.ViewModels
 		private readonly IRegionManager regionManager;
 
 		public int TotalDays => (Booking.CheckInDate.AddDays(Booking.LengthInDays) - Booking.CheckInDate).Days;
-		public double? TotalPrice => (Booking.RoomType.PricePerNight * TotalDays) + BookingExtras.Where(extra => extra.IsSelected).Sum(extra => extra.BookingExtra.Cost);
-		public BookingCreateViewModel(IBookingService bookingService, IHotelService hotelService, HotelBookingDbContext dbContext, IRegionManager regionManager)
+		public double? TotalPrice => Booking.RoomType is not null ? (Booking.RoomType.PricePerNight * TotalDays) + BookingExtras.Where(extra => extra.IsSelected).Sum(extra => extra.BookingExtra.Cost) : 0;
+
+		public GlobalStore Store { get; }
+
+		public BookingCreateViewModel(IBookingService bookingService, IHotelService hotelService, HotelBookingDbContext dbContext, IRegionManager regionManager, GlobalStore store)
 		{
-			CreateBookingCommand = new DelegateCommand(OnCreateBooking);
+			CreateBookingCommand = new DelegateCommand(OnCreateBooking, CanCreatebooking);
 			BookingUpdatedCommand = new DelegateCommand(OnBookingUpdate);
 			this.bookingService = bookingService;
 			this.dbContext = dbContext;
-			LoadDataAsync();
 			AvailableBookingLengths = new ObservableCollection<int> { 7, 14 };
 			this.hotelService = hotelService;
 			this.regionManager = regionManager;
+			Store = store;
+			LoadDataAsync();
 		}
+
+		private bool CanCreatebooking()
+		{
+			return Booking.RoomType is not null;
+		}
+
 		private void OnBookingUpdate()
 		{
 			RaisePropertyChanged(nameof(TotalPrice));
+			CreateBookingCommand.RaiseCanExecuteChanged();
 		}
 		private async void OnCreateBooking()
 		{
@@ -111,7 +123,6 @@ namespace HotelBooking.Presentation.ViewModels
 
 		public void OnNavigatedFrom(NavigationContext navigationContext)
 		{
-
 		}
 
 		public void OnNavigatedTo(NavigationContext navigationContext)

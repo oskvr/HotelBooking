@@ -22,7 +22,11 @@ namespace HotelBooking.Presentation.ViewModels
 {
 
 	public record SortOption(string Name, string MappingProperty, ListSortDirection SortDirection);
-
+	public record HotelViewModel(Hotel Hotel, ICollection<RoomType> AvailableRoomTypes)
+	{
+		public bool IsAvailable => AvailableRoomTypes.Count > 0;
+		public int FromPrice => AvailableRoomTypes.OrderBy(roomType => roomType.PricePerNight).First().PricePerNight;
+	}
 	public class HotelsOverviewViewModel : BindableBase
 	{
 		public ObservableCollection<Hotel> Hotels { get; set; }
@@ -87,6 +91,10 @@ namespace HotelBooking.Presentation.ViewModels
 		public async Task<ObservableCollection<Hotel>> GetHotels()
 		{
 			var hotels = await hotelService.GetAll();
+			//foreach (var hotel in hotels)
+			//{
+			//	var availableRoomTypes = await hotelService.GetAvailableRoomTypesBetweenDates(hotel.Id,)
+			//}
 			return new ObservableCollection<Hotel>(hotels);
 		}
 		private async void LoadInitData()
