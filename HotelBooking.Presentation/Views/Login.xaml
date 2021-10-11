@@ -21,13 +21,16 @@
                     <TextBlock Style="{ui:StaticResource HeaderTextBlockStyle}" Text="Logga In" />
                 </GroupBox.Header>
                 <ui:SimpleStackPanel Spacing="20">
+                    <TextBox
+                        ui:ControlHelper.Header="Email"
+                        ui:ControlHelper.PlaceholderText="Email"
+                        Text="{Binding Email}" />
                     <ui:SimpleStackPanel>
-                        <TextBlock Style="{ui:StaticResource CaptionTextBlockStyle}" Text="Email" />
-                        <TextBox Text="{Binding Email}" />
-                    </ui:SimpleStackPanel>
-                    <ui:SimpleStackPanel>
-                        <TextBlock Style="{ui:StaticResource CaptionTextBlockStyle}" Text="Lösenord" />
-                        <PasswordBox x:Name="LoginPasswordBox" PasswordChanged="PasswordBox_PasswordChanged" />
+                        <PasswordBox
+                            x:Name="LoginPasswordBox"
+                            ui:ControlHelper.Header="Lösenord"
+                            ui:ControlHelper.PlaceholderText="**********"
+                            PasswordChanged="PasswordBox_PasswordChanged" />
                         <CheckBox Content="Kom ihåg mig" />
                     </ui:SimpleStackPanel>
                     <ui:SimpleStackPanel>

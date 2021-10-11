@@ -43,9 +43,14 @@
                         </Grid.RowDefinitions>
                         <ui:SimpleStackPanel Grid.Column="1" Orientation="Horizontal">
                             <ui:AutoSuggestBox Width="300" PlaceholderText="Välj destination" />
-                            <DatePicker Width="300" />
-                            <ComboBox MinWidth="280" SelectedIndex="0">
-                                <ComboBoxItem>Hur många nätter ska du stanna?</ComboBoxItem>
+                            <DatePicker
+                                Width="300"
+                                ui:ControlHelper.CornerRadius="0"
+                                ui:ControlHelper.PlaceholderText="Incheckning" />
+                            <ComboBox
+                                MinWidth="280"
+                                ui:ControlHelper.CornerRadius="0"
+                                ui:ControlHelper.PlaceholderText="Hur många nätter ska du stanna?">
                                 <ComboBoxItem>7 nätter</ComboBoxItem>
                                 <ComboBoxItem>14 nätter</ComboBoxItem>
                             </ComboBox>
