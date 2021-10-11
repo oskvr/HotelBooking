@@ -17,56 +17,90 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
     </UserControl.Resources>
-    <Grid>
-        <ui:SimpleStackPanel
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Spacing="10"
-            Visibility="{Binding UserHasNoBookings, Converter={StaticResource BoolToVis}}">
-            <ui:SymbolIcon Symbol="Calendar">
-                <ui:SymbolIcon.LayoutTransform>
-                    <ScaleTransform ScaleX="2" ScaleY="2" />
-                </ui:SymbolIcon.LayoutTransform>
-            </ui:SymbolIcon>
-            <TextBlock FontSize="18" Text="Du har inga bokningar" />
-        </ui:SimpleStackPanel>
-        <DataGrid
-            Width="1000"
-            Margin="0,100,0,0"
-            HorizontalAlignment="Center"
-            AutoGenerateColumns="False"
-            IsReadOnly="True"
-            ItemsSource="{Binding Bookings}"
-            SelectedIndex="0"
-            Style="{ui:StaticResource DefaultDataGridStyle}">
-            <DataGrid.CellStyle>
-                <Style TargetType="DataGridCell">
-                    <Setter Property="Focusable" Value="False" />
-                    <Setter Property="BorderThickness" Value="0" />
-                    <Setter Property="Background" Value="Transparent" />
-                </Style>
-            </DataGrid.CellStyle>
-            <DataGrid.Columns>
-                <DataGridTemplateColumn Header="">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Image
-                                Width="60"
-                                Height="60"
-                                Margin="5"
-                                Source="https://source.unsplash.com/1000x700/?building,hotel"
-                                Stretch="Fill" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTextColumn Binding="{Binding Hotel.Name}" Header="Hotell" />
-                <DataGridTextColumn Binding="{Binding CheckInDate}" Header="Incheckning" />
-                <DataGridTextColumn Binding="{Binding CheckOutDate}" Header="Utcheckning" />
-                <DataGridTextColumn Binding="{Binding TotalPrice, ConverterCulture='sv-SE', StringFormat='\{0: #,##0 kr\}'}" Header="Pris" />
+    <Border Padding="50">
 
-            </DataGrid.Columns>
-        </DataGrid>
-    </Grid>
+        <Grid Margin="0,100,0,0">
+            <ui:SimpleStackPanel
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Spacing="10"
+                Visibility="{Binding UserHasNoBookings, Converter={StaticResource BoolToVis}}">
+                <ui:SymbolIcon Symbol="Calendar">
+                    <ui:SymbolIcon.LayoutTransform>
+                        <ScaleTransform ScaleX="2" ScaleY="2" />
+                    </ui:SymbolIcon.LayoutTransform>
+                </ui:SymbolIcon>
+                <TextBlock FontSize="18" Text="Du har inga bokningar" />
+            </ui:SimpleStackPanel>
+            <DataGrid
+                Grid.Row="1"
+                AutoGenerateColumns="False"
+                CanUserReorderColumns="True"
+                GridLinesVisibility="None"
+                HeadersVisibility="Column"
+                IsReadOnly="True"
+                ItemsSource="{Binding Bookings}"
+                SelectedIndex="0"
+                SelectionMode="Single">
+                <DataGrid.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="Focusable" Value="False" />
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="Background" Value="Transparent" />
+                    </Style>
+                </DataGrid.CellStyle>
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Width="Auto" Header="">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image
+                                    Width="60"
+                                    Height="60"
+                                    Margin="5"
+                                    Source="https://source.unsplash.com/1000x700/?building,hotel"
+                                    Stretch="Fill" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn
+                        Width="*"
+                        Binding="{Binding Hotel.Name}"
+                        Header="Hotell" />
+                    <DataGridTextColumn
+                        Width="*"
+                        Binding="{Binding CheckInDate}"
+                        Header="Incheckning" />
+                    <DataGridTextColumn
+                        Width="*"
+                        Binding="{Binding CheckOutDate}"
+                        Header="Utcheckning" />
+                    <DataGridTextColumn
+                        Width="*"
+                        Binding="{Binding TotalPrice, ConverterCulture='sv-SE', StringFormat='\{0: #,##0 kr\}'}"
+                        Header="Pris" />
+                    <DataGridTemplateColumn Width="50" Header="">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ui:CommandBar
+                                    x:Name="BookingCommandBar"
+                                    VerticalAlignment="Center"
+                                    Background="Transparent">
+                                    <ui:CommandBar.SecondaryCommands>
+                                        <ui:AppBarButton Icon="Edit" Label="Ändra" />
+                                        <ui:AppBarButton
+                                            Command="{Binding DataContext.DeleteBookingCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type view:BookingsList}}}"
+                                            CommandParameter="{Binding}"
+                                            Icon="Delete"
+                                            Label="Avboka" />
+                                    </ui:CommandBar.SecondaryCommands>
+                                </ui:CommandBar>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Border>
 </UserControl>
 
 

@@ -1,0 +1,40 @@
+﻿<UserControl
+    x:Class="HotelBooking.Presentation.Components.BookingDetailsCard"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:HotelBooking.Presentation.Components"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:prism="http://prismlibrary.com/"
+    xmlns:ui="http://schemas.modernwpf.com/2019"
+    d:Background="White"
+    d:DesignHeight="450"
+    d:DesignWidth="300"
+    mc:Ignorable="d">
+    <ui:SimpleStackPanel>
+        <GroupBox Header="Detaljer">
+            <Border Padding="10">
+                <ui:SimpleStackPanel>
+                    <TextBlock d:Text="Stadshotellet" Text="{Binding Booking.Hotel.Name}" />
+                    <TextBlock d:Text="Sverige" Text="{Binding Booking.Hotel.Country}" />
+                    <Separator Margin="0,10" />
+                    <TextBlock d:Text="Måndag 8 januari, 2021" Text="{Binding Booking.CheckInDate}" />
+                    <TextBlock FontWeight="Bold" Text="Till" />
+                    <TextBlock d:Text="Måndag 9 januari, 2021" Text="{Binding Booking.CheckOutDate}" />
+                    <Separator Margin="0,10" />
+                    <TextBlock d:Text="Enkelrum" Text="{Binding Booking.Room.RoomType.Type}" />
+                    <ui:SimpleStackPanel>
+                        <TextBlock Text="Tilägg:" />
+                        <ui:ListView DisplayMemberPath="Type" ItemsSource="{Binding Booking.BookingExtras}" />
+                    </ui:SimpleStackPanel>
+                    <Separator Margin="0,10" />
+                    <!--<TextBlock
+                        d:Text="1200 kr"
+                        FontSize="18"
+                        FontWeight="Bold"
+                        Text="{Binding Booking.TotalPrice}" />-->
+                </ui:SimpleStackPanel>
+            </Border>
+        </GroupBox>
+    </ui:SimpleStackPanel>
+</UserControl>

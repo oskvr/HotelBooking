@@ -106,8 +106,8 @@ namespace HotelBooking.DAL.Services
 			return await dbContext
 				.Bookings
 				.Include(booking => booking.Hotel)
-				.Include(booking=>booking.Room)
 				.Include(booking=>booking.BookingExtras)
+				.Include(booking=>booking.Room).ThenInclude(room=>room.RoomType)
 				.Where(booking => booking.UserId == store.CurrentUser.Id)
 				.ToListAsync();
 		}
