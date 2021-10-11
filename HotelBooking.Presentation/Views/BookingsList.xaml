@@ -88,7 +88,7 @@
                                     <ui:CommandBar.SecondaryCommands>
                                         <ui:AppBarButton Icon="Edit" Label="Ändra" />
                                         <ui:AppBarButton
-                                            Command="{Binding DataContext.DeleteBookingCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type view:BookingsList}}}"
+                                            Command="{Binding DataContext.DeleteBookingCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"
                                             CommandParameter="{Binding}"
                                             Icon="Delete"
                                             Label="Avboka" />
