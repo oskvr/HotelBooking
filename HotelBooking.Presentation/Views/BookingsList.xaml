@@ -69,6 +69,14 @@
                         Header="Hotell" />
                     <DataGridTextColumn
                         Width="*"
+                        Binding="{Binding Hotel.Country}"
+                        Header="Land" />
+                    <DataGridTextColumn
+                        Width="*"
+                        Binding="{Binding Room.RoomType.Type}"
+                        Header="Rumstyp" />
+                    <DataGridTextColumn
+                        Width="*"
                         Binding="{Binding CheckInDate}"
                         Header="Incheckning" />
                     <DataGridTextColumn

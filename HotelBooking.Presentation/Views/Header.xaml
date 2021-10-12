@@ -2,12 +2,16 @@
     x:Class="HotelBooking.Presentation.Views.Header"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:System="clr-namespace:System;assembly=mscorlib"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:HotelBooking.Presentation.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:ui="http://schemas.modernwpf.com/2019"
     xmlns:utils="clr-namespace:HotelBooking.Presentation.Utils"
+    xmlns:viewmodels="clr-namespace:HotelBooking.Presentation.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewmodels:HeaderViewModel}"
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
     <Border Padding="20" Background="White">
@@ -20,16 +24,31 @@
                 Grid.Column="1"
                 Orientation="Horizontal"
                 Spacing="10">
-                <ui:AutoSuggestBox
+                <!--<ui:AutoSuggestBox
                     Width="300"
                     PlaceholderText="Välj destination"
-                    QueryIcon="Find" />
-                <DatePicker Width="300" ui:ControlHelper.PlaceholderText="Incheckning" />
+                    QueryIcon="Find" />-->
+                <DatePicker
+                    Width="300"
+                    ui:ControlHelper.PlaceholderText="Incheckning"
+                    DisplayDateStart="{x:Static sys:DateTime.Now}"
+                    Focusable="False"
+                    Language="sv-se"
+                    SelectedDate="{Binding CheckInDate}"
+                    SelectedDateFormat="Long" />
                 <ComboBox
                     MinWidth="280"
                     ui:ControlHelper.PlaceholderText="Hur många nätter ska du stanna?"
-                    ItemsSource="{x:Static utils:Bookings.AVAILABLE_BOOKING_LENGTHS}" />
-                <Button Content="Sök" Style="{ui:StaticResource AccentButtonStyle}" />
+                    ItemsSource="{x:Static utils:Bookings.AVAILABLE_BOOKING_LENGTHS}"
+                    SelectedIndex="0"
+                    SelectedItem="{Binding LengthInDays}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding StringFormat='{}{0} nätter'}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <Button Content="Välj" Style="{ui:StaticResource AccentButtonStyle}" />
             </ui:SimpleStackPanel>
         </Grid>
     </Border>

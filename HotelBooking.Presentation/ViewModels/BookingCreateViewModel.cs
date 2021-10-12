@@ -49,31 +49,29 @@ namespace HotelBooking.Presentation.ViewModels
 			this.hotelService = hotelService;
 			this.regionManager = regionManager;
 			Store = store;
-			LoadDataAsync();
 		}
 
 		private bool CanCreatebooking()
 		{
-			return Booking.RoomType is not null;
+			return !string.IsNullOrEmpty(Booking.RoomType.Type);
 		}
 
 		private void OnBookingUpdate()
 		{
-			RaisePropertyChanged(nameof(TotalPrice));
+			RaisePropertyChanged(nameof(Booking));
 			CreateBookingCommand.RaiseCanExecuteChanged();
 		}
 		private async void OnCreateBooking()
 		{
-			Booking.BookingExtras = BookingExtras;
+			//Booking.BookingExtras = BookingExtras;
 			Booking.HotelId = HotelId;
 			try
 			{
 				var createdBooking = await bookingService.Create(Booking);
-				Booking = new BookingWrapper();
 				var navigationParams = new NavigationParameters();
 				navigationParams.Add("Booking", createdBooking);
 				regionManager.RequestNavigate(RegionNames.CONTENT_REGION, nameof(BookingConfirmed), navigationParams);
-				
+
 			}
 			catch (Exception e)
 			{
@@ -98,13 +96,12 @@ namespace HotelBooking.Presentation.ViewModels
 				{
 					BookingExtra = extra,
 				};
-				BookingExtras.Add(bookingExtra);
+				Booking.BookingExtras.Add(bookingExtra);
 			}
 		}
 
 		private async Task LoadRoomTypesAsync()
 		{
-			//var roomTypes = await dbContext.RoomTypes.ToListAsync();
 			var roomTypes = await hotelService.GetAvailableRoomTypesBetweenDates(HotelId, Booking.CheckInDate, Booking.CheckOutDate);
 			RoomTypes.Clear();
 			foreach (var roomType in roomTypes)
@@ -126,6 +123,9 @@ namespace HotelBooking.Presentation.ViewModels
 		{
 			var hotelId = navigationContext.Parameters.GetValue<int>("hotelId");
 			Booking = new BookingWrapper();
+			//Booking.CheckInDate = CheckInDate;
+			//Booking.LengthInDays = LengthInDays;
+			LoadDataAsync();
 			HotelId = hotelId;
 		}
 	}

@@ -30,8 +30,11 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <view:Header Grid.ColumnSpan="3"/>
-            <ui:SimpleStackPanel Grid.Column="1" Grid.Row="1" Margin="0,10">
+            <view:Header Grid.ColumnSpan="3" />
+            <ui:SimpleStackPanel
+                Grid.Row="1"
+                Grid.Column="1"
+                Margin="0,10">
                 <ui:SimpleStackPanel
                     HorizontalAlignment="Right"
                     Orientation="Horizontal"
@@ -75,7 +78,7 @@
                                         </Grid.ColumnDefinitions>
                                         <Image
                                             Height="150px"
-                                            Source="https://source.unsplash.com/1600x900/?hotel"
+                                            Source="{Binding ImageUrl}"
                                             Stretch="UniformToFill" />
                                         <ui:SimpleStackPanel
                                             Grid.Column="1"

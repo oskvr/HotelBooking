@@ -2,7 +2,6 @@
     x:Class="HotelBooking.Presentation.Views.BookingCreate"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:System="clr-namespace:System;assembly=mscorlib"
     xmlns:component="clr-namespace:HotelBooking.Presentation.Components"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
@@ -29,23 +28,30 @@
             <ScrollViewer>
                 <StackPanel Grid.Column="0" Margin="50">
                     <GroupBox Header="Incheckning">
-                        <ui:SimpleStackPanel>
+                        <ui:SimpleStackPanel Spacing="20">
                             <DatePicker
                                 Width="500"
-                                DisplayDateStart="{Binding Mode=OneWay, Source={x:Static System:DateTime.Today}}"
+                                ui:ControlHelper.Header="Incheckningsdatum"
+                                DisplayDateStart="{x:Static sys:DateTime.Now}"
+                                Focusable="False"
                                 Language="sv-se"
                                 SelectedDate="{Binding Booking.CheckInDate, Mode=TwoWay}"
-                                SelectedDateFormat="Long"
-                                Style="{ui:StaticResource DefaultDatePickerStyle}" />
-                            <TextBlock Text="Hur många nätter vill du stanna?" />
+                                SelectedDateFormat="Long" />
                             <ComboBox
                                 Width="500"
+                                ui:ControlHelper.Header="Hur många nätter ska du stanna?"
                                 ItemsSource="{x:Static utils:Bookings.AVAILABLE_BOOKING_LENGTHS}"
                                 SelectedIndex="0"
-                                SelectedItem="{Binding Booking.LengthInDays}" />
-                            <TextBlock Text="{Binding Booking.DisplayCheckOutDate}" />
+                                SelectedItem="{Binding Booking.LengthInDays}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding StringFormat='{}{0} nätter'}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
                         </ui:SimpleStackPanel>
                     </GroupBox>
+                    <Separator Margin="0,15" />
                     <GroupBox Header="Rumstyp">
                         <ui:SimpleStackPanel>
                             <ui:RadioButtons ItemsSource="{Binding RoomTypes}" SelectedItem="{Binding Booking.RoomType}">
@@ -64,10 +70,10 @@
                             </ui:RadioButtons>
                         </ui:SimpleStackPanel>
                     </GroupBox>
-
+                    <Separator Margin="0,15" />
                     <GroupBox Header="Tillägg">
                         <ui:SimpleStackPanel>
-                            <ui:ListView ItemsSource="{Binding BookingExtras}">
+                            <ui:ListView ItemsSource="{Binding Booking.BookingExtras}">
                                 <ui:ListView.ItemTemplate>
                                     <DataTemplate>
                                         <ui:SimpleStackPanel Orientation="Horizontal">
@@ -97,9 +103,9 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
+                            <RowDefinition />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
-
                         <GroupBox Header="Hotell">
                             <StackPanel>
                                 <Image
@@ -122,20 +128,22 @@
                                 </ui:SimpleStackPanel>
                             </StackPanel>
                         </GroupBox>
-                        <GroupBox Grid.Row="1" Header="Dina bokningsuppgifter">
-                            <ui:SimpleStackPanel>
-                                <ui:SimpleStackPanel Orientation="Horizontal">
-                                    <ui:SimpleStackPanel>
-                                        <Label Content="Incheckning" />
-                                        <TextBlock FontWeight="Bold" Text="{Binding Booking.DisplayCheckInDate}" />
-                                    </ui:SimpleStackPanel>
-                                    <ui:AppBarSeparator />
-                                    <ui:SimpleStackPanel>
-                                        <Label Content="Utcheckning" />
-                                        <TextBlock FontWeight="Bold" Text="{Binding Booking.DisplayCheckOutDate}" />
-                                    </ui:SimpleStackPanel>
-                                </ui:SimpleStackPanel>
+                        <StackPanel Grid.Row="1">
+                            <Separator Margin="0,30" />
+                            <GroupBox Header="Dina bokningsuppgifter">
                                 <ui:SimpleStackPanel>
+                                    <ui:SimpleStackPanel Orientation="Horizontal">
+                                        <ui:SimpleStackPanel>
+                                            <Label Content="Incheckning" />
+                                            <TextBlock FontWeight="Bold" Text="{Binding Booking.DisplayCheckInDate}" />
+                                        </ui:SimpleStackPanel>
+                                        <ui:AppBarSeparator />
+                                        <ui:SimpleStackPanel>
+                                            <Label Content="Utcheckning" />
+                                            <TextBlock FontWeight="Bold" Text="{Binding Booking.DisplayCheckOutDate}" />
+                                        </ui:SimpleStackPanel>
+                                    </ui:SimpleStackPanel>
+                                    <!--<ui:SimpleStackPanel>
                                     <TextBox
                                         ui:ControlHelper.Header="Förnamn"
                                         IsReadOnly="True"
@@ -148,24 +156,54 @@
                                         ui:ControlHelper.Header="Email"
                                         IsReadOnly="True"
                                         Text="{Binding Store.CurrentUser.Email}" />
+                                </ui:SimpleStackPanel>-->
                                 </ui:SimpleStackPanel>
-                            </ui:SimpleStackPanel>
-                        </GroupBox>
-                        <GroupBox
-                            Grid.Row="2"
-                            Margin="0,50"
-                            Header="Prisöversikt">
-
-                            <ui:SimpleStackPanel>
-
-                                <TextBlock FontSize="36" Text="{Binding TotalPrice, ConverterCulture='sv-SE', StringFormat='\{0: #,##0 kr\}'}" />
-                                <Button
-                                    HorizontalAlignment="Stretch"
-                                    Command="{Binding CreateBookingCommand}"
-                                    Content="Slutför bokning"
-                                    Style="{ui:StaticResource AccentButtonStyle}" />
-                            </ui:SimpleStackPanel>
-                        </GroupBox>
+                            </GroupBox>
+                        </StackPanel>
+                        <StackPanel Grid.Row="2">
+                            <Separator Margin="0,30" />
+                            <GroupBox Header="Prisöversikt">
+                                <ui:SimpleStackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock
+                                            Grid.Column="0"
+                                            HorizontalAlignment="Left"
+                                            Text="{Binding Booking.RoomType.Type}" />
+                                        <TextBlock Grid.Column="1" Text="{Binding Booking.RoomTypeSum, ConverterCulture='sv-SE', StringFormat='\{0: #,##0 kr\}'}" />
+                                    </Grid>
+                                    <Separator Margin="0,10" />
+                                    <ui:ItemsRepeater ItemsSource="{Binding Booking.SelectedBookingExtras}">
+                                        <ui:ItemsRepeater.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition />
+                                                        <ColumnDefinition />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock
+                                                        Grid.Column="0"
+                                                        HorizontalAlignment="Left"
+                                                        Text="{Binding Type}" />
+                                                    <TextBlock Grid.Column="1" Text="{Binding Cost, ConverterCulture='sv-SE', StringFormat='\{0: #,##0 kr\}'}" />
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ui:ItemsRepeater.ItemTemplate>
+                                    </ui:ItemsRepeater>
+                                </ui:SimpleStackPanel>
+                            </GroupBox>
+                        </StackPanel>
+                        <StackPanel Grid.Row="3">
+                            <TextBlock FontSize="36" Text="{Binding Booking.TotalPrice, ConverterCulture='sv-SE', StringFormat='\{0: #,##0 kr\}'}" />
+                            <Button
+                                HorizontalAlignment="Stretch"
+                                Command="{Binding CreateBookingCommand}"
+                                Content="Slutför bokning"
+                                Style="{ui:StaticResource AccentButtonStyle}" />
+                        </StackPanel>
                     </Grid>
                 </Border>
             </ui:SplitView.Pane>

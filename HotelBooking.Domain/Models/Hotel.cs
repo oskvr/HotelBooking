@@ -11,10 +11,10 @@ namespace HotelBooking.Domain.Models
 		public string Name { get; set; }
 		public string Country { get; set; }
 		public Uri ThumbnailImage { get; set; }
-
 		public ICollection<Room> Rooms { get; set; } = new List<Room>();
 		public ICollection<Rating> Ratings { get; set; } = new List<Rating>();
 		// Computed properties
 		public double Rating => Ratings.Sum(rating => rating.Score) / Ratings.Count;
+		public string ImageUrl => "https://via.placeholder.com/500";
 	}
 }

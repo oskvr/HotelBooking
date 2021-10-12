@@ -20,13 +20,15 @@ namespace HotelBooking.Domain.Models.Wrappers
 		public string DisplayCheckOutDate => CheckOutDate.ToString("D",
 				  CultureInfo.CreateSpecificCulture("sv-SE"));
 		public ICollection<BookingExtraWrapper> BookingExtras { get; set; } = new ObservableCollection<BookingExtraWrapper>();
-		public RoomType RoomType { get; set; }
+		public List<BookingExtra> SelectedBookingExtras => BookingExtras.Where(x => x.IsSelected).Select(x=>x.BookingExtra).ToList();
+		public RoomType RoomType { get; set; } = new RoomType();
 		public int HotelId { get; set; }
 
 		// Computed properties
 		//public int TotalDays => (CheckInDate.AddDays(LengthInDays) - CheckInDate).Days;
-		public double? TotalPrice => (RoomType.PricePerNight * LengthInDays) + BookingExtras.Where(extra => extra.IsSelected).Sum(extra => extra.BookingExtra.Cost);
-		public List<BookingExtra> SelectedBookingExtras => BookingExtras.Where(x => x.IsSelected).Select(x=>x.BookingExtra).ToList();
+		public double? BookingExtrasSum => SelectedBookingExtras.Sum(extra => extra.Cost);
+		public double? RoomTypeSum => RoomType is null ? null : RoomType.PricePerNight * LengthInDays;
+		public double? TotalPrice => RoomType is null ? null : BookingExtrasSum + RoomTypeSum;
 
 	}
 }

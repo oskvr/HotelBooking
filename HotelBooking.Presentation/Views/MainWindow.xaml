@@ -24,7 +24,7 @@
         </Grid.Resources>
         <ui:NavigationView
             x:Name="MainNavView"
-            AlwaysShowHeader="False"
+            AlwaysShowHeader="True"
             BackRequested="MainNavView_BackRequested"
             IsBackButtonVisible="Auto"
             IsBackEnabled="True"
@@ -32,13 +32,12 @@
             ItemInvoked="MainNavView_ItemInvoked"
             PaneDisplayMode="Auto"
             SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
-            <ui:NavigationView.Header>
-                <!--<ContentControl prism:RegionManager.RegionName="{x:Static utils:RegionNames.HEADER_REGION}" />-->
-                Hejsan
-            </ui:NavigationView.Header>
-            <ui:NavigationView.AutoSuggestBox>
+            <!--<ui:NavigationView.Header>
+                <ContentControl prism:RegionManager.RegionName="{x:Static utils:RegionNames.HEADER_REGION}" />
+            </ui:NavigationView.Header>-->
+            <!--<ui:NavigationView.AutoSuggestBox>
                 <ui:AutoSuggestBox PlaceholderText="Search" QueryIcon="Find" />
-            </ui:NavigationView.AutoSuggestBox>
+            </ui:NavigationView.AutoSuggestBox>-->
             <ui:NavigationView.MenuItems>
                 <ui:NavigationViewItem
                     Name="HotelsOverview"

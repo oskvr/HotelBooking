@@ -1,4 +1,6 @@
-﻿using Prism.Mvvm;
+﻿using Prism.Commands;
+using Prism.Events;
+using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace HotelBooking.Presentation.ViewModels
 {
-	public class HeaderViewModel:BindableBase
+	public class HeaderViewModel : BindableBase
 	{
-        
+
 	}
 }

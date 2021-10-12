@@ -10,5 +10,5 @@ namespace HotelBooking.Presentation.Utils
     {
         public const string CONTENT_REGION = "ContentRegion";
         public const string HEADER_REGION = "HeaderRegion";
-    }
+	}
 }
