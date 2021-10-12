@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:ui="http://schemas.modernwpf.com/2019"
+    xmlns:utils="clr-namespace:HotelBooking.Presentation.Utils"
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
     <Border Padding="20" Background="White">
@@ -24,10 +25,10 @@
                     PlaceholderText="Välj destination"
                     QueryIcon="Find" />
                 <DatePicker Width="300" ui:ControlHelper.PlaceholderText="Incheckning" />
-                <ComboBox MinWidth="280" ui:ControlHelper.PlaceholderText="Hur många nätter ska du stanna?">
-                    <ComboBoxItem>7 nätter</ComboBoxItem>
-                    <ComboBoxItem>14 nätter</ComboBoxItem>
-                </ComboBox>
+                <ComboBox
+                    MinWidth="280"
+                    ui:ControlHelper.PlaceholderText="Hur många nätter ska du stanna?"
+                    ItemsSource="{x:Static utils:Bookings.AVAILABLE_BOOKING_LENGTHS}" />
                 <Button Content="Sök" Style="{ui:StaticResource AccentButtonStyle}" />
             </ui:SimpleStackPanel>
         </Grid>

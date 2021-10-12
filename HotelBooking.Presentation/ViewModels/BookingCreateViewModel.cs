@@ -29,7 +29,6 @@ namespace HotelBooking.Presentation.ViewModels
 		public int HotelId { get; set; }
 		public ObservableCollection<RoomType> RoomTypes { get; set; } = new ObservableCollection<RoomType>();
 		public ObservableCollection<BookingExtraWrapper> BookingExtras { get; set; } = new ObservableCollection<BookingExtraWrapper>();
-		public ObservableCollection<int> AvailableBookingLengths { get; set; }
 		public DelegateCommand BookingUpdatedCommand { get; set; }
 		public DelegateCommand CreateBookingCommand { get; set; }
 		private readonly IBookingService bookingService;
@@ -37,8 +36,7 @@ namespace HotelBooking.Presentation.ViewModels
 		private readonly IHotelService hotelService;
 		private readonly IRegionManager regionManager;
 
-		public int TotalDays => (Booking.CheckInDate.AddDays(Booking.LengthInDays) - Booking.CheckInDate).Days;
-		public double? TotalPrice => Booking.RoomType is not null ? (Booking.RoomType.PricePerNight * TotalDays) + BookingExtras.Where(extra => extra.IsSelected).Sum(extra => extra.BookingExtra.Cost) : 0;
+		public double? TotalPrice => Booking.RoomType is not null ? (Booking.RoomType.PricePerNight * Booking.LengthInDays) + BookingExtras.Where(extra => extra.IsSelected).Sum(extra => extra.BookingExtra.Cost) : 0;
 
 		public GlobalStore Store { get; }
 
@@ -48,7 +46,6 @@ namespace HotelBooking.Presentation.ViewModels
 			BookingUpdatedCommand = new DelegateCommand(OnBookingUpdate);
 			this.bookingService = bookingService;
 			this.dbContext = dbContext;
-			AvailableBookingLengths = new ObservableCollection<int> { 7, 14 };
 			this.hotelService = hotelService;
 			this.regionManager = regionManager;
 			Store = store;

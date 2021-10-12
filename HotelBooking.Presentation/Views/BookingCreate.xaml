@@ -9,7 +9,9 @@
     xmlns:local="clr-namespace:HotelBooking.Presentation.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:ui="http://schemas.modernwpf.com/2019"
+    xmlns:utils="clr-namespace:HotelBooking.Presentation.Utils"
     xmlns:view="clr-namespace:HotelBooking.Presentation.Views"
     xmlns:viewmodels="clr-namespace:HotelBooking.Presentation.ViewModels"
     d:DataContext="{d:DesignInstance Type=viewmodels:BookingCreateViewModel}"
@@ -38,7 +40,7 @@
                             <TextBlock Text="Hur många nätter vill du stanna?" />
                             <ComboBox
                                 Width="500"
-                                ItemsSource="{Binding AvailableBookingLengths}"
+                                ItemsSource="{x:Static utils:Bookings.AVAILABLE_BOOKING_LENGTHS}"
                                 SelectedIndex="0"
                                 SelectedItem="{Binding Booking.LengthInDays}" />
                             <TextBlock Text="{Binding Booking.DisplayCheckOutDate}" />
