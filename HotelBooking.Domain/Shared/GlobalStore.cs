@@ -12,7 +12,7 @@ namespace HotelBooking.Domain.Shared
     {
 		public User CurrentUser { get; set; }
 		public bool IsLoggedIn => CurrentUser is not null;
-		public bool IsNotLoggedIn => CurrentUser is null; // Needed for binding inverted visibility in XAML
-		public bool PersistLoginSession { get; set; }
+		public bool IsNotLoggedIn => CurrentUser is null; // For binding inverted visibility in XAML
+		//public bool PersistLoginSession { get; set; }
 	}
 }

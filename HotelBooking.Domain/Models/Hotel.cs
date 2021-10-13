@@ -9,7 +9,7 @@ namespace HotelBooking.Domain.Models
 	public class Hotel : BaseEntity
 	{
 		public string Name { get; set; }
-		public string Country { get; set; }
+		public string City { get; set; }
 		public Uri Image { get; set; }
 		public ICollection<Room> Rooms { get; set; } = new List<Room>();
 		public int Rating { get; set; } = 3;

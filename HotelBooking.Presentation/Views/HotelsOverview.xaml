@@ -118,7 +118,7 @@
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="300px" />
                                             <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="250" />
                                         </Grid.ColumnDefinitions>
                                         <Image
                                             Height="150px"
@@ -132,7 +132,7 @@
                                                 FontWeight="Light"
                                                 Style="{ui:StaticResource TitleTextBlockStyle}"
                                                 Text="{Binding Name}" />
-                                            <TextBlock Text="{Binding Country}" />
+                                            <TextBlock Text="{Binding City}" />
                                             <ui:RatingControl
                                                 HorizontalAlignment="Left"
                                                 IsReadOnly="True"
@@ -153,12 +153,11 @@
                                                     FontSize="18"
                                                     FontWeight="Bold"
                                                     Text="{Binding FromPrice, ConverterCulture='sv-SE', StringFormat='\{0: #,##0 kr\}'}" />
-
-                                                <!--<TextBlock
-                                                    HorizontalAlignment="Right"
+                                                <TextBlock
+                                                    VerticalAlignment="Bottom"
                                                     FontSize="18"
-                                                    FontWeight="Bold"
-                                                    Text="129 kr" />-->
+                                                    Foreground="SlateGray"
+                                                    Text=" / natt" />
                                             </ui:SimpleStackPanel>
 
                                             <!--<Button

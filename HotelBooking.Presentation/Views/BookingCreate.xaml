@@ -36,13 +36,24 @@
                                 Focusable="False"
                                 Language="sv-se"
                                 SelectedDate="{Binding Booking.CheckInDate, Mode=TwoWay}"
-                                SelectedDateFormat="Long" />
+                                SelectedDateFormat="Long">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectedDateChanged">
+                                        <i:InvokeCommandAction Command="{Binding DateChangedCommand}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </DatePicker>
                             <ComboBox
                                 Width="500"
                                 ui:ControlHelper.Header="Hur många nätter ska du stanna?"
                                 ItemsSource="{x:Static utils:Bookings.AVAILABLE_BOOKING_LENGTHS}"
                                 SelectedIndex="0"
-                                SelectedItem="{Binding Booking.LengthInDays}">
+                                SelectedItem="{Binding Booking.LengthInDays, Mode=TwoWay}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding DateChangedCommand}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding StringFormat='{}{0} nätter'}" />
@@ -57,14 +68,18 @@
                             <ui:RadioButtons ItemsSource="{Binding RoomTypes}" SelectedItem="{Binding Booking.RoomType}">
                                 <ui:RadioButtons.ItemTemplate>
                                     <DataTemplate>
-                                        <StackPanel>
+                                        <RadioButton>
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="Click">
                                                     <i:InvokeCommandAction Command="{Binding DataContext.BookingUpdatedCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type view:BookingCreate}}}" />
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
-                                            <TextBlock Text="{Binding Type}" />
-                                        </StackPanel>
+                                            <ui:SimpleStackPanel Orientation="Horizontal" Spacing="10">
+
+                                                <TextBlock FontWeight="Bold" Text="{Binding Type}" />
+                                                <TextBlock Text="{Binding PricePerNight, ConverterCulture='sv-SE', StringFormat='\{0: #,##0 kr / natt\}'}" />
+                                            </ui:SimpleStackPanel>
+                                        </RadioButton>
                                     </DataTemplate>
                                 </ui:RadioButtons.ItemTemplate>
                             </ui:RadioButtons>
@@ -84,30 +99,13 @@
                                                         <i:InvokeCommandAction Command="{Binding DataContext.BookingUpdatedCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type view:BookingCreate}}}" />
                                                     </i:EventTrigger>
                                                 </i:Interaction.Triggers>
-                                                <TextBlock Text="{Binding BookingExtra.Type}" />
+                                                <TextBlock FontWeight="Bold" Text="{Binding BookingExtra.Type}" />
                                             </CheckBox>
                                             <TextBlock VerticalAlignment="Center" Text="{Binding BookingExtra.Cost, ConverterCulture='sv-SE', StringFormat='\{0: #,##0 kr\}'}" />
                                         </UniformGrid>
                                     </DataTemplate>
                                 </ui:ItemsRepeater.ItemTemplate>
                             </ui:ItemsRepeater>
-                            <!--<ui:ListView ItemsSource="{Binding Booking.BookingExtras}">
-                                <ui:ListView.ItemTemplate>
-                                    <DataTemplate>
-                                        <UniformGrid>
-                                            <CheckBox IsChecked="{Binding IsSelected}">
-                                                <i:Interaction.Triggers>
-                                                    <i:EventTrigger EventName="Click">
-                                                        <i:InvokeCommandAction Command="{Binding DataContext.BookingUpdatedCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type view:BookingCreate}}}" />
-                                                    </i:EventTrigger>
-                                                </i:Interaction.Triggers>
-                                                <TextBlock Text="{Binding BookingExtra.Type}" />
-                                            </CheckBox>
-                                            <TextBlock Text="{Binding BookingExtra.Cost, StringFormat='{}{0:c}'}" VerticalAlignment="Center" />
-                                        </UniformGrid>
-                                    </DataTemplate>
-                                </ui:ListView.ItemTemplate>
-                            </ui:ListView>-->
                         </ui:SimpleStackPanel>
                     </GroupBox>
                 </StackPanel>
@@ -128,7 +126,7 @@
                             <StackPanel>
                                 <Image
                                     Height="200px"
-                                    Source="https://source.unsplash.com/1600x900/?hotel"
+                                    Source="{Binding Hotel.Image}"
                                     Stretch="UniformToFill" />
                                 <ui:SimpleStackPanel
                                     Grid.Column="1"
@@ -137,12 +135,12 @@
                                     <TextBlock
                                         FontWeight="Light"
                                         Style="{ui:StaticResource TitleTextBlockStyle}"
-                                        Text="Radisson Blue" />
-                                    <TextBlock Text="Stockholm" />
+                                        Text="{Binding Hotel.Name}" />
+                                    <TextBlock Text="{Binding Hotel.City}" />
                                     <ui:RatingControl
                                         HorizontalAlignment="Left"
                                         IsReadOnly="True"
-                                        PlaceholderValue="4" />
+                                        PlaceholderValue="{Binding Hotel.Rating}" />
                                 </ui:SimpleStackPanel>
                             </StackPanel>
                         </GroupBox>
@@ -218,7 +216,6 @@
                     </Grid>
                 </Border>
             </ui:SplitView.Pane>
-            <!--<component:BookingDetailsCard Grid.Column="2" />-->
         </ui:SplitView>
     </Grid>
 </UserControl>

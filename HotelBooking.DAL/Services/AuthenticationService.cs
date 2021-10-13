@@ -45,6 +45,8 @@ namespace HotelBooking.DAL.Services
 		{
 			return await dbContext.Users.AnyAsync(user => user.Email == email);
 		}
+
+
 		public async Task<RegistrationResult> Register(string email, string firstName, string lastName, string password, string confirmPassword)
 		{
 			if (password != confirmPassword)

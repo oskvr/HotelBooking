@@ -24,27 +24,11 @@ namespace HotelBooking.Presentation.ViewModels
 {
 
 	public record SortOption(string Name, string MappingProperty, ListSortDirection SortDirection);
-	//public class HotelViewModel
-	//{
-	//	public HotelViewModel(Hotel hotel, List<RoomType> availableRoomTypes)
-	//	{
-	//		Hotel = hotel;
-	//		AvailableRoomTypes = availableRoomTypes;
-	//	}
-
-	//	public Hotel Hotel { get; set; } = new Hotel();
-	//	public List<RoomType> AvailableRoomTypes { get; set; } = new List<RoomType>();
-
-	//	public bool IsAvailable => AvailableRoomTypes.Count > 0;
-	//	public int FromPrice => 300;
-	//}
-	public record HotelViewModel(int Id, string Name, string Country, double Rating, string ImageUrl, List<RoomType> AvailableRoomTypes)
+	public record HotelViewModel(int Id, string Name, string City, double Rating, string ImageUrl, List<RoomType> AvailableRoomTypes)
 	{
 		public bool IsAvailable => AvailableRoomTypes.Count > 0;
-		//public int FromPrice => 300;
-
-		public Visibility Visibility => IsAvailable ? Visibility.Visible : Visibility.Hidden;
 		public int FromPrice => AvailableRoomTypes.Count == 0 ? 0 : AvailableRoomTypes.OrderBy(roomType => roomType.PricePerNight).FirstOrDefault().PricePerNight;
+		public Visibility Visibility => IsAvailable ? Visibility.Visible : Visibility.Hidden;
 	}
 	public class HotelsOverviewViewModel : BindableBase, INavigationAware
 	{
@@ -96,7 +80,6 @@ namespace HotelBooking.Presentation.ViewModels
 				new SortOption("Pris (stigande)", "FromPrice", ListSortDirection.Ascending),
 				new SortOption("Hotelklass (fallande)", "Rating", ListSortDirection.Descending),
 				new SortOption("Hotelklass (stigande)", "Rating", ListSortDirection.Ascending),
-				new SortOption("Tillgänglighet", "IsAvailable", ListSortDirection.Descending),
 				new SortOption("Namn (stigande)", "Name", ListSortDirection.Ascending),
 				new SortOption("Namn (fallande)", "Name", ListSortDirection.Descending),
 			};
@@ -106,6 +89,11 @@ namespace HotelBooking.Presentation.ViewModels
 		{
 			var navigationParams = new NavigationParameters();
 			navigationParams.Add("hotelId", (int)hotelId);
+
+			// TODO: Temporary fix to store selected date period from HotelsOverview => BookingCreate
+			SelectedDate.CHECK_IN_DATE = CheckInDateFilter;
+			SelectedDate.LENGTH_IN_DAYS = LengthInDaysFilter;
+
 			string redirectView = store.IsLoggedIn ? nameof(BookingCreate) : nameof(Login);
 			regionManager.RequestNavigate(RegionNames.CONTENT_REGION, redirectView, navigationParams);
 		}
@@ -116,7 +104,7 @@ namespace HotelBooking.Presentation.ViewModels
 			foreach (var hotel in hotels)
 			{
 				var availableRoomTypes = await hotelService.GetAvailableRoomTypesBetweenDates(hotel.Id, CheckInDateFilter, CheckInDateFilter.AddDays(LengthInDaysFilter));
-				var converted = new HotelViewModel(hotel.Id, hotel.Name, hotel.Country, hotel.Rating, hotel.Image.ToString(), availableRoomTypes);
+				var converted = new HotelViewModel(hotel.Id, hotel.Name, hotel.City, hotel.Rating, hotel.Image.ToString(), availableRoomTypes);
 				hotelViewModels.Add(converted);
 			}
 			FilteredHotels = CollectionViewSource.GetDefaultView(hotelViewModels);

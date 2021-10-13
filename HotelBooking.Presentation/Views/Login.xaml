@@ -31,9 +31,9 @@
                             ui:ControlHelper.Header="Lösenord"
                             ui:ControlHelper.PlaceholderText="**********"
                             PasswordChanged="PasswordBox_PasswordChanged" />
-                        <CheckBox Content="Kom ihåg mig" />
+                        <!--<CheckBox Content="Kom ihåg mig" />-->
                     </ui:SimpleStackPanel>
-                    <ui:SimpleStackPanel>
+                    <ui:SimpleStackPanel Margin="0,20">
                         <Button
                             HorizontalAlignment="Stretch"
                             Command="{Binding LoginCommand}"

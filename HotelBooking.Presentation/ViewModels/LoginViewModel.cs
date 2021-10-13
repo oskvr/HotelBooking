@@ -48,7 +48,7 @@ namespace HotelBooking.Presentation.ViewModels
 			}
 			else
 			{
-				MessageBox.Show("Login failed");
+				MessageBox.Show("Inloggningen misslyckades");
 			}
 		}
 
@@ -64,12 +64,6 @@ namespace HotelBooking.Presentation.ViewModels
 
 		public void OnNavigatedTo(NavigationContext navigationContext)
 		{
-			// TODO: ---- FOR TESTING, REMOVE ----
-			Email = "oskar@gmail.com";
-			Password = "oskar";
-			OnLogin();
-			// TODO: ---- FOR TESTING, REMOVE ----
-
 			navigationParams = new NavigationParameters();
 
 			bool hasHotelId = navigationContext.Parameters.Any(param => param.Key == "hotelId");
@@ -78,7 +72,7 @@ namespace HotelBooking.Presentation.ViewModels
 				// If hotelId exists the user wanted to book a hotel
 				int hotelId = navigationContext.Parameters.GetValue<int>("hotelId");
 				navigationParams.Add("hotelId", hotelId);
-				// Redirect the user to the booking page on successful login
+				// Redirect the user to the booking page
 				redirectView = nameof(BookingCreate);
 			}
 			else

@@ -34,9 +34,9 @@ namespace HotelBooking.DAL.Services
 			throw new NotImplementedException();
 		}
 
-		public Task<Hotel> GetById(int id)
+		public async Task<Hotel> GetById(int id)
 		{
-			throw new NotImplementedException();
+			return await dbContext.Hotels.FirstOrDefaultAsync(hotel => hotel.Id == id);
 		}
 
 		public async Task<IEnumerable<Hotel>> GetAll()

@@ -27,6 +27,7 @@ namespace HotelBooking.Presentation.ViewModels
 	{
 		public BookingWrapper Booking { get; set; } = new BookingWrapper();
 		public int HotelId { get; set; }
+		public Hotel Hotel { get; set; } = new Hotel();
 		public ObservableCollection<RoomType> RoomTypes { get; set; } = new ObservableCollection<RoomType>();
 		public ObservableCollection<BookingExtraWrapper> BookingExtras { get; set; } = new ObservableCollection<BookingExtraWrapper>();
 		public DelegateCommand BookingUpdatedCommand { get; set; }
@@ -54,6 +55,14 @@ namespace HotelBooking.Presentation.ViewModels
 			return !string.IsNullOrEmpty(Booking.RoomType.Type);
 		}
 
+		private DelegateCommand dateChangedCommand;
+		public DelegateCommand DateChangedCommand => dateChangedCommand ??= new DelegateCommand(OnDateChanged);
+		private async void OnDateChanged()
+		{
+			//TODO: Fixa
+			//await LoadRoomTypesAsync();
+			Debug.WriteLine("Updated date");
+		}
 		private void OnBookingUpdate()
 		{
 			RaisePropertyChanged(nameof(Booking));
@@ -80,6 +89,7 @@ namespace HotelBooking.Presentation.ViewModels
 		{
 			await LoadBookingExtrasAsync();
 			await LoadRoomTypesAsync();
+			await LoadHotelAsync();
 		}
 		private async Task LoadBookingExtrasAsync()
 		{
@@ -93,6 +103,10 @@ namespace HotelBooking.Presentation.ViewModels
 				};
 				Booking.BookingExtras.Add(bookingExtra);
 			}
+		}
+		private async Task LoadHotelAsync()
+		{
+			Hotel = await hotelService.GetById(HotelId);
 		}
 
 		private async Task LoadRoomTypesAsync()
@@ -118,10 +132,14 @@ namespace HotelBooking.Presentation.ViewModels
 		{
 			var hotelId = navigationContext.Parameters.GetValue<int>("hotelId");
 			Booking = new BookingWrapper();
-			//Booking.CheckInDate = CheckInDate;
-			//Booking.LengthInDays = LengthInDays;
-			LoadDataAsync();
+
+			// TODO: Temporary fix to store selected date period from HotelsOverview => BookingCreate
+			Booking.CheckInDate = SelectedDate.CHECK_IN_DATE;
+			Booking.LengthInDays = SelectedDate.LENGTH_IN_DAYS;
+
 			HotelId = hotelId;
+			LoadDataAsync();
+			CreateBookingCommand.RaiseCanExecuteChanged();
 		}
 	}
 }
