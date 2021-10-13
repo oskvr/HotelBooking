@@ -7,7 +7,9 @@
     xmlns:local="clr-namespace:HotelBooking.Presentation.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:ui="http://schemas.modernwpf.com/2019"
+    xmlns:utils="clr-namespace:HotelBooking.Presentation.Utils"
     xmlns:view="clr-namespace:HotelBooking.Presentation.Views"
     xmlns:viewmodels="clr-namespace:HotelBooking.Presentation.ViewModels"
     d:DataContext="{d:DesignInstance Type=viewmodels:HotelsOverviewViewModel}"
@@ -30,7 +32,49 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <view:Header Grid.ColumnSpan="3" />
+
+            <!--<view:Header Grid.ColumnSpan="3" />-->
+            <Border Grid.ColumnSpan="3" Padding="20">
+                <Grid HorizontalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <ui:SimpleStackPanel
+                        Grid.Column="1"
+                        Orientation="Horizontal"
+                        Spacing="10">
+                        <!--<ui:AutoSuggestBox
+                    Width="300"
+                    PlaceholderText="Välj destination"
+                    QueryIcon="Find" />-->
+                        <DatePicker
+                            Width="300"
+                            ui:ControlHelper.PlaceholderText="Incheckning"
+                            DisplayDateStart="{x:Static sys:DateTime.Now}"
+                            Focusable="False"
+                            Language="sv-se"
+                            SelectedDate="{Binding CheckInDateFilter}"
+                            SelectedDateFormat="Long" />
+                        <ComboBox
+                            MinWidth="280"
+                            ui:ControlHelper.PlaceholderText="Hur många nätter ska du stanna?"
+                            ItemsSource="{x:Static utils:Bookings.AVAILABLE_BOOKING_LENGTHS}"
+                            SelectedItem="{Binding LengthInDaysFilter}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding StringFormat='{}{0} nätter'}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <Button
+                            Command="{Binding DateFilterUpdatedCommand}"
+                            Content="Välj"
+                            Style="{ui:StaticResource AccentButtonStyle}" />
+                    </ui:SimpleStackPanel>
+                </Grid>
+            </Border>
+
             <ui:SimpleStackPanel
                 Grid.Row="1"
                 Grid.Column="1"
@@ -104,17 +148,17 @@
                                                     FontSize="14"
                                                     Foreground="SlateGray"
                                                     Text="från" />
-                                                <!--<TextBlock
-                                                    HorizontalAlignment="Right"
-                                                    FontSize="18"
-                                                    FontWeight="Bold"
-                                                    Text="{Binding Path=PricePerNight, ConverterCulture='sv-SE', StringFormat='\{0: #,##0 kr\}'}" />-->
-
                                                 <TextBlock
                                                     HorizontalAlignment="Right"
                                                     FontSize="18"
                                                     FontWeight="Bold"
-                                                    Text="129 kr" />
+                                                    Text="{Binding FromPrice, ConverterCulture='sv-SE', StringFormat='\{0: #,##0 kr\}'}" />
+
+                                                <!--<TextBlock
+                                                    HorizontalAlignment="Right"
+                                                    FontSize="18"
+                                                    FontWeight="Bold"
+                                                    Text="129 kr" />-->
                                             </ui:SimpleStackPanel>
 
                                             <!--<Button
@@ -128,9 +172,10 @@
                                             <Button
                                                 BorderThickness="10,5"
                                                 Command="{Binding DataContext.NavigateToBookingCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type view:HotelsOverview}}}"
-                                                CommandParameter="{Binding}"
+                                                CommandParameter="{Binding Id}"
                                                 Content="Boka Nu"
                                                 FontSize="18"
+                                                IsEnabled="{Binding IsAvailable}"
                                                 Style="{ui:StaticResource AccentButtonStyle}" />
                                         </ui:SimpleStackPanel>
                                     </Grid>

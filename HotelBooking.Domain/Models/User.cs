@@ -20,6 +20,5 @@ namespace HotelBooking.Domain.Models
 
 		public string FullName => $"{FirstName} {LastName}";
 		public ICollection<Booking> Bookings { get; set; }
-		public ICollection<Rating> Ratings { get; set; }
 	}
 }

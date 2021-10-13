@@ -12,7 +12,6 @@ namespace HotelBooking.DAL.Data
 	public class HotelBookingDbContext : DbContext
 	{
 		public DbSet<Hotel> Hotels { get; set; }
-		public DbSet<Rating> Ratings { get; set; }
 		public DbSet<BookingExtra> BookingExtras { get; set; }
 		public DbSet<RoomType> RoomTypes { get; set; }
 		public DbSet<Room> Rooms { get; set; }
@@ -38,9 +37,9 @@ namespace HotelBooking.DAL.Data
 		public static void SeedRoomTypes(this ModelBuilder modelBuilder)
 		{
 			_ = modelBuilder.Entity<RoomType>().HasData(
-				new RoomType { Id = (int)RoomTypeIds.Single, Type = "Single Room", MaxCapacity = 1, PricePerNight = 100 },
-				new RoomType { Id = (int)RoomTypeIds.Double, Type = "Double Room", MaxCapacity = 2, PricePerNight = 150 },
-				new RoomType { Id = (int)RoomTypeIds.Triple, Type = "Triple Room", MaxCapacity = 3, PricePerNight = 200 }
+				new RoomType { Id = (int)RoomTypeIds.Single, Type = "Enkel", MaxCapacity = 1, PricePerNight = 800 },
+				new RoomType { Id = (int)RoomTypeIds.Double, Type = "Dubbel", MaxCapacity = 2, PricePerNight = 1500 },
+				new RoomType { Id = (int)RoomTypeIds.Triple, Type = "Trippel", MaxCapacity = 3, PricePerNight = 2000 }
 				);
 		}
 
@@ -51,40 +50,39 @@ namespace HotelBooking.DAL.Data
 			new BookingExtra
 			{
 				Id = extrasId++,
-				Type = "Transport",
-				Cost = 20,
+				Type = "Transfer (tur/retur)",
+				Cost = 500,
 			},
 			new BookingExtra
 			{
 				Id = extrasId++,
 				Type = "All-Inclusive",
-				Cost = 100,
+				Cost = 1500,
 			},
 			new BookingExtra
 			{
 				Id = extrasId++,
 				Type = "Pool",
-				Cost = 30,
+				Cost = 200,
 			},
 			new BookingExtra
 			{
 				Id = extrasId++,
-				Type = "Breakfast",
-				Cost = 50,
+				Type = "Frukost",
+				Cost = 500,
 			}
-			);
+			);;
 		}
 		public static void SeedHotels(this ModelBuilder modelBuilder)
 		{
 			int hotelId = 1;
 			int roomId = 1;
-			int ratingId = 1;
 			Random random = new();
 			modelBuilder.Entity<Hotel>().HasData(
-				new Hotel { Id = hotelId++, ThumbnailImage = new Uri("https://picsum.photos/500"), Country = "Sweden", Name = "Plaza Bay Hotel" },
-				new Hotel { Id = hotelId++, ThumbnailImage = new Uri("https://picsum.photos/500"), Country = "Sweden", Name = "Stadshotellet" },
-				new Hotel { Id = hotelId++, ThumbnailImage = new Uri("https://picsum.photos/500"), Country = "Sweden", Name = "Sunkstället" },
-				new Hotel { Id = hotelId++, ThumbnailImage = new Uri("https://picsum.photos/500"), Country = "Sweden", Name = "Stugstugan" }
+				new Hotel { Id = hotelId++, Image = new Uri("https://source.unsplash.com/1000x1000/?hotel"), Country = "Sweden", Name = "Skumraskens Hotell", Rating = 2 },
+				new Hotel { Id = hotelId++, Image = new Uri("https://source.unsplash.com/1001x1001/?hotel"), Country = "Sweden", Name = "Stadskärnans Hotell", Rating = 5 },
+				new Hotel { Id = hotelId++, Image = new Uri("https://source.unsplash.com/1002x1002/?hotel"), Country = "Sweden", Name = "Sunkiga Väggar", Rating = 1 },
+				new Hotel { Id = hotelId++, Image = new Uri("https://source.unsplash.com/1003x1003/?hotel"), Country = "Sweden", Name = "Källarhotellet", Rating = 3 }
 				);
 			modelBuilder.Entity<Room>().HasData(
 				new Room
@@ -159,22 +157,6 @@ namespace HotelBooking.DAL.Data
 					HotelId = 4,
 					RoomTypeId = (int)RoomTypeIds.Triple
 				}
-			);
-			modelBuilder.Entity<Rating>().HasData(
-			new Rating { Id = ratingId++, HotelId = 1, Score = random.Next(0, 6) },
-			new Rating { Id = ratingId++, HotelId = 1, Score = random.Next(0, 6) },
-			new Rating { Id = ratingId++, HotelId = 1, Score = random.Next(0, 6) },
-			new Rating { Id = ratingId++, HotelId = 1, Score = random.Next(0, 6) },
-
-			new Rating { Id = ratingId++, HotelId = 2, Score = random.Next(0, 6) },
-			new Rating { Id = ratingId++, HotelId = 2, Score = random.Next(0, 6) },
-			new Rating { Id = ratingId++, HotelId = 2, Score = random.Next(0, 6) },
-			new Rating { Id = ratingId++, HotelId = 2, Score = random.Next(0, 6) },
-
-			new Rating { Id = ratingId++, HotelId = 3, Score = random.Next(0, 6) },
-			new Rating { Id = ratingId++, HotelId = 3, Score = random.Next(0, 6) },
-			new Rating { Id = ratingId++, HotelId = 3, Score = random.Next(0, 6) },
-			new Rating { Id = ratingId++, HotelId = 3, Score = random.Next(0, 6) }
 			);
 		}
 	}

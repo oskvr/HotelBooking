@@ -60,6 +60,7 @@ namespace HotelBooking.Presentation.ViewModels
 		private async void LoadBookings()
 		{
 			var bookings = await bookingService.GetAll();
+			bookings = bookings.OrderByDescending(booking => booking.CreatedAt);
 			Bookings.Clear();
 			foreach (var booking in bookings)
 			{

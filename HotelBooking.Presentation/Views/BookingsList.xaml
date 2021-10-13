@@ -65,6 +65,10 @@
                     </DataGridTemplateColumn>
                     <DataGridTextColumn
                         Width="*"
+                        Binding="{Binding CreatedAt}"
+                        Header="Bokningsdatum" />
+                    <DataGridTextColumn
+                        Width="*"
                         Binding="{Binding Hotel.Name}"
                         Header="Hotell" />
                     <DataGridTextColumn

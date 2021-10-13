@@ -61,7 +61,7 @@ namespace HotelBooking.Presentation.ViewModels
 
 				// Prevent going back after logging out
 				regionManager.Regions[RegionNames.CONTENT_REGION].NavigationService.Journal.Clear();
-				regionManager.RequestNavigate(RegionNames.CONTENT_REGION, nameof(Login));
+				regionManager.RequestNavigate(RegionNames.CONTENT_REGION, nameof(HotelsOverview));
 			}
 		}
 

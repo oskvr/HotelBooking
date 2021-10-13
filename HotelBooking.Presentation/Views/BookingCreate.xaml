@@ -57,14 +57,14 @@
                             <ui:RadioButtons ItemsSource="{Binding RoomTypes}" SelectedItem="{Binding Booking.RoomType}">
                                 <ui:RadioButtons.ItemTemplate>
                                     <DataTemplate>
-                                        <RadioButton>
+                                        <StackPanel>
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="Click">
                                                     <i:InvokeCommandAction Command="{Binding DataContext.BookingUpdatedCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type view:BookingCreate}}}" />
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
                                             <TextBlock Text="{Binding Type}" />
-                                        </RadioButton>
+                                        </StackPanel>
                                     </DataTemplate>
                                 </ui:RadioButtons.ItemTemplate>
                             </ui:RadioButtons>
@@ -73,10 +73,11 @@
                     <Separator Margin="0,15" />
                     <GroupBox Header="Tillägg">
                         <ui:SimpleStackPanel>
-                            <ui:ListView ItemsSource="{Binding Booking.BookingExtras}">
-                                <ui:ListView.ItemTemplate>
+                            <ui:ItemsRepeater ItemsSource="{Binding Booking.BookingExtras}">
+                                <ui:ItemsRepeater.ItemTemplate>
                                     <DataTemplate>
-                                        <ui:SimpleStackPanel Orientation="Horizontal">
+                                        <UniformGrid Columns="5">
+
                                             <CheckBox IsChecked="{Binding IsSelected}">
                                                 <i:Interaction.Triggers>
                                                     <i:EventTrigger EventName="Click">
@@ -85,11 +86,28 @@
                                                 </i:Interaction.Triggers>
                                                 <TextBlock Text="{Binding BookingExtra.Type}" />
                                             </CheckBox>
-                                            <TextBlock Text="{Binding BookingExtra.Cost, StringFormat='{}{0:c}'}" />
-                                        </ui:SimpleStackPanel>
+                                            <TextBlock VerticalAlignment="Center" Text="{Binding BookingExtra.Cost, ConverterCulture='sv-SE', StringFormat='\{0: #,##0 kr\}'}" />
+                                        </UniformGrid>
+                                    </DataTemplate>
+                                </ui:ItemsRepeater.ItemTemplate>
+                            </ui:ItemsRepeater>
+                            <!--<ui:ListView ItemsSource="{Binding Booking.BookingExtras}">
+                                <ui:ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <UniformGrid>
+                                            <CheckBox IsChecked="{Binding IsSelected}">
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="Click">
+                                                        <i:InvokeCommandAction Command="{Binding DataContext.BookingUpdatedCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type view:BookingCreate}}}" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                                <TextBlock Text="{Binding BookingExtra.Type}" />
+                                            </CheckBox>
+                                            <TextBlock Text="{Binding BookingExtra.Cost, StringFormat='{}{0:c}'}" VerticalAlignment="Center" />
+                                        </UniformGrid>
                                     </DataTemplate>
                                 </ui:ListView.ItemTemplate>
-                            </ui:ListView>
+                            </ui:ListView>-->
                         </ui:SimpleStackPanel>
                     </GroupBox>
                 </StackPanel>
@@ -103,7 +121,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
-                            <RowDefinition />
+                            <RowDefinition Height="AUto" />
                             <RowDefinition />
                         </Grid.RowDefinitions>
                         <GroupBox Header="Hotell">
@@ -129,8 +147,8 @@
                             </StackPanel>
                         </GroupBox>
                         <StackPanel Grid.Row="1">
-                            <Separator Margin="0,30" />
-                            <GroupBox Header="Dina bokningsuppgifter">
+                            <Separator Margin="0,10" />
+                            <GroupBox Header="Bokningsuppgifter">
                                 <ui:SimpleStackPanel>
                                     <ui:SimpleStackPanel Orientation="Horizontal">
                                         <ui:SimpleStackPanel>
@@ -144,24 +162,20 @@
                                         </ui:SimpleStackPanel>
                                     </ui:SimpleStackPanel>
                                     <!--<ui:SimpleStackPanel>
-                                    <TextBox
-                                        ui:ControlHelper.Header="Förnamn"
-                                        IsReadOnly="True"
-                                        Text="{Binding Store.CurrentUser.FirstName}" />
-                                    <TextBox
-                                        ui:ControlHelper.Header="Efternamn"
-                                        IsReadOnly="True"
-                                        Text="{Binding Store.CurrentUser.LastName}" />
-                                    <TextBox
-                                        ui:ControlHelper.Header="Email"
-                                        IsReadOnly="True"
-                                        Text="{Binding Store.CurrentUser.Email}" />
-                                </ui:SimpleStackPanel>-->
+                                        <TextBox
+                                            ui:ControlHelper.Header="Namn"
+                                            IsReadOnly="True"
+                                            Text="{Binding Store.CurrentUser.FullName}" />
+                                        <TextBox
+                                            ui:ControlHelper.Header="Email"
+                                            IsReadOnly="True"
+                                            Text="{Binding Store.CurrentUser.Email}" />
+                                    </ui:SimpleStackPanel>-->
                                 </ui:SimpleStackPanel>
                             </GroupBox>
                         </StackPanel>
                         <StackPanel Grid.Row="2">
-                            <Separator Margin="0,30" />
+                            <Separator Margin="0,20" />
                             <GroupBox Header="Prisöversikt">
                                 <ui:SimpleStackPanel>
                                     <Grid>
@@ -179,30 +193,27 @@
                                     <ui:ItemsRepeater ItemsSource="{Binding Booking.SelectedBookingExtras}">
                                         <ui:ItemsRepeater.ItemTemplate>
                                             <DataTemplate>
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition />
-                                                        <ColumnDefinition />
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock
-                                                        Grid.Column="0"
-                                                        HorizontalAlignment="Left"
-                                                        Text="{Binding Type}" />
-                                                    <TextBlock Grid.Column="1" Text="{Binding Cost, ConverterCulture='sv-SE', StringFormat='\{0: #,##0 kr\}'}" />
-                                                </Grid>
+                                                <UniformGrid>
+                                                    <TextBlock HorizontalAlignment="Left" Text="{Binding Type}" />
+                                                    <TextBlock Text="{Binding Cost, ConverterCulture='sv-SE', StringFormat='\{0: #,##0 kr\}'}" />
+                                                </UniformGrid>
                                             </DataTemplate>
                                         </ui:ItemsRepeater.ItemTemplate>
                                     </ui:ItemsRepeater>
                                 </ui:SimpleStackPanel>
                             </GroupBox>
                         </StackPanel>
-                        <StackPanel Grid.Row="3">
+                        <StackPanel Grid.Row="3" VerticalAlignment="Bottom">
                             <TextBlock FontSize="36" Text="{Binding Booking.TotalPrice, ConverterCulture='sv-SE', StringFormat='\{0: #,##0 kr\}'}" />
                             <Button
                                 HorizontalAlignment="Stretch"
                                 Command="{Binding CreateBookingCommand}"
                                 Content="Slutför bokning"
-                                Style="{ui:StaticResource AccentButtonStyle}" />
+                                Style="{ui:StaticResource AccentButtonStyle}">
+                                <Button.LayoutTransform>
+                                    <ScaleTransform ScaleX="1.5" ScaleY="1.5" />
+                                </Button.LayoutTransform>
+                            </Button>
                         </StackPanel>
                     </Grid>
                 </Border>

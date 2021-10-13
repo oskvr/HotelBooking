@@ -13,28 +13,55 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 
 namespace HotelBooking.Presentation.ViewModels
 {
 
 	public record SortOption(string Name, string MappingProperty, ListSortDirection SortDirection);
-	public record HotelViewModel(Hotel Hotel, ICollection<RoomType> AvailableRoomTypes)
+	//public class HotelViewModel
+	//{
+	//	public HotelViewModel(Hotel hotel, List<RoomType> availableRoomTypes)
+	//	{
+	//		Hotel = hotel;
+	//		AvailableRoomTypes = availableRoomTypes;
+	//	}
+
+	//	public Hotel Hotel { get; set; } = new Hotel();
+	//	public List<RoomType> AvailableRoomTypes { get; set; } = new List<RoomType>();
+
+	//	public bool IsAvailable => AvailableRoomTypes.Count > 0;
+	//	public int FromPrice => 300;
+	//}
+	public record HotelViewModel(int Id, string Name, string Country, double Rating, string ImageUrl, List<RoomType> AvailableRoomTypes)
 	{
 		public bool IsAvailable => AvailableRoomTypes.Count > 0;
-		public int FromPrice => AvailableRoomTypes.OrderBy(roomType => roomType.PricePerNight).First().PricePerNight;
+		//public int FromPrice => 300;
+
+		public Visibility Visibility => IsAvailable ? Visibility.Visible : Visibility.Hidden;
+		public int FromPrice => AvailableRoomTypes.Count == 0 ? 0 : AvailableRoomTypes.OrderBy(roomType => roomType.PricePerNight).FirstOrDefault().PricePerNight;
 	}
-	public class HotelsOverviewViewModel : BindableBase
+	public class HotelsOverviewViewModel : BindableBase, INavigationAware
 	{
+		public DateTime CheckInDateFilter { get; set; } = DateTime.Now;
+		public int LengthInDaysFilter { get; set; } = Bookings.AVAILABLE_BOOKING_LENGTHS[0];
+		private DelegateCommand dateFilterUpdatedCommand;
+		public DelegateCommand DateFilterUpdatedCommand => dateFilterUpdatedCommand ??= new DelegateCommand(ExecuteDateFilterUpdatedCommand);
+
+		void ExecuteDateFilterUpdatedCommand()
+		{
+			LoadInitData();
+		}
+
 		public ObservableCollection<Hotel> Hotels { get; set; }
 		public ICollectionView FilteredHotels { get; set; }
 		public ObservableCollection<SortOption> SortOptions { get; set; }
-		public ObservableCollection<RoomType> RoomTypes { get; set; }
-		public DelegateCommand TogglePaneCommand { get; set; }
-		public DelegateCommand<Hotel> NavigateToBookingCommand { get; set; }
+		public DelegateCommand<object> NavigateToBookingCommand { get; set; }
 		private SortOption selectedSortOption;
 		public SortOption SelectedSortOption
 		{
@@ -59,65 +86,76 @@ namespace HotelBooking.Presentation.ViewModels
 		{
 			this.dbContext = dbContext;
 			this.hotelService = hotelService;
-			NavigateToBookingCommand = new DelegateCommand<Hotel>(OnNavigateToBooking);
+			NavigateToBookingCommand = new DelegateCommand<object>(OnNavigateToBooking);
 			LoadInitData();
 			this.regionManager = regionManager;
 			this.store = store;
 			SortOptions = new ObservableCollection<SortOption>
 			{
-				new SortOption("Pris (fallande)", "PricePerNight", ListSortDirection.Descending),
-				new SortOption("Pris (stigande)", "PricePerNight", ListSortDirection.Ascending),
+				new SortOption("Pris (fallande)", "FromPrice", ListSortDirection.Descending),
+				new SortOption("Pris (stigande)", "FromPrice", ListSortDirection.Ascending),
 				new SortOption("Hotelklass (fallande)", "Rating", ListSortDirection.Descending),
 				new SortOption("Hotelklass (stigande)", "Rating", ListSortDirection.Ascending),
-				new SortOption("Tillgänglighet", "IsAvailable", ListSortDirection.Ascending),
+				new SortOption("Tillgänglighet", "IsAvailable", ListSortDirection.Descending),
 				new SortOption("Namn (stigande)", "Name", ListSortDirection.Ascending),
 				new SortOption("Namn (fallande)", "Name", ListSortDirection.Descending),
 			};
 		}
 
-		private void OnNavigateToBooking(Hotel hotel)
+		private void OnNavigateToBooking(object hotelId)
 		{
 			var navigationParams = new NavigationParameters();
-			navigationParams.Add("hotelId", hotel.Id);
+			navigationParams.Add("hotelId", (int)hotelId);
 			string redirectView = store.IsLoggedIn ? nameof(BookingCreate) : nameof(Login);
 			regionManager.RequestNavigate(RegionNames.CONTENT_REGION, redirectView, navigationParams);
 		}
-
-		public async Task<ObservableCollection<RoomType>> GetRoomTypes()
-		{
-			var roomTypes = await dbContext.RoomTypes.ToListAsync();
-			return new ObservableCollection<RoomType>(roomTypes);
-		}
-		public async Task<ObservableCollection<Hotel>> GetHotels()
-		{
-			var hotels = await hotelService.GetAll();
-			//foreach (var hotel in hotels)
-			//{
-			//	var availableRoomTypes = await hotelService.GetAvailableRoomTypesBetweenDates(hotel.Id,)
-			//}
-			return new ObservableCollection<Hotel>(hotels);
-		}
 		private async void LoadInitData()
 		{
-			RoomTypes = await GetRoomTypes();
-			Hotels = await GetHotels();
-			FilteredHotels = CollectionViewSource.GetDefaultView(Hotels);
+			var hotels = await hotelService.GetAll();
+			var hotelViewModels = new List<HotelViewModel>();
+			foreach (var hotel in hotels)
+			{
+				var availableRoomTypes = await hotelService.GetAvailableRoomTypesBetweenDates(hotel.Id, CheckInDateFilter, CheckInDateFilter.AddDays(LengthInDaysFilter));
+				var converted = new HotelViewModel(hotel.Id, hotel.Name, hotel.Country, hotel.Rating, hotel.Image.ToString(), availableRoomTypes);
+				hotelViewModels.Add(converted);
+			}
+			FilteredHotels = CollectionViewSource.GetDefaultView(hotelViewModels);
 			FilteredHotels.Filter = new Predicate<object>(ItemFilter);
+			if (SelectedSortOption is not null)
+			{
+				FilteredHotels.SortDescriptions.Clear();
+				FilteredHotels.SortDescriptions.Add(new SortDescription(SelectedSortOption.MappingProperty, SelectedSortOption.SortDirection));
+			}
 			FilteredHotels.Refresh();
 		}
 		private bool ItemFilter(object obj)
 		{
-			if (obj is Hotel hotel)
+			if (obj is HotelViewModel hotel)
 			{
-				return true;
+				return hotel.IsAvailable;
 			}
 			return false;
+		}
+
+		public void OnNavigatedTo(NavigationContext navigationContext)
+		{
+			LoadInitData();
+		}
+
+		public bool IsNavigationTarget(NavigationContext navigationContext)
+		{
+			return true;
+		}
+
+		public void OnNavigatedFrom(NavigationContext navigationContext)
+		{
 		}
 	}
 }
 
 
 
+#region old_code_delete_anytime
 
 //namespace HotelBooking.Presentation.ViewModels
 //{
@@ -168,3 +206,4 @@ namespace HotelBooking.Presentation.ViewModels
 //		}
 //	}
 //}
+#endregion

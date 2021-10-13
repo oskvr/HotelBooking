@@ -19,18 +19,12 @@
         <ui:SimpleStackPanel
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Spacing="30">
-            <ui:SimpleStackPanel Orientation="Horizontal" Spacing="20">
+            Spacing="40">
 
-                <TextBlock Style="{ui:StaticResource HeaderTextBlockStyle}" Text="Tack för din bokning" />
-                <TextBlock
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Bottom"
-                    FontFamily="Segoe MDL2 Assets"
-                    FontSize="36"
-                    Foreground="ForestGreen"
-                    Text="&#xE73D;" />
-            </ui:SimpleStackPanel>
+            <TextBlock
+                Style="{ui:StaticResource HeaderTextBlockStyle}"
+                Text="Tack för din bokning"
+                TextAlignment="Center" />
             <Button
                 HorizontalAlignment="Center"
                 Command="{Binding NavigateToBookingsCommand}"

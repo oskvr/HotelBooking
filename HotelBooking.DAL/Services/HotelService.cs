@@ -3,6 +3,7 @@ using HotelBooking.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,11 +41,11 @@ namespace HotelBooking.DAL.Services
 
 		public async Task<IEnumerable<Hotel>> GetAll()
 		{
-			return await dbContext.Hotels.Include(hotel => hotel.Ratings).Include(hotel=>hotel.Rooms).ToListAsync();
+			return await dbContext.Hotels.Include(hotel=>hotel.Rooms).ToListAsync();
 		}
 		public async Task<List<Room>> GetAvailableRoomsBetweenDates(int hotelId, DateTime checkInDate, DateTime checkOutDate)
 		{
-			List<Room> allRooms = await dbContext.Rooms.Include(room => room.Bookings).Where(room => room.HotelId == hotelId).ToListAsync();
+			List<Room> allRooms = await dbContext.Rooms.Include(room=>room.RoomType).Include(room => room.Bookings).Where(room => room.HotelId == hotelId).ToListAsync();
 			List<Room> availableRooms = new();
 			foreach (Room room in allRooms)
 			{
@@ -61,7 +62,8 @@ namespace HotelBooking.DAL.Services
 		public async Task<List<RoomType>> GetAvailableRoomTypesBetweenDates(int hotelId, DateTime checkInDate, DateTime checkOutDate)
 		{
 			var availableRooms = await GetAvailableRoomsBetweenDates(hotelId, checkInDate, checkOutDate);
-			return availableRooms.Select(room => room.RoomType).Distinct().ToList();
+			var roomTypes = availableRooms.Select(room => room.RoomType).Distinct().ToList();
+			return roomTypes;
 		}
 		//public async Task<IEnumerable<RoomType>> GetAvailableRoomTypesBetweenDates(int hotelId, DateTime checkInDate, DateTime checkOutDate)
 		//{

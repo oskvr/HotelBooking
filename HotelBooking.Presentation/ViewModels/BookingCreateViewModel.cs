@@ -36,8 +36,6 @@ namespace HotelBooking.Presentation.ViewModels
 		private readonly IHotelService hotelService;
 		private readonly IRegionManager regionManager;
 
-		public double? TotalPrice => Booking.RoomType is not null ? (Booking.RoomType.PricePerNight * Booking.LengthInDays) + BookingExtras.Where(extra => extra.IsSelected).Sum(extra => extra.BookingExtra.Cost) : 0;
-
 		public GlobalStore Store { get; }
 
 		public BookingCreateViewModel(IBookingService bookingService, IHotelService hotelService, HotelBookingDbContext dbContext, IRegionManager regionManager, GlobalStore store)
@@ -63,10 +61,9 @@ namespace HotelBooking.Presentation.ViewModels
 		}
 		private async void OnCreateBooking()
 		{
-			//Booking.BookingExtras = BookingExtras;
-			Booking.HotelId = HotelId;
 			try
 			{
+				Booking.HotelId = HotelId;
 				var createdBooking = await bookingService.Create(Booking);
 				var navigationParams = new NavigationParameters();
 				navigationParams.Add("Booking", createdBooking);
@@ -78,8 +75,6 @@ namespace HotelBooking.Presentation.ViewModels
 				MessageBox.Show(e.Message);
 			}
 
-			// TODO: Temporary for refreshing roomtypes
-			LoadRoomTypesAsync();
 		}
 		private async void LoadDataAsync()
 		{
