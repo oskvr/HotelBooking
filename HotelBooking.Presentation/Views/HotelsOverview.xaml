@@ -12,6 +12,7 @@
     xmlns:utils="clr-namespace:HotelBooking.Presentation.Utils"
     xmlns:view="clr-namespace:HotelBooking.Presentation.Views"
     xmlns:viewmodels="clr-namespace:HotelBooking.Presentation.ViewModels"
+    x:Name="root"
     d:DataContext="{d:DesignInstance Type=viewmodels:HotelsOverviewViewModel}"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -170,7 +171,7 @@
 
                                             <Button
                                                 BorderThickness="10,5"
-                                                Command="{Binding DataContext.NavigateToBookingCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type view:HotelsOverview}}}"
+                                                Command="{Binding DataContext.NavigateToBookingCommand, ElementName=root}"
                                                 CommandParameter="{Binding Id}"
                                                 Content="Boka Nu"
                                                 FontSize="18"
@@ -187,89 +188,3 @@
         </Grid>
     </ScrollViewer>
 </UserControl>
-
-
-
-<!--<Grid>
-        <ui:SplitView
-            DisplayMode="Inline"
-            IsPaneOpen="True"
-            OpenPaneLength="300">
-            <ui:SplitView.Pane>
-                <ui:SimpleStackPanel Spacing="10">
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        FontSize="24"
-                        Text="{Binding SelectedHotel.Name}" />
-                    <Image Source="https://source.unsplash.com/1001x700/?building,hotel" />
-                    <Button
-                        HorizontalAlignment="Center"
-                        Command="{Binding NavigateToBookingCommand}"
-                        Content="Boka"
-                        Style="{ui:StaticResource AccentButtonStyle}" />
-                </ui:SimpleStackPanel>
-            </ui:SplitView.Pane>
-            <DataGrid
-                AutoGenerateColumns="False"
-                IsReadOnly="True"
-                ItemsSource="{Binding Hotels}"
-                SelectedIndex="0"
-                SelectedItem="{Binding SelectedHotel}"
-                Style="{ui:StaticResource DefaultDataGridStyle}">
-                <DataGrid.CellStyle>
-                    <Style TargetType="DataGridCell">
-                        <Setter Property="Focusable" Value="False" />
-                        <Setter Property="BorderThickness" Value="0" />
-                        <Setter Property="Background" Value="Transparent" />-->
-<!--
-    Update from comments.
-    Remove the focus indication for the selected cell
--->
-<!--
-                    </Style>
-                </DataGrid.CellStyle>
-                <DataGrid.Columns>
-                    <DataGridTemplateColumn Header="">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Image
-                                    Width="60"
-                                    Height="60"
-                                    Margin="5"
-                                    Source="https://source.unsplash.com/1000x700/?building,hotel"
-                                    Stretch="Fill" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTextColumn
-                        Binding="{Binding Name}"
-                        Header="Namn"
-                        TextSearch.Text="What is this" />
-                    <DataGridTextColumn Binding="{Binding Country}" Header="Land" />
-
-                    <DataGridTemplateColumn Header="Hotellklass" SortMemberPath="Rating">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <ui:RatingControl
-                                    HorizontalAlignment="Left"
-                                    IsReadOnly="True"
-                                    PlaceholderValue="{Binding Rating}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-
-                    <DataGridTemplateColumn Header="Pris/natt" SortMemberPath="PricePerNight">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    Text="935" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
-        </ui:SplitView>
-    </Grid>-->

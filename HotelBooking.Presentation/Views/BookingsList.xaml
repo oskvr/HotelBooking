@@ -116,32 +116,3 @@
         </Grid>
     </Border>
 </UserControl>
-
-
-<!--<Grid>
-    <ui:SimpleStackPanel
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Spacing="10"
-            Visibility="{Binding UserHasNoBookings, Converter={StaticResource BoolToVis}}">
-        <ui:SymbolIcon Symbol="Calendar">
-            <ui:SymbolIcon.LayoutTransform>
-                <ScaleTransform ScaleX="2" ScaleY="2" />
-            </ui:SymbolIcon.LayoutTransform>
-        </ui:SymbolIcon>
-        <TextBlock FontSize="18" Text="Du har inga bokningar" />
-    </ui:SimpleStackPanel>
-    <ui:ListView ItemsSource="{Binding Bookings}" SelectedItem="{Binding SelectedBooking}">
-        <ui:ListView.ItemTemplate>
-            <DataTemplate>
-                <ui:SimpleStackPanel Orientation="Horizontal">
-                    <TextBlock VerticalAlignment="Center" Text="{Binding Hotel.Name}" />
-                    <ui:AppBarButton
-                            Command="{Binding DataContext.DeleteBookingCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type view:BookingsList}}}"
-                            CommandParameter="{Binding}"
-                            Icon="Delete" />
-                </ui:SimpleStackPanel>
-            </DataTemplate>
-        </ui:ListView.ItemTemplate>
-    </ui:ListView>
-</Grid>-->
