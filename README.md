@@ -42,6 +42,16 @@ UI libraries and controls:
 > dotnet run
 ```
 
+or 
+
+Using the *Package Manager Console* in Visual Studio:
+
+- Change the "Default Project" to HotelBooking.DAL and run:
+```
+> add-migration Init
+> update-database
+```
+
 ## License
 
 MIT
